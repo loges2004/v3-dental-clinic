@@ -1,0 +1,13 @@
+.admin-dashboard-container { max-width: 1100px; margin: 2rem auto; background: #fff; padding: 2rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+h2 { text-align: center; }
+.appointments-table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+.appointments-table th, .appointments-table td { border: 1px solid #e0e0e0; padding: 0.7rem; text-align: center; }
+.appointments-table th { background: #e3f2fd; }
+.appointments-table tr:nth-child(even) { background: #f8f9fa; }
+.appointments-table button { margin: 0 0.3rem; background: #388e3c; color: #fff; border: none; padding: 0.4rem 1rem; border-radius: 5px; cursor: pointer; transition: background 0.2s; }
+.appointments-table button:hover { background: #2e7031; }
+.reject-popup { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem; }
+.reject-popup input { padding: 0.4rem; border: 1px solid #bdbdbd; border-radius: 5px; }
+.success-message { color: #388e3c; margin-top: 1rem; text-align: center; }
+.error-message { color: #d32f2f; margin-top: 1rem; text-align: center; }
+@media (max-width: 900px) { .appointments-table, .appointments-table th, .appointments-table td { font-size: 0.9rem; } .admin-dashboard-container { padding: 1rem; } } 

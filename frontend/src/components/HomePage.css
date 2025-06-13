@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:700&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #222;
+}
+
+.homepage-bootstrap {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #222;
+  color: #222;
+  min-height: 100vh;
+  padding-top: 90px; /* Adjusted space for fixed navbar based on increased padding */
+}
+
+/* Ensure the body and html have a dark background too */
+body, html {
+  background-color: #222;
+}
+
+.homepage-dashboard-container { font-family: 'Segoe UI', Arial, sans-serif; background: linear-gradient(135deg, #e3f2fd 0%, #e0f7fa 100%); color: #222; min-height: 100vh; }
+
+.hero-section { background: linear-gradient(90deg, #00bcd4 0%, #388e3c 100%); padding: 2.5rem 0 2rem 0; }
+.hero-content { display: flex; align-items: center; justify-content: center; gap: 2.5rem; max-width: 1100px; margin: 0 auto; flex-wrap: wrap; }
+.hero-logo { width: 120px; height: 120px; border-radius: 50%; box-shadow: 0 2px 12px rgba(0,0,0,0.10); background: #fff; object-fit: cover; }
+.hero-title { color: #fff; font-size: 2.5rem; margin-bottom: 0.5rem; }
+.hero-tagline { color: #e0f7fa; font-size: 1.3rem; margin-bottom: 1.2rem; }
+.hero-cta-btn { background: linear-gradient(90deg, #388e3c 0%, #00bcd4 100%); color: #fff; border: none; padding: 1.1rem 2.5rem; border-radius: 9px; font-size: 1.25rem; cursor: pointer; font-weight: 700; box-shadow: 0 2px 8px rgba(0,188,212,0.10); transition: background 0.2s, transform 0.2s; min-width: 180px; min-height: 48px; }
+.hero-cta-btn:hover { background: linear-gradient(90deg, #00bcd4 0%, #388e3c 100%); transform: scale(1.04); }
+
+.dashboard-cards-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 2rem; max-width: 1100px; margin: 2.5rem auto; }
+.dashboard-card { background: #fff; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,188,212,0.10); padding: 2rem 1.2rem; display: flex; flex-direction: column; align-items: center; transition: box-shadow 0.2s, transform 0.2s; cursor: pointer; min-height: 320px; min-width: 0; }
+.dashboard-card:hover { box-shadow: 0 6px 24px #00bcd4; transform: translateY(-4px) scale(1.03); }
+.dashboard-card-icon { font-size: 2.5rem; margin-bottom: 0.7rem; }
+.services-list { list-style: disc; padding-left: 1.2rem; font-size: 1.08rem; text-align: left; margin: 0.7rem 0 0 0; }
+.doctors-list { display: flex; gap: 1.2rem; flex-wrap: wrap; justify-content: center; }
+.doctor-card { background: #e3f2fd; border-radius: 10px; padding: 1rem; min-width: 150px; box-shadow: 0 1px 8px rgba(0,188,212,0.08); text-align: center; transition: box-shadow 0.2s, transform 0.2s; margin-bottom: 0.5rem; }
+.doctor-card:hover { box-shadow: 0 4px 20px #00bcd4; transform: translateY(-2px) scale(1.03); }
+.doctor-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; margin-bottom: 0.5rem; border: 2px solid #00bcd4; }
+.map-container { margin-top: 0.7rem; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,188,212,0.08); }
+
+.about-section { max-width: 900px; margin: 2.5rem auto; background: #fff; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); padding: 2rem; text-align: center; }
+.about-section h2 { color: #00bcd4; font-weight: 700; margin-bottom: 1rem; }
+
+.gallery-section { max-width: 1100px; margin: 2.5rem auto; }
+.gallery-section h2 { color: #388e3c; font-weight: 700; margin-bottom: 1.2rem; text-align: center; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+.gallery-img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,188,212,0.10); transition: transform 0.2s; }
+.gallery-img:hover { transform: scale(1.04); box-shadow: 0 4px 20px #00bcd4; }
+
+.footer-section { text-align: center; padding: 1.5rem 0;color: #fff; margin-top: 2rem; border-radius: 0 0 14px 14px; font-size: 1.05rem; }
+
+@media (max-width: 900px) {
+  .hero-content { flex-direction: column; gap: 1.2rem; }
+  .dashboard-cards-section { grid-template-columns: 1fr; gap: 1.2rem; }
+  .about-section, .gallery-section { padding: 1rem; }
+  .gallery-img { height: 140px; }
+  .dashboard-card { min-height: 220px; }
+}
+
+@media (max-width: 600px) {
+  .hero-title { font-size: 1.2rem; }
+  .hero-logo { width: 70px; height: 70px; }
+  .hero-section { padding: 1.2rem 0 1rem 0; }
+  .hero-cta-btn { font-size: 1rem; padding: 1rem 1.2rem; min-width: 120px; min-height: 44px; }
+  .dashboard-card { padding: 1rem 0.3rem; min-height: 160px; }
+  .gallery-img { height: 90px; }
+  .about-section { padding: 0.7rem; }
+  .dashboard-card-icon { font-size: 2rem; }
+  .doctor-img { width: 44px; height: 44px; }
+  .services-list { font-size: 0.98rem; }
+  .clinic-name-animated {
+    font-size: 0.75rem;
+    letter-spacing: 0px;
+  }
+  .navbar-brand img,
+  .clinic-logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+.clinic-carousel img {
+    width: 100vw !important;
+    height: 55vw !important;
+    max-height: 400px;
+    object-fit: contain;
+    background: #fff;
+    margin: 0 auto;
+    display: block;
+  }
+  
+  @media (max-width: 600px) {
+    .clinic-carousel img {
+      height: 50vw !important;
+      max-height: 220px;
+    }
+  }
+
+.clinic-name-animated {
+  font-size: 1.6rem;
+  font-weight: bold;
+  background: linear-gradient(90deg, #00bcd4, #388e3c, #00bcd4);
+  background-size: 200% auto;
+  color: #fff;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gradient-move 3s linear infinite;
+  letter-spacing: 2px;
+  font-family: 'Poppins', Arial, sans-serif;
+  text-shadow: 0 2px 8px rgba(0,188,212,0.10);
+  flex-shrink: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+@keyframes gradient-move {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+.contact-section {
+  background: linear-gradient(90deg, #222 0%, #00bcd4 100%);
+  color: #fff;
+}
+.contact-title {
+  color: #fff;
+  font-family: 'Poppins', Arial, sans-serif;
+  font-weight: 700;
+  font-size: 2rem;
+  letter-spacing: 1px;
+  border-bottom: 3px solid #fff;
+  display: inline-block;
+  padding-bottom: 0.2em;
+  margin-bottom: 1.2rem;
+}
+.contact-card {
+  background: rgba(0, 188, 212, 0.18);
+  color: #fff;
+  border-radius: 16px;
+  font-size: 1.1rem;
+  box-shadow: 0 2px 12px rgba(0,188,212,0.10);
+}
+.contact-card a {
+  color: #ffe082;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.open-maps-btn {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: none;
+  color: #00bcd4;
+  padding: 0.5rem 1rem;
+  border-radius: 24px;
+  font-weight: bold;
+  text-decoration: underline;
+  box-shadow: none;
+  transition: color 0.2s;
+  z-index: 2;
+}
+.open-maps-btn:hover {
+  color: #388e3c;
+  background: none;
+}
+
+.navbar,
+.navbar.bg-dark {
+  background: #222 !important;
+  margin-bottom: 0 !important;
+  padding-top: 1.5rem !important;
+  padding-bottom: 1.5rem !important;
+  border-bottom: none !important;
+  z-index: 1030; /* Ensure fixed navbar is on top */
+}
+
+.homepage-bootstrap > section:first-of-type {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.navbar-brand img,
+.clinic-logo {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+@media (max-width: 600px) {
+  .navbar-brand img,
+  .clinic-logo {
+    width: 36px !important;
+    height: 36px !important;
+  }
+}
+
+.clinic-image-section {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
