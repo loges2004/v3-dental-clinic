@@ -87,10 +87,10 @@ const AppointmentForm = () => {
     switch(currentImage) {
       case 1: return 'url(/images/image6.jpg)';
       case 2: return 'url(/images/bg_booking.jpg)';
-      case 3: return 'url(/images/image3.jpg)';
+      case 3: return 'url(/images/image11.jpg)';
       case 4: return 'url(/images/image2.jpg)';
       case 5: return 'url(/images/image4.jpg)';
-      case 6: return 'url(/images/image9.jpg)';
+      case 6: return 'url(/images/image10.jpg)';
       default: return 'url(/images/bg_booking.jpg)';
     }
   };

@@ -18,9 +18,9 @@ const services = [
 ];
 
 const doctors = [
-  { name: 'Dr. Anish M', qualification: 'BDS', specialization: 'General Dentist', img: '/images/image7.jpg', phone: '98765 43210' },
-  { name: 'Dr. Nithish Kumar S', qualification: 'BDS', specialization: 'General Dentist', img: '/images/image8.jpg', phone: '81899 85733' },
-  { name: 'Dr. Ashriene Jose PJ', qualification: 'BDS', specialization: 'General Dentist', img: '/images/image9.jpg', phone: '99887 66554' },
+  { name: 'Dr. Anish M', qualification: 'BDS', specialization: 'General Dentist', img: '/images/Anish.jpg', phone: '98765 43210' },
+  { name: 'Dr.Nithishkumar', qualification: 'BDS', specialization: 'Dental surgeon', img: '/images/Nithish.jpg', phone: '81899 85733' },
+  { name: 'Dr. Ashriene Jose PJ', qualification: 'BDS', specialization: 'General Dentist', img: '/images/Ashriene.jpg', phone: '99887 66554' },
 ];
 
 const openingTimes = [
@@ -37,7 +37,7 @@ const HomePage = () => {
       case 1: return 'url(/images/image6.jpg)';
       case 2: return 'url(/images/bg_booking.jpg)';
       case 3: return 'url(/images/image55.jpg)';
-      case 4: return 'url(/images/image2.jpg)';
+      case 4: return 'url(/images/image11.jpg)';
       case 5: return 'url(/images/image4.jpg)';
       case 6: return 'url(/images/image9.jpg)';
       default: return 'url(/images/bg_booking.jpg)';
