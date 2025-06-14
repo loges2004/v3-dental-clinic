@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "bootstrap": "^5.3.6",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "react-bootstrap": "^2.10.10",
+    "sweetalert2": "^11.22.0"
+  }
+}
