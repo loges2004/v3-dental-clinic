@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @SpringBootApplication
 @ComponentScan(basePackages = "com.dental")
@@ -18,6 +20,21 @@ public class DentalClinicApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DentalClinicApplication.class, args);
+    }
+
+    @Bean
+    public CommandLineRunner passwordEncoderRunner() {
+        return args -> {
+            String rawPassword = "v3@08062025";
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            String hashedPassword = encoder.encode(rawPassword);
+            System.out.println("--------------------------------------------------");
+            System.out.println("Generated Hashed Password:");
+            System.out.println("Raw Password: " + rawPassword);
+            System.out.println("Hashed Password: " + hashedPassword);
+            System.out.println("--------------------------------------------------");
+            // You can stop the application after getting the hash, or let it run
+        };
     }
 
     @Bean

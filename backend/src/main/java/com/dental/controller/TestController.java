@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/test")
@@ -37,7 +39,30 @@ public class TestController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError()
                 .body("Database connection failed: " + e.getMessage() + "\n" +
-                      "Please check if MySQL is running on port 4306 and the database 'dental_clinic' exists.");
+                      "Please check if MySQL is running on port 3306 and the database 'dental_clinic' exists.");
+        }
+    }
+
+    @GetMapping("/appointments")
+    public ResponseEntity<?> testAppointments() {
+        try {
+            // Check if appointments table exists
+            try {
+                List<Map<String, Object>> appointments = jdbcTemplate.queryForList(
+                    "SELECT * FROM appointments ORDER BY appointment_date DESC"
+                );
+                
+                if (appointments.isEmpty()) {
+                    return ResponseEntity.ok("Appointments table exists but is empty.");
+                }
+                
+                return ResponseEntity.ok(appointments);
+            } catch (Exception e) {
+                return ResponseEntity.ok("Appointments table might not exist. Error: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                .body("Error accessing appointments: " + e.getMessage());
         }
     }
 } 

@@ -8,10 +8,14 @@ E:\dental\backend\src\main\java\com\dental\repository\NotificationRepository.jav
 E:\dental\backend\src\main\java\com\dental\service\UserService.java
 E:\dental\backend\src\main\java\com\dental\service\EmailService.java
 E:\dental\backend\src\main\java\com\dental\controller\TestController.java
+E:\dental\backend\src\main\java\com\dental\payload\response\AuthResponse.java
 E:\dental\backend\src\main\java\com\dental\controller\AppointmentController.java
 E:\dental\backend\src\main\java\com\dental\config\SecurityConfig.java
+E:\dental\backend\src\main\java\HashGenerator.java
+E:\dental\backend\src\main\java\com\dental\security\JwtTokenProvider.java
 E:\dental\backend\src\main\java\com\dental\model\Appointment.java
 E:\dental\backend\src\main\java\com\dental\model\User.java
+E:\dental\backend\src\main\java\com\dental\payload\request\AuthRequest.java
 E:\dental\backend\src\main\java\com\dental\repository\AppointmentRepository.java
 E:\dental\backend\src\main\java\com\dental\security\JwtAuthenticationFilter.java
 E:\dental\backend\src\main\java\com\dental\repository\UserRepository.java

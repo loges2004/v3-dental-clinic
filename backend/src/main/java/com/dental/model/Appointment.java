@@ -14,9 +14,14 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id", nullable = false)
-    private User patient;
+    @Column(name = "patient_full_name", nullable = false)
+    private String patientFullName;
+
+    @Column(name = "patient_email", nullable = false)
+    private String patientEmail;
+
+    @Column(name = "patient_phone", nullable = false)
+    private String patientPhone;
 
     @Column(name = "appointment_date", nullable = false)
     private LocalDate appointmentDate;
@@ -26,6 +31,9 @@ public class Appointment {
 
     @Column(name = "service_type", nullable = false)
     private String serviceType;
+
+    @Column(name = "clinic_area")
+    private String clinicArea;
 
     private String description;
 
@@ -52,6 +60,6 @@ public class Appointment {
     }
 
     public enum AppointmentStatus {
-        PENDING, ACCEPTED, REJECTED
+        PENDING, ACCEPTED, REJECTED, RESCHEDULED
     }
 } 

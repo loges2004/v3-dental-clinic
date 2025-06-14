@@ -1,19 +1,18 @@
 package com.dental.controller;
 
 import com.dental.model.Appointment;
-import com.dental.model.User;
 import com.dental.service.AppointmentService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -23,14 +22,39 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<Appointment> createAppointment(
-            @RequestBody AppointmentRequest request,
-            @AuthenticationPrincipal User patient) {
+    public ResponseEntity<Appointment> createAppointment(@RequestBody AppointmentRequest request) {
         Appointment appointment = new Appointment();
-        appointment.setPatient(patient);
+        
+        appointment.setPatientFullName(request.getName());
+        appointment.setPatientEmail(request.getEmail());
+        appointment.setPatientPhone(request.getPhone());
+        
         appointment.setAppointmentDate(LocalDate.parse(request.getDate()));
-        appointment.setAppointmentTime(LocalTime.parse(request.getTime(), DateTimeFormatter.ofPattern("h:mma – h:mma")));
+
+        // Manual parsing of time to handle AM/PM robustly
+        String timeString = request.getTime().trim();
+
+        // --- START DEBUG LOGGING ---
+        System.out.println("Received time string: '" + timeString + "'");
+        System.out.println("Time string length: " + timeString.length());
+        for (int i = 0; i < timeString.length(); i++) {
+            System.out.println("Char at index " + i + ": '" + timeString.charAt(i) + "' (Unicode: " + (int) timeString.charAt(i) + ")");
+        }
+        // --- END DEBUG LOGGING ---
+
+        LocalTime parsedTime;
+
+        if (timeString.contains("AM") || timeString.contains("PM")) {
+            parsedTime = LocalTime.parse(timeString, DateTimeFormatter.ofPattern("hh:mm a", Locale.ENGLISH));
+        } else {
+            // Fallback for 24-hour format if somehow still sent
+            parsedTime = LocalTime.parse(timeString, DateTimeFormatter.ofPattern("HH:mm"));
+        }
+
+        appointment.setAppointmentTime(parsedTime);
         appointment.setServiceType(request.getService());
+        appointment.setClinicArea(request.getClinicArea());
+        
         return ResponseEntity.ok(appointmentService.createAppointment(appointment));
     }
 
@@ -38,14 +62,10 @@ public class AppointmentController {
     public ResponseEntity<Appointment> updateAppointmentStatus(
             @PathVariable Long id,
             @RequestParam Appointment.AppointmentStatus status,
-            @RequestParam(required = false) String reason) {
-        return ResponseEntity.ok(appointmentService.updateAppointmentStatus(id, status, reason));
-    }
-
-    @GetMapping("/patient")
-    public ResponseEntity<List<Appointment>> getPatientAppointments(
-            @AuthenticationPrincipal User patient) {
-        return ResponseEntity.ok(appointmentService.getPatientAppointments(patient));
+            @RequestParam(required = false) String reason,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate newDate,
+            @RequestParam(required = false) @DateTimeFormat(pattern = "HH:mm") LocalTime newTime) {
+        return ResponseEntity.ok(appointmentService.updateAppointmentStatus(id, status, reason, newDate, newTime));
     }
 
     @GetMapping("/date/{date}")
@@ -54,11 +74,9 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.getAppointmentsByDate(date));
     }
 
-    @GetMapping("/patient/date/{date}")
-    public ResponseEntity<List<Appointment>> getPatientAppointmentsByDate(
-            @AuthenticationPrincipal User patient,
-            @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return ResponseEntity.ok(appointmentService.getPatientAppointmentsByDate(patient, date));
+    @GetMapping
+    public ResponseEntity<List<Appointment>> getAllAppointments() {
+        return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
 }
 

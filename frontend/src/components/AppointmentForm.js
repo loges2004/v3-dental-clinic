@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Row, Col, Form, Button, Alert, Spinner, FloatingLabel } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Spinner, FloatingLabel } from 'react-bootstrap';
+import Swal from 'sweetalert2';
 import './AppointmentForm.css';
 
 const timeSlots = [
-  '9:30AM – 10:30AM',
-  '10:30AM – 11:30AM',
-  '11:30AM – 12:30PM',
-  '12:30PM – 2:00PM',
-  '4:00PM – 5:00PM',
-  '5:00PM – 6:00PM',
-  '6:00PM – 7:00PM',
-  '7:00PM – 8:00PM',
-  '8:00PM – 9:30PM',
+  '09:30',
+  '10:30',
+  '11:30',
+  '12:30',
+  '1:30',
+  '2:30',
+  '4:00',
+  '5:00',
+  '6:00',
+  '7:00',
+  '8:00',
+  '9:30'
 ];
 
 const services = [
@@ -43,8 +47,6 @@ const AppointmentForm = () => {
     timeSlot: '',
     serviceType: '',
   });
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentImage, setCurrentImage] = useState(1);
 
@@ -59,25 +61,89 @@ const AppointmentForm = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const validateForm = () => {
+    const { fullName, email, phone, clinicArea, date, timeSlot, serviceType } = form;
+
+    if (!fullName || !email || !phone || !clinicArea || !date || !timeSlot || !serviceType) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'All fields are required. Please fill in all information.',
+      });
+      return false;
+    }
+
+    const emailRegex = /^[\w-.]+@([\w-]+\.)+(com|org|net|edu|gov|mil|biz|info|name|aero|arpa|coop|museum|int|pro|travel|mobi|[a-zA-Z]{2})$/;
+    if (!emailRegex.test(email)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Please enter a valid email address.',
+      });
+      return false;
+    }
+
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Validation Error',
+        text: 'Please enter a valid 10-digit phone number.',
+      });
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessage('');
-    setError('');
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
     try {
-      await axios.post('/api/appointments', {
-        fullName: form.fullName,
+      const response = await axios.post('http://localhost:8001/api/appointments', {
+        name: form.fullName,
         email: form.email,
         phone: form.phone,
-        clinicArea: form.clinicArea,
+        service: form.serviceType,
+        time: form.timeSlot,
         date: form.date,
-        timeSlot: form.timeSlot,
-        serviceType: form.serviceType,
+        clinicArea: form.clinicArea
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        withCredentials: true
       });
-      setMessage('Appointment booked successfully! You will receive a confirmation shortly.');
-      setForm({ fullName: '', email: '', phone: '', clinicArea: '', date: '', timeSlot: '', serviceType: '' });
+      
+      if (response.data) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Appointment Booked!',
+          text: 'You will receive a confirmation shortly.',
+        });
+        setForm({ 
+          fullName: '', 
+          email: '', 
+          phone: '', 
+          clinicArea: '', 
+          date: '', 
+          timeSlot: '', 
+          serviceType: '' 
+        });
+      }
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to book appointment. Please try again.');
+      console.error('Appointment submission error:', err);
+      Swal.fire({
+        icon: 'error',
+        title: 'Booking Failed',
+        text: err.response?.data?.message || 'Failed to book appointment. Please try again.',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -210,12 +276,6 @@ const AppointmentForm = () => {
                 {isSubmitting ? <><Spinner animation="border" size="sm" /> Booking...</> : 'Confirm Appointment'}
               </Button>
             </Form>
-            {message && (
-              <Alert variant="success" className="mt-3">{message}</Alert>
-            )}
-            {error && (
-              <Alert variant="danger" className="mt-3">{error}</Alert>
-            )}
           </Col>
           <Col xs={12} md={5} className="benefits-sidebar mt-4 mt-md-0">
             <h3>Why Choose Us?</h3>
