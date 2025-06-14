@@ -65,8 +65,10 @@ const AdminDashboard = () => {
   const fetchAppointments = async () => {
     setLoading(true);
     try {
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+      console.log('Debug Token (fetchAppointments):', token); // Debugging line
       const res = await api.get('/api/appointments', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken') || localStorage.getItem('jwtToken')}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setAppointments(res.data);
     } catch (err) {
@@ -86,8 +88,10 @@ const AdminDashboard = () => {
 
   const handleAccept = async (id) => {
     try {
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+      console.log('Debug Token (handleAccept):', token); // Debugging line
       await api.put(`/api/appointments/${id}/status?status=ACCEPTED`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken') || localStorage.getItem('jwtToken')}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       Swal.fire({
         icon: 'success',
@@ -118,8 +122,10 @@ const AdminDashboard = () => {
     const rejectionReason = `Rescheduled to ${new Date(rescheduleDate).toLocaleDateString()} at ${rescheduleTime}.`;
 
     try {
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+      console.log('Debug Token (handleReject):', token); // Debugging line
       await api.put(`/api/appointments/${id}/status?status=RESCHEDULED&reason=${encodeURIComponent(rejectionReason)}&newDate=${rescheduleDate}&newTime=${rescheduleTime}`, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken') || localStorage.getItem('jwtToken')}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       Swal.fire({
         icon: 'success',
@@ -168,9 +174,10 @@ const AdminDashboard = () => {
         }
         url += `&newDate=${rescheduleDate}&newTime=${rescheduleTime}`;
       }
-
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+      console.log('Debug Token (handleUpdateStatus):', token); // Debugging line
       await api.put(url, {}, {
-        headers: { Authorization: `Bearer ${localStorage.getItem('adminToken') || localStorage.getItem('jwtToken')}` },
+        headers: { Authorization: `Bearer ${token}` },
       });
       Swal.fire({
         icon: 'success',
