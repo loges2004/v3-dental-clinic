@@ -17,6 +17,7 @@ const AdminLogin = () => {
                 email,
                 password,
             });
+            console.log('Debug: Token received from API:', response.data.jwtToken);
             localStorage.setItem('jwtToken', response.data.jwtToken);
             Swal.fire({
                 icon: 'success',
