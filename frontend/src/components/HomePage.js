@@ -1,252 +1,1194 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Navbar, Nav, Container, Offcanvas, Row, Col, Card, Button } from 'react-bootstrap';
-import './HomePage.css';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+"use client"
 
-const services = [
-  'Dental Check-ups & Cleaning',
-  'Fillings & Root Canal Treatment',
-  'Crowns, Bridges & Extractions',
-  'Braces, Aligners & Smile Designing',
-  'Extractions & Wisdom Tooth Removal (Impaction)',
-  'Teeth Whitening',
-  'Pediatric Dentistry',
-  'Full Mouth Rehabilitation',
-];
-
-const doctors = [
-  { name: 'Dr. Anish M', qualification: 'BDS', specialization: 'General Dentist', img: '/images/Anish.jpg', phone: '98765 43210' },
-  { name: 'Dr.Nithishkumar', qualification: 'BDS', specialization: 'Dental surgeon', img: '/images/Nithish.jpg', phone: '81899 85733' },
-  { name: 'Dr. Ashriene Jose PJ', qualification: 'BDS', specialization: 'General Dentist', img: '/images/Ashriene.jpg', phone: '99887 66554' },
-];
-
-const openingTimes = [
-  { days: 'Monday to Sunday', times: '9.30am to 2.00pm, 4.00pm to 9.30pm' },
-];
+import React, { useState, useEffect, useRef } from "react"
+import "./HomePage.css"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faTooth,
+  faSyringe,
+  faCrown,
+  faXRay,
+  faStar,
+  faChild,
+  faHospitalUser
+} from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
-  const navigate = useNavigate();
-  const [showOffcanvas, setShowOffcanvas] = React.useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [currentImage, setCurrentImage] = useState(0)
 
-  const [currentImage, setCurrentImage] = React.useState(1);
-  const getBackgroundImage = () => {
-    switch(currentImage) {
-      case 1: return 'url(/images/image6.jpg)';
-      case 2: return 'url(/images/bg_booking.jpg)';
-      case 3: return 'url(/images/image55.jpg)';
-      case 4: return 'url(/images/image11.jpg)';
-      case 5: return 'url(/images/image4.jpg)';
-      case 6: return 'url(/images/image9.jpg)';
-      default: return 'url(/images/bg_booking.jpg)';
-    }
+  const servicesRef = useRef(null)
+  const heroRef = useRef(null)
+
+  const whyChooseRef = useRef(null)
+  const doctorsRef = useRef(null)
+  const contactRef = useRef(null)
+
+
+
+  const doctors = [
+    {
+      name: "Dr. Anish M",
+      qualification: "BDS",
+      specialization: "Dental surgeon",
+      img: "/images/Anish.jpg",
+      phone: "93616 29220",
+    },
+    {
+      name: "Dr. Nithishkumar",
+      qualification: "BDS",
+      specialization: "Dental Surgeon",
+      img: "/images/Nithish.jpg",
+      phone: "81899 85733",
+    },
+    {
+      name: "Dr. Ashriene Jose PJ",
+      qualification: "BDS",
+      specialization: "Dental surgeon",
+      img: "/images/Ashriene.jpg",
+      phone: "62827 28909",
+    },
+  ]
+
+  const whyChooseUs = [
+    {
+      icon: "🦷",
+      title: "Expert Dentists",
+      description: "Qualified professionals with years of experience",
+      color: "blue-cyan",
+    },
+    {
+      icon: "💺",
+      title: "Comfortable Environment",
+      description: "Modern equipment and pain-free treatments",
+      color: "purple-pink",
+    },
+    {
+      icon: "⏱️",
+      title: "Flexible Scheduling",
+      description: "Evening and weekend appointments available",
+      color: "green-emerald",
+    },
+    {
+      icon: "💰",
+      title: "Affordable Care",
+      description: "Competitive pricing and payment plans",
+      color: "orange-red",
+    },
+  ]
+
+
+
+  const serviceIcons = {
+    tooth: faTooth,
+    syringe: faSyringe,
+    crown: faCrown,
+    xray: faXRay,
+    star: faStar,
+    child: faChild,
+    hospital: faHospitalUser,
   };
+  
 
-  React.useEffect(() => {
+  const services = [
+    {
+      title: "Dental Check-ups & Cleaning",
+      description: "Comprehensive oral health examination and professional cleaning",
+      icon: "tooth",
+      image: "/images/dental_cleaning.jpg",
+    },
+    {
+      title: "Fillings & Root Canal Treatment",
+      description: "Advanced restorative procedures for damaged teeth",
+      icon: "syringe",
+      image: "/images/dentalRootCanal.png",
+    },
+    {
+      title: "Crowns, Bridges & Extractions",
+      description: "Prosthetic solutions and surgical procedures",
+      icon: "crown",
+      image: "/images/dentalbridge.jpg",
+    },
+    {
+      title: "Braces, Aligners & Smile Designing",
+      description: "Orthodontic treatments for perfect smile alignment",
+      icon: "tooth", // Braces icon is in Pro, fallback to tooth
+      image: "/images/braces.jpg",
+    },
+    {
+      title: "Extractions & Wisdom Tooth Removal",
+      description: "Safe and painless tooth extraction procedures",
+      icon: "xray",
+      image: "/images/wisdom-tooth.jpg",
+    },
+    {
+      title: "Teeth Whitening",
+      description: "Professional whitening for brighter, whiter teeth",
+      icon: "star",
+      image: "/images/teeth_white.jpg",
+    },
+    {
+      title: "Pediatric Dentistry",
+      description: "Specialized dental care for children and teens",
+      icon: "child",
+      image: "/images/child-dentist-dental.webp",
+    },
+    {
+      title: "Full Mouth Rehabilitation",
+      description: "Complete restoration of oral health and function",
+      icon: "hospital",
+      image: "/images/Full_mouth_Rehabilitation.jpg",
+    },
+  ];
+  
+
+  const heroImages = [
+    "/images/teeth_white.jpg",
+    "/images/c1.jpg",
+    "/images/image11.jpg",
+     "/images/image5.jpg"
+  ]
+
+  // Intersection Observer for animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "-50px",
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animate-in")
+        }
+      })
+    }, observerOptions)
+
+    // Observe all sections
+    const sections = document.querySelectorAll(".animate-section")
+    sections.forEach((section) => observer.observe(section))
+
+    return () => observer.disconnect()
+  }, [])
+
+  // Add click outside handler for mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const mobileMenu = document.querySelector('.mobile-menu')
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn')
+      
+      if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  // Add escape key handler for mobile menu
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        setIsMenuOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [])
+
+  const toggleMenu = () => {
+    setIsMenuOpen(prev => !prev)
+  }
+
+  // Auto-rotate carousel images
+  useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImage(prev => prev >= 6 ? 1 : prev + 1);
-    }, 3000);
+      setCurrentImage(prev => (prev + 1) % heroImages.length);
+    }, 5000);
+
     return () => clearInterval(interval);
-  }, []);
+  }, [heroImages.length]); // Added heroImages.length as dependency
+  
+  return React.createElement(
+    React.Fragment,
+    null,
+    // Main Container
+    React.createElement(
+      "div",
+      { className: "homepage-container" },
+      // Floating Bubbles Container
+      React.createElement("div", { className: "bubble-container" }),
 
-  React.useEffect(() => {
-    AOS.init({ duration: 900, once: false });
-  }, []);
+      // Fixed Navigation Header
+      React.createElement(
+        "header",
+        { className: "fixed-header" },
+        React.createElement(
+          "nav",
+          { className: "navbar" },
+          React.createElement(
+            "div",
+            { className: "nav-container" },
+            React.createElement(
+              "div",
+              { className: "nav-content" },
+              React.createElement(
+                "div",
+                { className: "nav-brand" },
+                React.createElement(
+                  "div",
+                  { className: "logo-container" },
+                  React.createElement("img", {
+                    src: "/images/logo.png",
+                    alt: "V3 Dental Clinic Logo",
+                    className: "logo",
+                  }),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "brand-text" },
+                  React.createElement("h1", { className: "clinic-name" }, "V3 DENTAL CLINIC"),
+                  React.createElement("p", { className: "tagline" }, "Excellence in Dental Care"),
+                ),
+              ),
 
-  return (
-    <div className="homepage-bootstrap">
-      {/* Navbar */}
-      <Navbar bg="dark" variant="dark" expand="md" fixed="top" className="shadow-sm py-2">
-        <Container fluid>
-          <div className="d-flex align-items-center w-100" style={{ minHeight: '40px' }}>
-            <Navbar.Brand className="d-flex align-items-center mb-0 pb-0" style={{paddingBottom: 0, marginBottom: 0}}>
-              <img src="/images/logo.png" alt="Logo" width="40" height="40" className="rounded-circle" style={{objectFit:'cover'}} />
-            </Navbar.Brand>
-            <div className="clinic-name-animated" style={{fontSize: '1.6rem', fontWeight: 'bold'}}>
-              V3 DENTAL CLINIC
-            </div>
-            <div className="ms-auto">
-              <Navbar.Toggle aria-controls="main-navbar-offcanvas" onClick={() => setShowOffcanvas(true)} />
-            </div>
-          </div>
-          <Navbar.Offcanvas
-            id="main-navbar-offcanvas"
-            aria-labelledby="main-navbar-offcanvas-label"
-            placement="end"
-            show={showOffcanvas}
-            onHide={() => setShowOffcanvas(false)}
-            className="bg-dark text-light"
-          >
-            <Offcanvas.Header closeButton closeVariant="white">
-              <Offcanvas.Title id="main-navbar-offcanvas-label" className="text-info">
-                Menu
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <Nav className="ms-auto flex-column flex-md-row gap-2 gap-md-4 align-items-md-center">
-                <Nav.Link className="text-light" onClick={() => {navigate('/'); setShowOffcanvas(false);}}>Home</Nav.Link>
-                <Nav.Link className="text-light" onClick={() => {navigate('/appointment'); setShowOffcanvas(false);}}>Book Appointment</Nav.Link>
-                <Nav.Link className="text-light" href="#services" onClick={() => setShowOffcanvas(false)}>Services</Nav.Link>
-                <Nav.Link className="text-light" href="#doctors" onClick={() => setShowOffcanvas(false)}>Doctors</Nav.Link>
-                <Nav.Link className="text-light" href="#contact" onClick={() => setShowOffcanvas(false)}>Contact</Nav.Link>
-              </Nav>
-            </Offcanvas.Body>
-          </Navbar.Offcanvas>
-        </Container>
-      </Navbar>
+              // Desktop Menu
+              React.createElement(
+                "div",
+                { className: "desktop-menu" },
+                ["Home", "Services", "Why Choose Us", "Doctors", "Contact"].map((item) =>
+                  React.createElement(
+                    "a",
+                    {
+                      key: item,
+                      href: `#${item.toLowerCase().replace(/\s+/g, "-")}`,
+                      className: "nav-link",
+                    },
+                    item,
+                  ),
+                ),
+                React.createElement(
+                  "button",
+                  {
+                    className: "book-btn",
+                    onClick: () => window.location.href = '/appointment',
+                  },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "16",
+                      height: "16",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2" }),
+                    React.createElement("line", { x1: "16", y1: "2", x2: "16", y2: "6" }),
+                    React.createElement("line", { x1: "8", y1: "2", x2: "8", y2: "6" }),
+                    React.createElement("line", { x1: "3", y1: "10", x2: "21", y2: "10" }),
+                  ),
+                  "Book Appointment",
+                ),
+              ),
 
-      {/* Clinic Tour Carousel */}
-      <section
-        className="clinic-image-section"
-        style={{
-          width: '100vw',
-          height: '55vw',
-          maxHeight: '400px',
-          minHeight: '220px',
-          backgroundImage: getBackgroundImage(),
-          backgroundRepeat: 'no-repeat',
-          backgroundPosition: 'center',
-          backgroundSize: 'cover',
-          margin: 0,
-          padding: 0,
-          position: 'relative',
-          left: '50%',
-          right: '50%',
-          marginLeft: '-50vw',
-          marginRight: '-50vw',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Optionally, add navigation dots or arrows here */}
-      </section>
+              // Mobile Menu Button
+              React.createElement(
+                "button",
+                {
+                  className: `mobile-menu-btn ${isMenuOpen ? "active" : ""}`,
+                  onClick: toggleMenu,
+                  "aria-label": "Toggle mobile menu",
+                },
+                React.createElement("span"),
+                React.createElement("span"),
+                React.createElement("span"),
+              ),
+            ),
+          ),
 
-      {/* Highlighted Services & Opening Times */}
-      <section className="py-5" style={{background: 'linear-gradient(90deg, #222 0%, #00bcd4 100%)'}}>
-        <Container>
-          <Row className="justify-content-center align-items-center g-4">
-            <Col xs={12} md={7}>
-              <h2 className="text-white fw-bold mb-4">Our Services</h2>
-              <ul className="list-unstyled text-white fs-5 mb-4">
-                {services.map((service, idx) => (
-                  <li key={idx} className="mb-2">• {service}</li>
-                ))}
-              </ul>
-            </Col>
-            <Col xs={12} md={5} className="text-white">
-              <div className="bg-dark bg-opacity-75 rounded p-4 text-center">
-                <h4 className="fw-bold text-warning mb-2">Consultation Time</h4>
-                {openingTimes.map((slot, idx) => (
-                  <div key={idx}>
-                    <div className="mb-1">{slot.days}</div>
-                    <div className="fw-bold text-success">{slot.times}</div>
-                  </div>
-                ))}
-                <div className="mt-3">
-                  <span className="me-2">📞</span>
-                  <span className="fw-bold">87786 00419 | 93616 29220</span>
-                </div>
-                <div className="mt-2">
-                  <a
-                    href="https://www.google.com/maps/place/V3+Dental+Clinic,+Kannusamy+Street,+Sanganoor+Main+Road,+Coimbatore"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="open-maps-link"
-                  >
-                    <span role="img" aria-label="map">📍</span> Open in Google Maps
-                  </a>
-                </div>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+          // Mobile Menu
+          React.createElement(
+            "div",
+            {
+              className: `mobile-menu ${isMenuOpen ? "open" : ""}`,
+              "aria-hidden": !isMenuOpen,
+            },
+            React.createElement(
+              "div",
+              { className: "mobile-menu-top-bar" },
+              React.createElement("span", { className: "close-label" }, "Close"),
+            ),
+            React.createElement(
+              "div",
+              { className: "mobile-menu-content" },
+              ["Home", "Services", "Why Choose Us", "Doctors", "Contact"].map((item) =>
+                React.createElement(
+                  "a",
+                  {
+                    key: item,
+                    href: `#${item.toLowerCase().replace(/\s+/g, "-")}`,
+                    className: "mobile-nav-link",
+                    onClick: () => setIsMenuOpen(false),
+                  },
+                  item,
+                ),
+              ),
+              React.createElement(
+                "button",
+                {
+                  className: "mobile-book-btn",
+                  onClick: () => window.location.href = '/appointment',
+                },
+                React.createElement(
+                  "svg",
+                  {
+                    width: "16",
+                    height: "16",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: "2",
+                  },
+                  React.createElement("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2" }),
+                  React.createElement("line", { x1: "16", y1: "2", x2: "16", y2: "6" }),
+                  React.createElement("line", { x1: "8", y1: "2", x2: "8", y2: "6" }),
+                  React.createElement("line", { x1: "3", y1: "10", x2: "21", y2: "10" }),
+                ),
+                "Book Appointment",
+              ),
+            ),
+          ),
+        ),
+      ),
 
-      {/* Hero/Quote Section */}
-      <section className="bg-primary text-white text-center py-5 hero-section">
-        <Container>
-          <h1 className="display-6 fw-bold mb-3">Creating Healthy Smiles, One Visit at a Time.</h1>
-          <Button size="lg" variant="light" className="fw-bold px-4 py-2 mt-3" onClick={() => navigate('/appointment')}>
-            Book Appointment
-          </Button>
-        </Container>
-      </section>
+      // Simplified Hero Section
+      React.createElement(
+        "section",
+        { ref: heroRef, className: "hero-section carousel-section", id: "home" },
+        React.createElement(
+          "div",
+          { className: "hero-background" },
+          React.createElement("div", {
+            className: "hero-image",
+            style: { backgroundImage: `url(${heroImages[currentImage]})` },
+          }),
+          React.createElement("div", { className: "hero-overlay" }),
+        ),
 
-      {/* Doctors Section */}
-      <section id="doctors" className="py-5 bg-light">
-        <Container>
-          <h2 className="text-center mb-4 text-primary fw-bold">Meet Our Doctors</h2>
-          <Row className="justify-content-center g-4">
-            {doctors.map((doc, idx) => (
-              <Col xs={12} sm={6} md={4} key={idx} className="d-flex justify-content-center">
-                <Card className="doctor-card text-center shadow-sm position-relative" style={{maxWidth: '320px', width: '100%'}} data-aos="zoom-in">
-                  <Card.Img variant="top" src={doc.img} alt={doc.name} className="doctor-img mx-auto mt-3" style={{width: '90px', height: '90px', objectFit: 'cover', borderRadius: '50%', border: '3px solid #00bcd4'}} />
-                  <Card.Body>
-                    <Card.Title className="mb-1">{doc.name}</Card.Title>
-                    <Card.Subtitle className="mb-1 text-muted">{doc.qualification}</Card.Subtitle>
-                    <Card.Text className="mb-0">{doc.specialization}</Card.Text>
-                    <Card.Text className="mt-2 mb-0"><strong>Contact:</strong> <a href={`tel:${doc.phone.replace(/\s/g, '')}`}>{doc.phone}</a></Card.Text>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
+        // Centered Carousel Indicators
+        React.createElement(
+          "div",
+          { className: "hero-indicators" },
+          heroImages.map((_, index) =>
+            React.createElement("button", {
+              key: index,
+              className: `indicator ${index === currentImage ? "active" : ""}`,
+              onClick: () => setCurrentImage(index),
+            }),
+          ),
+        ),
 
-      {/* Contact Section */}
-      <section id="contact" className="py-5 contact-section">
-        <Container>
-          <h2 className="text-center mb-4 contact-title" data-aos="fade-up">Contact Us</h2>
-          <Row className="justify-content-center">
-            <Col xs={12} md={6} className="mb-3">
-              <Card className="shadow-sm border-0 contact-card" data-aos="fade-up">
-                <Card.Body>
-                  <Card.Text>
-                    <strong>Address:</strong><br />
-                    235, Kannusamy Street, Sanganoor Main Road,<br />Kannapa Nagar Junction, Coimbatore - 641027
-                  </Card.Text>
-                  <Card.Text>
-                    <strong>Phone:</strong> <a href="tel:8778600419">87786 00419</a> | <a href="tel:9361629220">93616 29220</a><br />
-                    <strong>Email:</strong> <a href="mailto:v3dentalclinic@gmail.com">v3dentalclinic@gmail.com</a>
-                  </Card.Text>
-                  <div className="mt-3">
-                    <a
-                      href="https://www.google.com/maps/place/V3+Dental+Clinic,+Kannusamy+Street,+Sanganoor+Main+Road,+Coimbatore"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="open-maps-link"
-                    >
-                      <span role="img" aria-label="map">📍</span> Open in Google Maps
-                    </a>
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col xs={12} md={6}>
-              <div className="ratio ratio-16x9 rounded shadow-sm overflow-hidden position-relative" data-aos="zoom-in">
-                <iframe
-                  title="Clinic Location"
-                  src="https://www.google.com/maps?q=V3+Dental+Clinic,+Kannusamy+Street,+Sanganoor+Main+Road,+Coimbatore&output=embed"
-                  style={{ border: 0, borderRadius: '10px' }}
-                  allowFullScreen=""
-                  loading="lazy"
-                ></iframe>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+        // Carousel Navigation Buttons
+        React.createElement(
+          "button",
+          {
+            className: "carousel-nav prev",
+            onClick: () => setCurrentImage((prev) => (prev - 1 + heroImages.length) % heroImages.length),
+            "aria-label": "Previous image",
+          },
+          React.createElement(
+            "svg",
+            {
+              width: "24",
+              height: "24",
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: "2",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            },
+            React.createElement("polyline", { points: "15 18 9 12 15 6" })
+          )
+        ),
+        React.createElement(
+          "button",
+          {
+            className: "carousel-nav next",
+            onClick: () => setCurrentImage((prev) => (prev + 1) % heroImages.length),
+            "aria-label": "Next image",
+          },
+          React.createElement(
+            "svg",
+            {
+              width: "24",
+              height: "24",
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: "2",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            },
+            React.createElement("polyline", { points: "9 18 15 12 9 6" })
+          )
+        ),
 
-      {/* Footer */}
-      <footer className="footer-section bg-dark text-white text-center py-3 mt-4">
-        <Container>
-          <small>&copy; {new Date().getFullYear()} V3 Dental Clinic. All rights reserved.</small>
-        </Container>
-      </footer>
-    </div>
-  );
-};
+        // Hero Content
+        React.createElement(
+          "div",
+          { className: "hero-content" },
+          React.createElement(
+            "div",
+            { className: "hero-text" },
+            React.createElement(
+              "div",
+              { className: "hero-badge" },
+              React.createElement(
+                "svg",
+                {
+                  width: "16",
+                  height: "16",
+                  viewBox: "0 0 24 24",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeWidth: "2",
+                },
+                React.createElement("polygon", {
+                  points: "12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26",
+                }),
+              ),
+              "Premium Dental Care",
+            ),
+            React.createElement(
+              "h2",
+              { className: "hero-title" },
+              "Creating Healthy ",
+              React.createElement("span", { className: "hero-highlight" }, "Smiles"),
+              React.createElement("br"),
+              React.createElement("span", { className: "hero-subtitle" }, "One Visit at a Time"),
+            ),
+            React.createElement(
+              "p",
+              { className: "hero-description" },
+              "Experience world-class dental care with our expert team of professionals using cutting-edge technology",
+            ),
+            React.createElement(
+              "div",
+              { className: "hero-buttons" },
+              React.createElement(
+                "button",
+                {
+                  className: "hero-btn primary",
+                  onClick: () => window.location.href = '/appointment',
+                },
+                React.createElement(
+                  "svg",
+                  {
+                    width: "20",
+                    height: "20",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: "2",
+                  },
+                  React.createElement("rect", { x: "3", y: "4", width: "18", height: "18", rx: "2", ry: "2" }),
+                  React.createElement("line", { x1: "16", y1: "2", x2: "16", y2: "6" }),
+                  React.createElement("line", { x1: "8", y1: "2", x2: "8", y2: "6" }),
+                  React.createElement("line", { x1: "3", y1: "10", x2: "21", y2: "10" }),
+                ),
+                "Book Your Appointment",
+              ),
+              React.createElement(
+                "button",
+                {
+                  className: "hero-btn secondary",
+                  onClick: () => window.location.href = 'tel:9361629220',
+                },
+                React.createElement(
+                  "svg",
+                  {
+                    width: "20",
+                    height: "20",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: "2",
+                  },
+                  React.createElement("path", {
+                    d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+                  }),
+                ),
+                "Call Now",
+              ),
+            ),
+          ),
+        ),
+      ),
 
-export default HomePage; 
+      // Fixed Call and WhatsApp Buttons
+      React.createElement(
+        "div",
+        { className: "fixed-contact-buttons" },
+        React.createElement(
+          "a",
+          {
+            href: "tel:+919361629220",
+           className:"call-btn"
+          },
+          React.createElement(
+            "svg",
+            {
+              width: "20",
+              height: "20",
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: "2",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            },
+            React.createElement("path", { d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" }),
+          ),
+          "Call Us",
+        ),
+        React.createElement(
+          "a",
+          {
+            href: "https://wa.me/918778600419?text=Enquiry%20For%20Dental%20Treatment%20Services",
+            target: "_blank",
+            rel: "noopener noreferrer",
+            className: "whatsapp-btn",
+            
+          },
+          React.createElement(
+            "svg",
+            {
+              width: "20",
+              height: "20",
+              viewBox: "0 0 24 24",
+              fill: "none",
+              stroke: "currentColor",
+              strokeWidth: "2",
+              strokeLinecap: "round",
+              strokeLinejoin: "round",
+            },
+            React.createElement("path", { d: "M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" }),
+          ),
+          "Connect Us",
+        ),
+      ),
+
+      // Services Section
+      React.createElement(
+        "section",
+        {
+          id: "services",
+          ref: servicesRef,
+          className: "services-section animate-section",
+        },
+        React.createElement("div", { className: "services-bg" }),
+        React.createElement(
+          "div",
+          { className: "container" },
+          React.createElement(
+            "div",
+            { className: "section-header" },
+            React.createElement(
+              "div",
+              { className: "section-badge" },
+              React.createElement(
+                "svg",
+                {
+                  width: "16",
+                  height: "16",
+                  viewBox: "0 0 24 24",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeWidth: "2",
+                },
+                React.createElement("polygon", {
+                  points: "12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26",
+                }),
+              ),
+              "Our Services",
+            ),
+            React.createElement(
+              "h2",
+              { className: "section-title" },
+              "Comprehensive ",
+              React.createElement("span", { className: "title-highlight" }, "Dental Services"),
+            ),
+            React.createElement(
+              "p",
+              { className: "section-description" },
+              "From routine check-ups to advanced procedures, we provide complete dental care with the latest technology and techniques",
+            ),
+          ),
+
+          React.createElement(
+            "div",
+            { className: "services-grid" },
+            services.map((service, index) =>
+              React.createElement(
+                "div",
+                {
+                  key: index,
+                  className: `service-card animate-slide-${index % 2 === 0 ? "left" : "right"}`,
+                  style: { animationDelay: `${index * 0.15}s` },
+                },
+                React.createElement(
+                  "div",
+                  { className: "service-image" },
+                  React.createElement("img", { src: service.image, alt: service.title }),
+                  React.createElement("div", { className: "service-overlay" }),
+                  React.createElement("div", { className: `service-icon ${service.color}` }, React.createElement(FontAwesomeIcon, { icon: serviceIcons[service.icon] })),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "service-content" },
+                  React.createElement("h3", { className: "service-title" }, service.title),
+                  React.createElement("p", { className: "service-description" }, service.description),
+                  React.createElement("div", { className: "service-divider" }),
+                ),
+              ),
+            ),
+          ),
+
+          // Consultation Hours
+          React.createElement(
+            "div",
+            { className: "consultation-card" },
+            React.createElement(
+              "div",
+              { className: "consultation-content" },
+              React.createElement(
+                "div",
+                { className: "consultation-icon" },
+                React.createElement(
+                  "svg",
+                  {
+                    width: "40",
+                    height: "40",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: "2",
+                  },
+                  React.createElement("circle", { cx: "12", cy: "12", r: "10" }),
+                  React.createElement("polyline", { points: "12,6 12,12 16,14" }),
+                ),
+              ),
+              React.createElement(
+                "div",
+                { className: "consultation-header" },
+                React.createElement("span", { className: "consultation-emoji" }, "⏰"),
+                React.createElement("h3", { className: "consultation-title" }, "Consultation Hours"),
+              ),
+              React.createElement(
+                "div",
+                { className: "consultation-schedule" },
+                React.createElement(
+                  "div",
+                  { className: "schedule-item" },
+                  React.createElement("p", { className: "schedule-day" }, "Monday to Sunday"),
+                  React.createElement("p", { className: "schedule-time" }, "9:30 AM - 2:00 PM"),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "schedule-item" },
+                  React.createElement("p", { className: "schedule-day" }, "Evening Hours"),
+                  React.createElement("p", { className: "schedule-time" }, "4:00 PM - 9:30 PM"),
+                ),
+              ),
+              React.createElement(
+                "div",
+                { className: "consultation-contact" },
+                React.createElement(
+                  "div",
+                  { className: "contact-item" },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "20",
+                      height: "20",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("path", {
+                      d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+                    }),
+                  ),
+                  React.createElement("span", null, "87786 00419 | 93616 29220"),
+                ),
+                React.createElement(
+                  "a",
+                  {
+                    href: "https://www.google.com/maps/place/V3+Dental+Clinic",
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    className: "maps-link",
+                  },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "18",
+                      height: "18",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("path", { d: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" }),
+                    React.createElement("circle", { cx: "12", cy: "10", r: "3" }),
+                  ),
+                  React.createElement("span", null, "📍 Open in Google Maps"),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+      React.createElement(
+        "section",
+        {
+          id: "why-choose-us",
+          ref: whyChooseRef,
+          className: "why-choose-section animate-section",
+        },
+        React.createElement(
+          "div",
+          { className: "container" },
+          React.createElement(
+            "div",
+            { className: "section-header" },
+            React.createElement(
+              "div",
+              { className: "section-badge" },
+              React.createElement(
+                "svg",
+                {
+                  width: "16",
+                  height: "16",
+                  viewBox: "0 0 24 24",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeWidth: "2",
+                },
+                React.createElement("polygon", {
+                  points: "12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26",
+                }),
+              ),
+              "Why Choose Us",
+            ),
+            React.createElement(
+              "h2",
+              { className: "section-title" },
+              "Why Patients ",
+              React.createElement("span", { className: "title-highlight" }, "Choose Us"),
+            ),
+            React.createElement(
+              "p",
+              { className: "section-description" },
+              "We're committed to providing exceptional dental care with a focus on comfort, quality, and affordability",
+            ),
+          ),
+
+          React.createElement(
+            "div",
+            { className: "why-choose-grid" },
+            whyChooseUs.map((item, index) =>
+              React.createElement(
+                "div",
+                {
+                  key: index,
+                  className: "why-choose-card",
+                  style: { animationDelay: `${index * 0.2}s` },
+                },
+                React.createElement("div", { className: `why-choose-icon ${item.color}` }, item.icon),
+                React.createElement("h3", { className: "why-choose-title" }, item.title),
+                React.createElement("p", { className: "why-choose-description" }, item.description),
+                React.createElement("div", { className: "why-choose-divider" }),
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      // Doctors Section
+      React.createElement(
+        "section",
+        {
+          id: "doctors",
+          ref: doctorsRef,
+          className: "doctors-section animate-section",
+        },
+        React.createElement(
+          "div",
+          { className: "container" },
+          React.createElement(
+            "div",
+            { className: "section-header" },
+            React.createElement(
+              "div",
+              { className: "section-badge" },
+              React.createElement(
+                "svg",
+                {
+                  width: "16",
+                  height: "16",
+                  viewBox: "0 0 24 24",
+                  fill: "none",
+                  stroke: "currentColor",
+                  strokeWidth: "2",
+                },
+                React.createElement("polygon", {
+                  points: "12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26",
+                }),
+              ),
+              "Our Team",
+            ),
+            React.createElement(
+              "h2",
+              { className: "section-title" },
+              "Meet Our ",
+              React.createElement("span", { className: "title-highlight" }, "Professional Doctors"),
+            ),
+            React.createElement(
+              "p",
+              { className: "section-description" },
+              "Our dedicated team of dental professionals is committed to providing you with the highest quality care",
+            ),
+          ),
+
+          React.createElement(
+            "div",
+            { className: "doctors-grid" },
+            doctors.map((doctor, index) =>
+              React.createElement(
+                "div",
+                {
+                  key: index,
+                  className: "doctor-card",
+                  style: { animationDelay: `${index * 0.3}s` },
+                },
+                React.createElement(
+                  "div",
+                  { className: "doctor-frame" },
+                  React.createElement(
+                    "div",
+                    { className: "doctor-image" },
+                    React.createElement("img", { src: doctor.img, alt: doctor.name }),
+                    React.createElement("div", { className: "doctor-overlay" }),
+                    React.createElement("div", { className: "professional-badge" }, "PROFESSIONAL"),
+                  ),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "doctor-info" },
+                  React.createElement("h3", { className: "doctor-name" }, doctor.name),
+                  React.createElement("p", { className: "doctor-qualification" }, doctor.qualification),
+                  React.createElement("p", { className: "doctor-specialization" }, doctor.specialization),
+                  React.createElement("div", { className: "doctor-divider" }),
+                  React.createElement(
+                    "a",
+                    {
+                      href: `tel:${doctor.phone.replace(/\s/g, "")}`,
+                      className: "doctor-contact",
+                    },
+                    React.createElement(
+                      "svg",
+                      {
+                        width: "16",
+                        height: "16",
+                        viewBox: "0 0 24 24",
+                        fill: "none",
+                        stroke: "currentColor",
+                        strokeWidth: "2",
+                      },
+                      React.createElement("path", {
+                        d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+                      }),
+                    ),
+                    React.createElement("span", null, doctor.phone),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+
+      // Contact Section
+      React.createElement(
+        "section",
+        {
+          id: "contact",
+          ref: contactRef,
+          className: "contact-section animate-section",
+        },
+        React.createElement("div", { className: "contact-bg" }),
+        React.createElement(
+          "div",
+          { className: "container" },
+          React.createElement(
+            "div",
+            { className: "section-header" },
+            React.createElement(
+              "div",
+              { className: "section-badge" },
+              [
+                React.createElement(
+                  "svg",
+                  {
+                    width: "16",
+                    height: "16",
+                    viewBox: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    strokeWidth: "2",
+                  },
+                  [
+                    React.createElement("path", {
+                      d: "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z",
+                    }),
+                    React.createElement("polyline", { points: "22,6 12,13 2,6" }),
+                  ]
+                ),
+                "Contact Us",
+              ]
+            ),
+            React.createElement(
+              "h2",
+              { className: "section-title" },
+              "Get In ",
+              React.createElement("span", { className: "title-highlight" }, "Touch"),
+            ),
+            React.createElement(
+              "p",
+              { className: "section-description" },
+              "Ready to start your journey to better oral health? Contact us today to schedule your appointment",
+            ),
+          ),
+
+          React.createElement(
+            "div",
+            { className: "contact-grid" },
+            React.createElement(
+              "div",
+              { className: "contact-info" },
+              React.createElement(
+                "div",
+                { className: "contact-item" },
+                React.createElement(
+                  "div",
+                  { className: "contact-icon blue-green" },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "24",
+                      height: "24",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("path", { d: "M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" }),
+                    React.createElement("circle", { cx: "12", cy: "10", r: "3" }),
+                  ),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "contact-details" },
+                  React.createElement("h3", null, "Address"),
+                  React.createElement(
+                    "p",
+                    null,
+                    "235, Kannusamy Street, Sanganoor Main Road,",
+                    React.createElement("br"),
+                    "Kannapa Nagar Junction, Coimbatore - 641027",
+                  ),
+                ),
+              ),
+
+              React.createElement(
+                "div",
+                { className: "contact-item" },
+                React.createElement(
+                  "div",
+                  { className: "contact-icon green-blue" },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "24",
+                      height: "24",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("path", {
+                      d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
+                    }),
+                  ),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "contact-details" },
+                  React.createElement("h3", null, "Phone"),
+                  React.createElement(
+                    "div",
+                    null,
+                    React.createElement("a", { href: "tel:8778600419" }, "87786 00419"),
+                    React.createElement("a", { href: "tel:9361629220" }, "93616 29220"),
+                  ),
+                ),
+              ),
+
+              React.createElement(
+                "div",
+                { className: "contact-item" },
+                React.createElement(
+                  "div",
+                  { className: "contact-icon purple-pink" },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "24",
+                      height: "24",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("path", {
+                      d: "M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z",
+                    }),
+                    React.createElement("polyline", { points: "22,6 12,13 2,6" }),
+                  ),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "contact-details" },
+                  React.createElement("h3", null, "Email"),
+                  React.createElement("a", { href: "mailto:v3dentalclinic@gmail.com" }, "v3dentalclinic@gmail.com"),
+                ),
+              ),
+
+              React.createElement(
+                "div",
+                { className: "contact-item" },
+                React.createElement(
+                  "div",
+                  { className: "contact-icon orange-red" },
+                  React.createElement(
+                    "svg",
+                    {
+                      width: "24",
+                      height: "24",
+                      viewBox: "0 0 24 24",
+                      fill: "none",
+                      stroke: "currentColor",
+                      strokeWidth: "2",
+                    },
+                    React.createElement("circle", { cx: "12", cy: "12", r: "10" }),
+                    React.createElement("polyline", { points: "12,6 12,12 16,14" }),
+                  ),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "contact-details" },
+                  React.createElement("h3", null, "Working Hours"),
+                  React.createElement(
+                    "div",
+                    null,
+                    React.createElement("p", null, "Monday - Sunday"),
+                    React.createElement("p", { className: "highlight" }, "9:30 AM - 2:00 PM"),
+                    React.createElement("p", { className: "highlight" }, "4:00 PM - 9:30 PM"),
+                  ),
+                ),
+              ),
+            ),
+
+            React.createElement(
+              "div",
+              { className: "contact-map" },
+              React.createElement("iframe", {
+                src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.3!2d77.0!3d11.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzAwLjAiTiA3N8KwMDAnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890",
+                width: "100%",
+                height: "100%",
+                style: { border: 0 },
+                allowFullScreen: "",
+                loading: "lazy",
+                referrerPolicy: "no-referrer-when-downgrade",
+                title: "V3 Dental Clinic Location",
+              }),
+            ),
+          ),
+        ),
+      ),
+
+      // Footer
+      React.createElement(
+        "footer",
+        { className: "footer" },
+        React.createElement("div", { className: "footer-gradient" }),
+        React.createElement(
+          "div",
+          { className: "container" },
+          React.createElement(
+            "div",
+            { className: "footer-content" },
+            React.createElement(
+              "div",
+              { className: "footer-brand" },
+              React.createElement(
+                "div",
+                { className: "footer-logo" },
+                React.createElement("img", { src: "/images/logo.png", alt: "V3 Dental Clinic Logo" }),
+              ),
+              React.createElement("h3", { className: "footer-title" }, "V3 DENTAL CLINIC"),
+            ),
+            React.createElement("p", { className: "footer-tagline" }, "Excellence in Dental Care"),
+          ),
+          React.createElement(
+            "div",
+            { className: "footer-bottom" },
+            React.createElement(
+              "p",
+              { className: "copyright" },
+              `© ${new Date().getFullYear()} V3 Dental Clinic. All Rights Reserved.`,
+              React.createElement("span", { className: "footer-highlight" }, " Creating Healthy Smiles")
+            ),
+            React.createElement(
+              "div",
+              { className: "developer-credits" },
+              React.createElement(
+                "div",
+                { className: "developer-info" },
+                React.createElement(
+                  "div",
+                  { className: "lk-logo" },
+                  React.createElement("span", { className: "lk-text" }, "LK"),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "developer-texts" },
+                  React.createElement("span", { className: "developer-text" }, "Designed & Developed by Logeshkumar"),
+                  React.createElement("span", { className: "developer-contact" }, "📞 +91 97916 42972 | ✉️ logeshkumars777@gmail.com"),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  )
+}
+
+export default HomePage
