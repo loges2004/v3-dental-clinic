@@ -45,8 +45,21 @@ const AdminLogin = () => {
             style={{ backgroundImage: `url('/images/bg5.jpg')` }}
         >
             <div className="admin-login-card">
-                <h2 className="card-title text-center mb-4">Dentist Login</h2>
-                <form onSubmit={handleSubmit}>
+            <h2 className="card-title text-center mb-4 position-relative">
+  <div className="d-inline-block position-relative">
+    <img 
+      src="/images/logo.png" 
+      alt="Dental Logo"
+      className="dental-logo-animate me-2"
+      style={{
+        height: '32px',
+        verticalAlign: 'text-bottom',
+        animation: 'pulse 2s infinite'
+      }}
+    />
+    <span className="text-gradient">V3 Dentist Login</span>
+  </div>
+</h2>                <form onSubmit={handleSubmit}>
                     <div className="mb-3">
                         <label htmlFor="emailInput" className="form-label">Email address</label>
                         <input

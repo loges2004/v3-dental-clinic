@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
+// eslint-disable-next-line no-unused-vars
+import { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -16,14 +17,14 @@ const timeSlots = [
   '10:30',
   '11:30',
   '12:30',
-  '13:30',
-  '14:30',
-  '16:00',
-  '17:00',
-  '18:00',
-  '19:00',
-  '20:00',
-  '21:30'
+  '01:30',
+  '02:30',
+  '04:00',
+  '05:00',
+  '06:00',
+  '07:00',
+  '08:00',
+  '09:30'
 ];
 
 const AdminDashboard = () => {
@@ -205,14 +206,22 @@ const AdminDashboard = () => {
   return (
     <div 
       className="admin-dashboard-container"
-      style={{ backgroundImage: `url('/images/background_admin.jpg')` }}
+      style={{ backgroundImage: `url('${process.env.PUBLIC_URL}/images/background_admin.jpg')` }}
     >
+      
       <div className="admin-dashboard-header">
-      <h2>Dentist Dashboard</h2>
-<p>Manage appointments, patient records, and treatment schedules from here.</p>
-
-        <button className="logout-button" onClick={handleLogout}>Logout</button>
-      </div>
+        
+  <h2><img 
+      src="/images/logo.png" 
+      alt="Dental Logo"
+      className="dental-logo-animate me-2"
+      style={{
+        height: '40px',
+        verticalAlign: 'text-bottom',
+        animation: 'pulse 2s infinite',
+      }}
+    />Dentist Dashboard</h2>
+  <p>Manage appointments, records, and treatments</p></div>
       
       {loading ? (
         <p>Loading appointments...</p>
@@ -221,7 +230,7 @@ const AdminDashboard = () => {
           <table className="appointments-table">
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Patient Name</th>
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Date</th>
@@ -245,11 +254,11 @@ const AdminDashboard = () => {
                     <td>
                       {appt.status && appt.status.trim().toUpperCase() === 'PENDING' && (
                         <>
-                          <button className='btn btn-success' onClick={() => handleAccept(appt.id)}>Accept</button>
-                          <button className='btn btn-danger mt-2' onClick={() => handleShowModal(appt.id)}>Reject</button>
+                          <button className='btn btn-success btn-sm' onClick={() => handleAccept(appt.id)}>Accept</button>
+                          <button className='btn btn-danger mt-2 btn-sm' onClick={() => handleShowModal(appt.id)}>Reject</button>
                         </>
                       )}
-                      <button className='btn btn-info mt-2' onClick={() => handleShowEditModal(appt.id, appt.status)}>Edit</button>
+                      <button className='btn btn-info mt-2 btn-sm me-3 pe-3 ps-3' onClick={() => handleShowEditModal(appt.id, appt.status)}>Edit</button>
                     </td>
                   </tr>
                 ))
@@ -362,7 +371,10 @@ const AdminDashboard = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <button className="logout-button" onClick={handleLogout}>Logout</button>
     </div>
+    
   );
 };
 
