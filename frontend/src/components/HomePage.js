@@ -21,34 +21,7 @@ const HomePage = () => {
   const heroRef = useRef(null)
 
   const whyChooseRef = useRef(null)
-  const doctorsRef = useRef(null)
   const contactRef = useRef(null)
-
-
-
-  const doctors = [
-    {
-      name: "Dr. Anish M",
-      qualification: "BDS",
-      specialization: "Dental surgeon",
-      img: "/images/Anish.jpg",
-      phone: "93616 29220",
-    },
-    {
-      name: "Dr. Nithishkumar",
-      qualification: "BDS",
-      specialization: "Dental Surgeon",
-      img: "/images/Nithish.jpg",
-      phone: "81899 85733",
-    },
-    {
-      name: "Dr. Ashriene Jose PJ",
-      qualification: "BDS",
-      specialization: "Dental surgeon",
-      img: "/images/Ashriene.jpg",
-      phone: "62827 28909",
-    },
-  ]
 
   const whyChooseUs = [
     {
@@ -76,8 +49,6 @@ const HomePage = () => {
       color: "orange-red",
     },
   ]
-
-
 
   const serviceIcons = {
     tooth: faTooth,
@@ -258,7 +229,7 @@ const HomePage = () => {
               React.createElement(
                 "div",
                 { className: "desktop-menu" },
-                ["Home", "Services", "Why Choose Us", "Doctors", "Contact"].map((item) =>
+                ["Home", "Services", "Why Choose Us", "Contact"].map((item) =>
                   React.createElement(
                     "a",
                     {
@@ -324,7 +295,7 @@ const HomePage = () => {
             React.createElement(
               "div",
               { className: "mobile-menu-content" },
-              ["Home", "Services", "Why Choose Us", "Doctors", "Contact"].map((item) =>
+              ["Home", "Services", "Why Choose Us", "Contact"].map((item) =>
                 React.createElement(
                   "a",
                   {
@@ -466,10 +437,14 @@ const HomePage = () => {
             React.createElement(
               "h2",
               { className: "hero-title" },
-              "Creating Healthy ",
-              React.createElement("span", { className: "hero-highlight" }, "Smiles"),
+              "Creating Healthy",
               React.createElement("br"),
-              React.createElement("span", { className: "hero-subtitle" }, "One Visit at a Time"),
+              React.createElement("span", { className: "hero-highlight" }, "Smiles"),
+            ),
+            React.createElement(
+              "span",
+              { className: "hero-subtitle" },
+              "One Visit at a Time"
             ),
             React.createElement(
               "p",
@@ -814,110 +789,6 @@ const HomePage = () => {
                 React.createElement("h3", { className: "why-choose-title" }, item.title),
                 React.createElement("p", { className: "why-choose-description" }, item.description),
                 React.createElement("div", { className: "why-choose-divider" }),
-              ),
-            ),
-          ),
-        ),
-      ),
-
-      // Doctors Section
-      React.createElement(
-        "section",
-        {
-          id: "doctors",
-          ref: doctorsRef,
-          className: "doctors-section animate-section",
-        },
-        React.createElement(
-          "div",
-          { className: "container" },
-          React.createElement(
-            "div",
-            { className: "section-header" },
-            React.createElement(
-              "div",
-              { className: "section-badge" },
-              React.createElement(
-                "svg",
-                {
-                  width: "16",
-                  height: "16",
-                  viewBox: "0 0 24 24",
-                  fill: "none",
-                  stroke: "currentColor",
-                  strokeWidth: "2",
-                },
-                React.createElement("polygon", {
-                  points: "12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26",
-                }),
-              ),
-              "Our Team",
-            ),
-            React.createElement(
-              "h2",
-              { className: "section-title" },
-              "Meet Our ",
-              React.createElement("span", { className: "title-highlight" }, "Professional Doctors"),
-            ),
-            React.createElement(
-              "p",
-              { className: "section-description" },
-              "Our dedicated team of dental professionals is committed to providing you with the highest quality care",
-            ),
-          ),
-
-          React.createElement(
-            "div",
-            { className: "doctors-grid" },
-            doctors.map((doctor, index) =>
-              React.createElement(
-                "div",
-                {
-                  key: index,
-                  className: "doctor-card",
-                  style: { animationDelay: `${index * 0.3}s` },
-                },
-                React.createElement(
-                  "div",
-                  { className: "doctor-frame" },
-                  React.createElement(
-                    "div",
-                    { className: "doctor-image" },
-                    React.createElement("img", { src: doctor.img, alt: doctor.name }),
-                    React.createElement("div", { className: "doctor-overlay" }),
-                    React.createElement("div", { className: "professional-badge" }, "PROFESSIONAL"),
-                  ),
-                ),
-                React.createElement(
-                  "div",
-                  { className: "doctor-info" },
-                  React.createElement("h3", { className: "doctor-name" }, doctor.name),
-                  React.createElement("p", { className: "doctor-qualification" }, doctor.qualification),
-                  React.createElement("p", { className: "doctor-specialization" }, doctor.specialization),
-                  React.createElement("div", { className: "doctor-divider" }),
-                  React.createElement(
-                    "a",
-                    {
-                      href: `tel:${doctor.phone.replace(/\s/g, "")}`,
-                      className: "doctor-contact",
-                    },
-                    React.createElement(
-                      "svg",
-                      {
-                        width: "16",
-                        height: "16",
-                        viewBox: "0 0 24 24",
-                        fill: "none",
-                        stroke: "currentColor",
-                        strokeWidth: "2",
-                      },
-                      React.createElement("path", {
-                        d: "M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z",
-                      }),
-                    ),
-                    React.createElement("span", null, doctor.phone),
-                  ),
-                ),
               ),
             ),
           ),
