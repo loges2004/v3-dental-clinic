@@ -6,8 +6,8 @@ E:\dental\backend\src\main\java\com\dental\controller\NotificationController.jav
 E:\dental\backend\src\main\java\com\dental\controller\AuthController.java
 E:\dental\backend\src\main\java\com\dental\repository\NotificationRepository.java
 E:\dental\backend\src\main\java\com\dental\service\UserService.java
+E:\dental\backend\src\main\java\com\dental\config\GlobalExceptionHandler.java
 E:\dental\backend\src\main\java\com\dental\service\EmailService.java
-E:\dental\backend\src\main\java\com\dental\controller\TestController.java
 E:\dental\backend\src\main\java\com\dental\payload\response\AuthResponse.java
 E:\dental\backend\src\main\java\com\dental\controller\AppointmentController.java
 E:\dental\backend\src\main\java\com\dental\config\SecurityConfig.java

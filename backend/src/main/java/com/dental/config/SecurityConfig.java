@@ -51,7 +51,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             .antMatchers("/api/auth/**").permitAll()
-            .antMatchers("/api/appointments").permitAll()
+            .antMatchers("/api/appointments/date/**").permitAll()
+            .antMatchers(org.springframework.http.HttpMethod.POST, "/api/appointments").permitAll()
+            .antMatchers(org.springframework.http.HttpMethod.POST, "/api/appointments/admin-add").hasRole("ADMIN")
+            .antMatchers("/api/appointments/**").hasRole("ADMIN")
             .antMatchers("/api/admin/**").hasRole("ADMIN")
             .anyRequest().authenticated()
             .and()
@@ -61,10 +64,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("*"));
+        
+        // Allow multiple origins for mobile compatibility
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+            "http://localhost:*",
+            "http://127.0.0.1:*", 
+            "http://192.168.*.*:*",
+            "http://10.*.*.*:*",
+            "http://172.*.*.*:*",
+            "https://*.vercel.app",
+            "https://*.railway.app",
+            "https://*"
+        ));
+        
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"));
+        configuration.setAllowedHeaders(Arrays.asList(
+            "*",
+            "Content-Type", 
+            "Accept", 
+            "Authorization", 
+            "X-Requested-With",
+            "Cache-Control",
+            "Origin",
+            "Access-Control-Request-Method",
+            "Access-Control-Request-Headers"
+        ));
+        configuration.setExposedHeaders(Arrays.asList(
+            "Access-Control-Allow-Origin",
+            "Access-Control-Allow-Credentials"
+        ));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // 1 hour cache for preflight requests
         
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

@@ -8,7 +8,16 @@ import java.time.LocalTime;
 
 @Data
 @Entity
-@Table(name = "appointments")
+@Table(name = "appointments", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {
+        "patient_full_name",
+        "patient_email",
+        "patient_phone",
+        "appointment_date",
+        "appointment_time",
+        "service_type"
+    })
+})
 public class Appointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +26,7 @@ public class Appointment {
     @Column(name = "patient_full_name", nullable = false)
     private String patientFullName;
 
-    @Column(name = "patient_email", nullable = false)
+    @Column(name = "patient_email")
     private String patientEmail;
 
     @Column(name = "patient_phone", nullable = false)
@@ -51,7 +60,9 @@ public class Appointment {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        status = AppointmentStatus.PENDING;
+        if (status == null) {
+            status = AppointmentStatus.PENDING;
+        }
     }
 
     @PreUpdate

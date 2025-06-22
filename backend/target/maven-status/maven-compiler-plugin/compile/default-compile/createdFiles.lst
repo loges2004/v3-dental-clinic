@@ -2,7 +2,6 @@ com\dental\payload\response\AuthResponse.class
 com\dental\model\Appointment.class
 com\dental\service\UserService.class
 com\dental\DentalClinicApplication.class
-com\dental\controller\TestController.class
 com\dental\repository\UserRepository.class
 com\dental\service\AppointmentService.class
 com\dental\controller\AuthController.class
@@ -14,11 +13,13 @@ com\dental\model\User$UserRole.class
 com\dental\model\Appointment$AppointmentStatus.class
 com\dental\model\Notification.class
 com\dental\security\JwtService.class
+com\dental\controller\StatusUpdateRequest.class
 com\dental\controller\AppointmentController.class
 com\dental\repository\AppointmentRepository.class
 HashGenerator.class
 com\dental\model\User.class
 com\dental\controller\AppointmentRequest.class
 com\dental\security\JwtAuthenticationFilter.class
+com\dental\config\GlobalExceptionHandler.class
 com\dental\controller\NotificationController.class
 com\dental\payload\request\AuthRequest.class
