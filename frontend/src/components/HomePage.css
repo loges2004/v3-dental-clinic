@@ -97,19 +97,6 @@ body {
   }
 }
 
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
 /* Fixed Header */
 .fixed-header {
   position: fixed;
@@ -131,7 +118,7 @@ body {
 .nav-content {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   height: 70px;
   width: 100%;
   max-width: 1400px;
@@ -143,7 +130,8 @@ body {
   display: flex;
   align-items: center;
   gap: 2.5rem; /* Increased gap for better spacing */
-  /* Removed margin-left: auto; and margin-right: 2rem; to let space-between handle alignment */
+  margin-left: 200px; /* Push menu to the right */
+
 }
 
 .nav-brand {
@@ -152,7 +140,7 @@ body {
   gap: 0.75rem;
   cursor: pointer;
   transition: var(--transition);
-  margin-right: auto; /* This will push other elements to the right */
+  /* margin-right: auto; Removed to allow space-between to work */
 }
 
 .nav-brand:hover {
@@ -169,7 +157,7 @@ body {
   flex-shrink: 0;
   background: linear-gradient(45deg, #06b6d4, #10b981);
   left: 0 ;
-  margin-bottom: 20px;
+  
 }
 
 .logo-container:hover {
@@ -195,6 +183,7 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
+  margin-top: 17px;
 }
 
 .tagline {
@@ -235,7 +224,7 @@ body {
 .book-btn {
   background: linear-gradient(to right, #007bff, #28a745); /* Blue to green gradient from logo */
   color: white;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 2rem;
   border: none;
   border-radius: 9999px; /* Pill shape */
   font-size: 1rem;
@@ -345,7 +334,7 @@ body {
 }
 
 .mobile-nav-link {
-  width: 100%;
+  width: 200px;
   text-align: left;
   padding: 1rem 1.5rem;
   margin: 0.25rem 0;
@@ -359,12 +348,14 @@ body {
 }
 
 .mobile-nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #00e0ff;
+  background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.10), 0 1.5px 6px rgba(16, 185, 129, 0.10);
+  transition: background 0.3s, color 0.3s, box-shadow 0.3s;
 }
 
 .mobile-nav-link.active {
-  color: #00e0ff;
+  color: #10b981;
 }
 
 .mobile-nav-link.active::after {
@@ -382,9 +373,11 @@ body {
   width: calc(100% - 1rem);
   margin: 1.5rem 1rem 1rem;
   padding: 0.2rem 1.5rem;
-  padding-left: 20px;
-  padding-right: 20px;
-  font-size: 1.1rem;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 1rem;
   background: linear-gradient(to right, #007bff, #28a745);
   color: white;
   border: none;
@@ -582,12 +575,13 @@ body {
   letter-spacing: -2px;
   white-space: nowrap;
 }
-
 .hero-highlight {
-  background: linear-gradient(to right, #007bff, #28a745);
+  background: linear-gradient(to right, #007bff, #28a745); /* Blue to Green Gradient from Logo */
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  text-shadow: 0px 1px 2px rgba(12, 2, 2, 0.1);
   background-clip: text;
+  font-weight: 800;
 }
 
 .hero-subtitle {
@@ -962,18 +956,26 @@ body {
 .consultation-title {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #ea580c;
+  color: #ba5017;
 }
 
 .consultation-schedule {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.2rem;
   margin-bottom: 2rem;
+  align-items: center;
 }
 
 .schedule-item {
   text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.schedule-day.highlight, .schedule-time.highlight {
+  font-size: 1.15rem;
+  padding: 0.18em 0.8em;
+  border-radius: 8px;
 }
 
 .schedule-day {
@@ -1465,10 +1467,16 @@ body {
   margin-bottom: 0.25rem;
 }
 
-.contact-details .highlight {
-  color: #10b981;
-  font-weight: 600;
-  font-size: 1.1rem;
+.highlight {
+  color: #fff !important;
+  font-weight: 700 !important;
+  background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+  border-radius: 8px;
+  padding: 0.15em 0.7em;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.10), 0 1.5px 6px rgba(16, 185, 129, 0.10);
+  letter-spacing: 0.01em;
+  transition: background 0.3s, color 0.3s;
 }
 
 .contact-map {
@@ -1720,6 +1728,7 @@ body {
   .contact-grid {
     grid-template-columns: 1fr 1fr;
   }
+  
 
   .section-title {
     font-size: 3rem;
@@ -1756,7 +1765,7 @@ body {
   top: 0;
   left: -50%;
   width: 50%;
-  height: 600px;
+  height: 480px;
   background: #bfd5f6;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -1764,8 +1773,8 @@ body {
   transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
               border-radius 0.4s ease;
   z-index: 999;
-  padding-top: 100px;
-  border-radius: 2px;
+  padding-top: 70px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
@@ -1849,10 +1858,6 @@ body {
   .contact-details p {
     font-size: 0.9rem;
     line-height: 1.5;
-  }
-
-  .contact-details .highlight {
-    font-size: 1rem;
   }
 
   .nav-container {
@@ -2083,5 +2088,81 @@ padding-right: 15px;
     font-size: 2.5rem;
     text-align: left;
   }
-}}
+}
 
+.sidebar-menu-item {
+  white-space: nowrap;
+}
+
+.sidebar {
+  min-width: 245px; /* or more, as needed */
+}
+
+.consultation-subtitle {
+  font-size: 1.1rem;
+  color: #6366f1;
+  margin-bottom: 1.2rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.highlight {
+  color: #fff !important;
+  font-weight: 700 !important;
+  background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
+  border-radius: 8px;
+  padding: 0.15em 0.7em;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.10), 0 1.5px 6px rgba(16, 185, 129, 0.10);
+  letter-spacing: 0.01em;
+  transition: background 0.3s, color 0.3s;
+}
+
+/* Consultation Schedule Animation */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.consultation-schedule .schedule-item {
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+  margin-bottom: 0.7rem;
+}
+
+.consultation-schedule .schedule-item:nth-child(1) { animation-delay: 0.1s; }
+.consultation-schedule .schedule-item:nth-child(2) { animation-delay: 0.2s; }
+
+.schedule-day.highlight {
+  background: #2563eb;
+  color: #fff !important;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.18em 0.8em;
+  margin-right: 0.2em;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+}
+
+.schedule-time.highlight {
+  background: #10b981;
+  color: #fff !important;
+  font-weight: 700;
+  border-radius: 8px;
+  padding: 0.18em 0.8em;
+  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
+}
+
+.schedule-item.sunday .schedule-day.highlight {
+  background: #7c3aed;
+}
+
+.schedule-item.sunday .schedule-time.highlight {
+  background: #06b6d4;
+}
+}

@@ -115,8 +115,9 @@ const HomePage = () => {
 
   const heroImages = [
     "/images/teeth_white.jpg",
-    "/images/c1.jpg",
     "/images/image11.jpg",
+    "/images/bg_booking.jpg",
+    "/images/anish2.jpg",
      "/images/image5.jpg"
   ]
 
@@ -665,18 +666,24 @@ const HomePage = () => {
               ),
               React.createElement(
                 "div",
+                { className: "consultation-subtitle" },
+                "We are open 7 days a week for your convenience."
+              ),
+              React.createElement(
+                "div",
                 { className: "consultation-schedule" },
                 React.createElement(
                   "div",
                   { className: "schedule-item" },
-                  React.createElement("p", { className: "schedule-day" }, "Monday to Sunday"),
-                  React.createElement("p", { className: "schedule-time" }, "9:30 AM - 2:00 PM"),
+                  React.createElement("p", { className: "schedule-day highlight" }, "Monday - Saturday"),
+                  React.createElement("p", { className: "schedule-time highlight" }, "09:30 AM – 02:00 PM"),
+                  React.createElement("p", { className: "schedule-time highlight" }, "04:00 PM – 09:30 PM"),
                 ),
                 React.createElement(
                   "div",
                   { className: "schedule-item" },
-                  React.createElement("p", { className: "schedule-day" }, "Evening Hours"),
-                  React.createElement("p", { className: "schedule-time" }, "4:00 PM - 9:30 PM"),
+                  React.createElement("p", { className: "schedule-day highlight" }, "Sunday"),
+                  React.createElement("p", { className: "schedule-time highlight" }, "09:30 AM – 01:00 PM"),
                 ),
               ),
               React.createElement(
@@ -684,7 +691,7 @@ const HomePage = () => {
                 { className: "consultation-contact" },
                 React.createElement(
                   "div",
-                  { className: "contact-item" },
+                  { className: "contact-item highlight" },
                   React.createElement(
                     "svg",
                     {
@@ -707,7 +714,7 @@ const HomePage = () => {
                     href: "https://www.google.com/maps/place/V3+Dental+Clinic",
                     target: "_blank",
                     rel: "noopener noreferrer",
-                    className: "maps-link",
+                    className: "maps-link highlight",
                   },
                   React.createElement(
                     "svg",

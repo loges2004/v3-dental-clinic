@@ -10,14 +10,22 @@ const AdminLogin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
+    const getApiBaseUrl = () => {
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return 'http://localhost:8001';
+        } else {
+            return `http://${window.location.hostname}:8001`;
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8001/api/auth/login', {
+            const apiUrl = `${getApiBaseUrl()}/api/auth/login`;
+            const response = await axios.post(apiUrl, {
                 email,
                 password,
             });
-            console.log('Debug: Token received from API:', response.data.jwtToken);
             localStorage.setItem('jwtToken', response.data.jwtToken);
             Swal.fire({
                 icon: 'success',
@@ -30,7 +38,6 @@ const AdminLogin = () => {
                 navigate('/admin/dashboard');
             }, 1500);
         } catch (err) {
-            console.error('Login error:', err);
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',

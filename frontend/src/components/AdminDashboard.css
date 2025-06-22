@@ -25,7 +25,7 @@ body {
 .admin-dashboard-container {
     width: 100%;
     min-height: 100vh;
-    padding: 1rem;
+    padding: 1rem 1rem 100px; /* Added padding for the fixed footer */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -99,76 +99,23 @@ body {
 }
 
 .logout-button {
-    background: #4285F4; /* Google blue */
+    background: #dc3545;
     color: white;
     border: none;
     padding: 0.8rem 1.5rem;
     border-radius: 4px;
     font-weight: 500;
-    font-size: 0.95rem;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth material transition */
+    transition: all 0.3s ease;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  /* Google red hover effect */
-  .logout-button:hover {
-    background: #EA4335; /* Google red */
+}
+
+.logout-button:hover {
+    background: #c82333;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(234, 67, 53, 0.2);
-  }
-  
-  /* Active state */
-  .logout-button:active {
-    background: #D33426; /* Darker red */
-    transform: translateY(0);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-  
-  /* Google ripple effect (red version) */
-  .logout-button::after {
-    content: "";
-    position: absolute;
-    background: rgba(255, 255, 255, 0.4);
-    border-radius: 50%;
-    transform: scale(0);
-    opacity: 1;
-    transition: transform 0.6s cubic-bezier(0, 0, 0.2, 1), 
-                opacity 0.6s cubic-bezier(0, 0, 0.2, 1);
-  }
-  
-  .logout-button:active::after {
-    transform: scale(2);
-    opacity: 0;
-  }
-  
-  /* Google "G" icon */
-  .logout-button::before {
-    content: "V3";
-    font-family: 'Product Sans', Arial, sans-serif;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: color 0.3s ease;
-  }
-  
-  /* Hover effect for the icon */
-  .logout-button:hover::before {
-    color: white;
-  }
-  
-  /* Responsive design */
-  @media (max-width: 768px) {
-    .logout-button {
-      padding: 0.7rem 1.2rem;
-      font-size: 0.9rem;
-    }
-  }
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+}
+
 /* Table Styling */
 .table-container {
     width: 100%;
@@ -192,7 +139,6 @@ body {
     text-align: left;
     border-bottom: 1px solid var(--border-color);
     border-right: 1px solid var(--border-color) /* Vertical line for headers */
-
 }
 
 .appointments-table td:nth-child(1) { /* Assuming first column is Name */
@@ -300,12 +246,43 @@ body {
 }
 
 .btn-success {
-    background-color: var(--success-color);
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+    color: white;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
 .btn-success:hover {
-    background-color: #218838;
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #218838, #1ea085);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+    color: white;
+}
+
+.btn-success:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.btn-success::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-success:hover::before {
+    left: 100%;
 }
 
 .btn-danger {
@@ -444,7 +421,27 @@ body {
         margin-left: 17px;
     }
 
+    .filter-controls {
+        flex-direction: row !important;
+        flex-wrap: nowrap;
+        gap: 0.7rem;
+        align-items: center;
+        justify-content: flex-start;
+        overflow-x: auto;
+        width: 100%;
+        padding-bottom: 0.5rem;
+    }
+    .reset-filters-btn {
+        width: auto;
+        margin-left: 0.5rem;
+        margin-top: 0;
+    }
 
+    /* Download button responsive design */
+    .btn-success {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+    }
 }
 
 /* Medium devices (tablets, 768px and up) */
@@ -517,3 +514,102 @@ body {
     animation: none;
   color: #00f2fe;
   }
+
+.action-btn-group {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.action-btn-group.pending-actions {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.action-btn-group .btn {
+    width: 100%;
+    padding: 0.4rem;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .action-btn-group,
+  .action-btn-group.pending-actions {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on mobile */
+  }
+}
+
+.filter-clear-btn {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f5f5f5;
+  border: none;
+  color: #888;
+  font-size: 1.1rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 2;
+}
+.filter-clear-btn:hover, .filter-clear-btn:focus {
+  background: #e0e0e0;
+  color: #dc3545;
+  outline: none;
+}
+
+.reset-filters-btn {
+  margin-left: 0.5rem;
+  padding: 0.3rem 0.9rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #bbb;
+  background: #f8f9fa;
+  color: #444;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  white-space: nowrap;
+}
+.reset-filters-btn:hover, .reset-filters-btn:focus {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+}
+
+.filter-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+/* Floating Action Buttons Container */
+.floating-action-buttons {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem 2rem;
+    background: #ffffff;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    z-index: 1000;
+}
+
+.floating-action-buttons .btn,
+.floating-action-buttons .logout-button {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 160px;
+    text-align: center;
+}
