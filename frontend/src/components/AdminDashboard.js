@@ -95,6 +95,9 @@ const AdminDashboard = () => {
   const [isUpdating, setIsUpdating] = useState(false);
   const [acceptingId, setAcceptingId] = useState(null);
   const [isRescheduling, setIsRescheduling] = useState(false);
+  const [selectedAppointments, setSelectedAppointments] = useState(new Set()); // Track selected appointments
+  const [selectAll, setSelectAll] = useState(false); // Track select all state
+  const [isBulkDeleting, setIsBulkDeleting] = useState(false); // Track bulk deletion state
   const [newAppointment, setNewAppointment] = useState({
     patientFullName: '',
     patientPhone: '',
@@ -175,6 +178,29 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchAppointments();
   }, [fetchAppointments]);
+
+  // Filtered appointments
+  const filteredAppointments = appointments.filter(appt => {
+    const statusMatch = !filterStatus || appt.status === filterStatus;
+    const dateMatch = !filterDate || appt.appointmentDate === filterDate;
+    const timeMatch = !filterTime || (appt.appointmentTime && appt.appointmentTime.startsWith(filterTime));
+    return statusMatch && dateMatch && timeMatch;
+  });
+
+  // Handle individual appointment selection
+  const handleAppointmentSelect = (appointmentId) => {
+    const newSelected = new Set(selectedAppointments);
+    if (newSelected.has(appointmentId)) {
+      newSelected.delete(appointmentId);
+    } else {
+      newSelected.add(appointmentId);
+    }
+    setSelectedAppointments(newSelected);
+    
+    // Update select all state
+    const filteredIds = filteredAppointments.map(appt => appt.id);
+    setSelectAll(newSelected.size === filteredIds.length && filteredIds.length > 0);
+  };
 
   const handleAccept = async (id) => {
     setAcceptingId(id);
@@ -387,13 +413,93 @@ const AdminDashboard = () => {
     }
   };
 
-  // Filtered appointments
-  const filteredAppointments = appointments.filter(appt => {
-    const statusMatch = !filterStatus || appt.status === filterStatus;
-    const dateMatch = !filterDate || appt.appointmentDate === filterDate;
-    const timeMatch = !filterTime || (appt.appointmentTime && appt.appointmentTime.startsWith(filterTime));
-    return statusMatch && dateMatch && timeMatch;
-  });
+  // Handle select all functionality
+  const handleSelectAll = useCallback(() => {
+    if (selectAll) {
+      setSelectedAppointments(new Set());
+      setSelectAll(false);
+    } else {
+      const allIds = filteredAppointments.map(appt => appt.id);
+      setSelectedAppointments(new Set(allIds));
+      setSelectAll(true);
+    }
+  }, [selectAll, filteredAppointments]);
+
+  // Handle bulk deletion
+  const handleBulkDelete = async () => {
+    if (selectedAppointments.size === 0) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'No Selection',
+        text: 'Please select at least one appointment to delete.',
+      });
+      return;
+    }
+
+    const confirm = await Swal.fire({
+      title: 'Are you sure?',
+      text: `This will permanently delete ${selectedAppointments.size} appointment(s). This action cannot be undone.`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete them!',
+      confirmButtonColor: '#d33',
+    });
+
+    if (confirm.isConfirmed) {
+      setIsBulkDeleting(true);
+      try {
+        const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+        const deletePromises = Array.from(selectedAppointments).map(id =>
+          fetch(`${getApiBaseUrl()}/api/appointments/${id}`, {
+            method: 'DELETE',
+            headers: { Authorization: `Bearer ${token}` },
+          })
+        );
+
+        await Promise.all(deletePromises);
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Bulk Delete Successful!',
+          text: `${selectedAppointments.size} appointment(s) have been deleted.`,
+        });
+        
+        setSelectedAppointments(new Set());
+        setSelectAll(false);
+        fetchAppointments();
+      } catch (err) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Bulk Delete Failed',
+          text: 'Some appointments could not be deleted. Please try again.',
+        });
+      } finally {
+        setIsBulkDeleting(false);
+      }
+    }
+  };
+
+  // Clear selection when filters change
+  useEffect(() => {
+    setSelectedAppointments(new Set());
+    setSelectAll(false);
+  }, [filterStatus, filterDate, filterTime]);
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Ctrl+A to select all
+      if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        if (filteredAppointments.length > 0) {
+          handleSelectAll();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [filteredAppointments, handleSelectAll]);
 
   // Reset all filters
   const handleResetFilters = () => {
@@ -534,10 +640,11 @@ const AdminDashboard = () => {
     doc.text(`Generated on: ${currentDate} at ${currentTime}`, pageWidth / 2, 60, { align: 'center' });
     
     // Prepare table data
-    const tableData = filteredAppointments.map(appt => {
+    const tableData = filteredAppointments.map((appt, index) => {
       const date = new Date(appt.appointmentDate);
       const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
       return [
+        (index + 1).toString(),
         appt.patientFullName,
         appt.patientEmail || 'N/A',
         appt.patientPhone,
@@ -553,7 +660,7 @@ const AdminDashboard = () => {
     // Create table
     autoTable(doc, {
       startY: 70,
-      head: [['Patient Name', 'Email', 'Phone', 'Date', 'Time', 'Service', 'Clinic Area', 'Status', 'Description']],
+      head: [['S.No.', 'Patient Name', 'Email', 'Phone', 'Date', 'Time', 'Service', 'Clinic Area', 'Status', 'Description']],
       body: tableData,
       theme: 'grid',
       headStyles: {
@@ -567,15 +674,16 @@ const AdminDashboard = () => {
         valign: 'middle'
       },
       columnStyles: {
-        0: { cellWidth: 30, halign: 'left' },
-        1: { cellWidth: 40, halign: 'left' },
-        2: { cellWidth: 25, halign: 'center' },
-        3: { cellWidth: 20, halign: 'center' },
+        0: { cellWidth: 15, halign: 'center' },
+        1: { cellWidth: 30, halign: 'left' },
+        2: { cellWidth: 40, halign: 'left' },
+        3: { cellWidth: 25, halign: 'center' },
         4: { cellWidth: 20, halign: 'center' },
-        5: { cellWidth: 40, halign: 'left' },
-        6: { cellWidth: 25, halign: 'center' },
-        7: { cellWidth: 20, halign: 'center' },
-        8: { cellWidth: 'auto', halign: 'left' }
+        5: { cellWidth: 20, halign: 'center' },
+        6: { cellWidth: 40, halign: 'left' },
+        7: { cellWidth: 25, halign: 'center' },
+        8: { cellWidth: 20, halign: 'center' },
+        9: { cellWidth: 'auto', halign: 'left' }
       },
       didDrawPage: function (data) {
         // Add page number
@@ -642,7 +750,23 @@ const AdminDashboard = () => {
           animation: 'pulse 2s infinite',
         }}
       />V3 Dental Clinic</h2>
-    <p>Manage appointments, records, and treatments</p></div>
+    <p>Manage appointments, records, and treatments</p>
+    <div style={{ 
+      background: 'rgba(255, 255, 255, 0.2)', 
+      padding: '0.5rem 1rem', 
+      borderRadius: '20px', 
+      fontSize: '0.9rem',
+      fontWeight: '500',
+      marginTop: '0.5rem'
+    }}>
+      📊 Total Appointments: <strong>{filteredAppointments.length}</strong>
+      {filteredAppointments.length !== appointments.length && (
+        <span style={{ marginLeft: '1rem', opacity: 0.8 }}>
+          (Filtered from {appointments.length})
+        </span>
+      )}
+    </div>
+    </div>
         
         {/* Filter Controls */}
         <div className="filter-controls" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center', marginBottom: '1.5rem', alignItems: 'center' }}>
@@ -689,6 +813,52 @@ const AdminDashboard = () => {
           </Button>
         </div>
 
+        {/* Selection Summary */}
+        {selectedAppointments.size > 0 && (
+          <div className="selection-summary" style={{ 
+            background: 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)', 
+            padding: '0.75rem 1rem', 
+            borderRadius: '8px', 
+            marginBottom: '1rem',
+            border: '1px solid #90caf9',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1rem'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <span style={{ fontSize: '1.1rem', fontWeight: 'bold', color: '#1976d2' }}>
+                📋 {selectedAppointments.size} appointment(s) selected
+              </span>
+              <span style={{ fontSize: '0.9rem', color: '#666' }}>
+                out of {filteredAppointments.length} total
+              </span>
+              <span style={{ fontSize: '0.8rem', color: '#888', fontStyle: 'italic' }}>
+                💡 Tip: Use Ctrl+A to select all
+              </span>
+            </div>
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button 
+                className="btn btn-secondary btn-sm"
+                onClick={() => {
+                  setSelectedAppointments(new Set());
+                  setSelectAll(false);
+                }}
+              >
+                Clear Selection
+              </button>
+              <button 
+                className="btn btn-danger btn-sm"
+                onClick={handleBulkDelete}
+                disabled={isBulkDeleting}
+              >
+                {isBulkDeleting ? 'Deleting...' : `Delete Selected (${selectedAppointments.size})`}
+              </button>
+            </div>
+          </div>
+        )}
+
         {loading ? (
           <p>Loading appointments...</p>
         ) : (
@@ -696,6 +866,16 @@ const AdminDashboard = () => {
             <table className="appointments-table">
               <thead>
                 <tr>
+                  <th style={{ width: '50px', textAlign: 'center' }}>
+                    <input
+                      type="checkbox"
+                      checked={selectAll}
+                      onChange={handleSelectAll}
+                      disabled={filteredAppointments.length === 0}
+                      title={selectAll ? "Deselect all" : "Select all"}
+                    />
+                  </th>
+                  <th style={{ width: '60px', textAlign: 'center' }}>S.No.</th>
                   <th>Patient Name</th>
                   <th>Email</th>
                   <th>Phone</th>
@@ -709,8 +889,19 @@ const AdminDashboard = () => {
               </thead>
               <tbody>
                 {filteredAppointments.length > 0 ? (
-                  filteredAppointments.map((appt) => (
-                    <tr key={appt.id}>
+                  filteredAppointments.map((appt, index) => (
+                    <tr key={appt.id} className={selectedAppointments.has(appt.id) ? 'selected-row' : ''}>
+                      <td style={{ textAlign: 'center' }}>
+                        <input
+                          type="checkbox"
+                          checked={selectedAppointments.has(appt.id)}
+                          onChange={() => handleAppointmentSelect(appt.id)}
+                          title="Select this appointment"
+                        />
+                      </td>
+                      <td style={{ textAlign: 'center', fontWeight: 'bold', color: '#666' }}>
+                        {index + 1}
+                      </td>
                       <td>{appt.patientFullName}</td>
                       <td>{appt.patientEmail}</td>
                       <td>{appt.patientPhone}</td>
@@ -747,7 +938,7 @@ const AdminDashboard = () => {
                   ))
                 ) : (
                   <tr>
-                    <td colSpan="9" className="no-appointments">
+                    <td colSpan="11" className="no-appointments">
                       No appointments found
                     </td>
                   </tr>
