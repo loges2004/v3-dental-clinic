@@ -11,11 +11,7 @@ const AdminLogin = () => {
     const navigate = useNavigate();
 
     const getApiBaseUrl = () => {
-        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-            return 'http://localhost:8001';
-        } else {
-            return `http://${window.location.hostname}:8001`;
-        }
+        return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
     };
 
     const handleSubmit = async (e) => {

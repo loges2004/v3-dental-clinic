@@ -9,11 +9,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const getApiBaseUrl = () => {
-    const hostname = window.location.hostname;
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return 'http://localhost:8001';
-    }
-    return `http://${hostname}:8001`;
+    return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
 };
 
 const timeSlots = [
