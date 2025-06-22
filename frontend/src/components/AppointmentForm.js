@@ -102,23 +102,14 @@ const AppointmentForm = () => {
       // Development - try to detect the correct IP
       return 'http://localhost:8001';
     } else {
-      // Production - use environment variable or construct from current domain
+      // Production - use environment variable or Railway URL
       const backendUrl = process.env.REACT_APP_BACKEND_URL;
       if (backendUrl) {
         return backendUrl;
       }
       
-      // Fallback: construct from current domain
-      const hostname = window.location.hostname;
-      const protocol = window.location.protocol;
-      
-      // If frontend is on Vercel, backend will be on Railway
-      if (hostname.includes('vercel.app')) {
-        return 'https://your-railway-app-name.railway.app';
-      }
-      
-      // For other hosting providers
-      return `${protocol}//${hostname.replace('www.', '')}:8001`;
+      // Fallback: use Railway URL (replace with your actual Railway URL)
+      return 'https://your-railway-app-name.railway.app';
     }
   };
 
@@ -306,7 +297,7 @@ const AppointmentForm = () => {
       if (!response.ok) {
         let errorMessage = `HTTP error! status: ${response.status}`;
         try {
-          const errorData = await response.json();
+        const errorData = await response.json();
           errorMessage = errorData.message || errorData.error || errorMessage;
         } catch (parseError) {
           // Ignore parsing error
@@ -591,9 +582,9 @@ const AppointmentForm = () => {
                 <div className="desktop-gallery" ref={desktopGalleryRef}>
                     {galleryImages.map((image, index) => (
                         <motion.div key={`desktop-${image.id}`} initial={{ x: -100, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 80 }} className="gallery-item">
-                            <img src={image.src} alt={image.alt} />
-                        </motion.div>
-                    ))}
+                                <img src={image.src} alt={image.alt} />
+                            </motion.div>
+                        ))}
                 </div>
             </div>
             
