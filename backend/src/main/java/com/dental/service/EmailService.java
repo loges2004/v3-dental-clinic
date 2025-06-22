@@ -5,9 +5,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,41 +18,65 @@ import java.util.stream.Collectors;
 public class EmailService {
     private final JavaMailSender mailSender;
 
+    private boolean hasEmail(Appointment appointment) {
+        return appointment.getPatientEmail() != null && !appointment.getPatientEmail().trim().isEmpty();
+    }
+
     public void sendAppointmentConfirmation(Appointment appointment) {
+        if (!hasEmail(appointment)) return;
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(appointment.getPatientEmail());
         message.setSubject("Appointment Confirmation - V3 Dental Clinic");
-        message.setText(String.format(
-            "Dear %s,\n\n" +
-            "Your appointment has been confirmed for:\n" +
-            "Date: %s\n" +
-            "Time: %s\n" +
-            "Service: %s\n\n" +
-            "Please arrive 10 minutes before your scheduled time.\n\n" +
-            "Best regards,\nV3 Dental Clinic Team",
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedTime = appointment.getAppointmentTime().format(timeFormatter);
+        String formattedDate = appointment.getAppointmentDate().format(dateFormatter);
+
+        String whatsappMessage = String.format(
+            "*V3 Dental Clinic - Appointment Confirmed!* ✅\n\n" +
+            "Hi *%s*,\n\n" +
+            "Your appointment is all set! We're looking forward to seeing you. 😊\n\n" +
+            "*Here are your appointment details:*\n\n" +
+            "🦷 *Service:* %s\n" +
+            "🗓️ *Date:* %s\n" +
+            "⏰ *Time:* %s\n" +
+            "📍 *Clinic:* %s\n\n" +
+            "*Important Information:*\n" +
+            "• Please arrive 10 minutes early to allow for check-in.\n" +
+            "• If you need to reschedule, please contact us at least 24 hours in advance.\n\n" +
+            "Thank you for choosing V3 Dental Clinic!\n" +
+            "We're committed to giving you a bright and healthy smile. ✨",
             appointment.getPatientFullName(),
-            appointment.getAppointmentDate(),
-            appointment.getAppointmentTime(),
-            appointment.getServiceType()
-        ));
+            appointment.getServiceType(),
+            formattedDate,
+            formattedTime,
+            appointment.getClinicArea()
+        );
+
+        message.setText(whatsappMessage);
         mailSender.send(message);
     }
 
     public void sendAppointmentRejection(Appointment appointment, String reason, List<LocalTime> availableSlots) {
+        if (!hasEmail(appointment)) return;
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(appointment.getPatientEmail());
         message.setSubject("Appointment Update - V3 Dental Clinic");
-
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedTime = appointment.getAppointmentTime().format(timeFormatter);
+        String formattedDate = appointment.getAppointmentDate().format(dateFormatter);
         String slotsMessage = "";
         if (availableSlots != null && !availableSlots.isEmpty()) {
             String formattedSlots = availableSlots.stream()
-                    .map(LocalTime::toString)
+                    .map(slot -> slot.format(timeFormatter))
                     .collect(Collectors.joining(", "));
-            slotsMessage = "\n\nAvailable Time Slots for " + appointment.getAppointmentDate() + ": " + formattedSlots + ".\n";
+            slotsMessage = "\n\nAvailable Time Slots for " + formattedDate + ": " + formattedSlots + ".\n";
         } else {
             slotsMessage = "\n\nWe recommend checking our website for updated availability.\n";
         }
-
         message.setText(String.format(
             "Dear %s,\n\n" +
             "We regret to inform you that your appointment request for %s at %s has been declined.\n" +
@@ -58,8 +84,8 @@ public class EmailService {
             "Please contact us to reschedule your appointment.\n\n" +
             "Best regards,\nV3 Dental Clinic Team",
             appointment.getPatientFullName(),
-            appointment.getAppointmentDate(),
-            appointment.getAppointmentTime(),
+            formattedDate,
+            formattedTime,
             reason,
             slotsMessage
         ));
@@ -70,6 +96,10 @@ public class EmailService {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo("v3dentalclinic@gmail.com"); // Admin email
         message.setSubject("New Appointment Request - V3 Dental Clinic");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedTime = appointment.getAppointmentTime().format(timeFormatter);
+        String formattedDate = appointment.getAppointmentDate().format(dateFormatter);
         message.setText(String.format(
             "New appointment request received:\n\n" +
             "Patient: %s\n" +
@@ -83,8 +113,8 @@ public class EmailService {
             appointment.getPatientFullName(),
             appointment.getPatientEmail(),
             appointment.getPatientPhone(),
-            appointment.getAppointmentDate(),
-            appointment.getAppointmentTime(),
+            formattedDate,
+            formattedTime,
             appointment.getServiceType(),
             appointment.getDescription()
         ));
@@ -92,9 +122,15 @@ public class EmailService {
     }
 
     public void sendAppointmentRescheduled(Appointment appointment, LocalDate newDate, LocalTime newTime) {
+        if (!hasEmail(appointment)) return;
+
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(appointment.getPatientEmail());
         message.setSubject("Appointment Rescheduled - V3 Dental Clinic");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedTime = newTime.format(timeFormatter);
+        String formattedDate = newDate.format(dateFormatter);
         message.setText(String.format(
             "Dear %s,\n\n" +
             "Your appointment has been rescheduled to:\n" +
@@ -103,9 +139,11 @@ public class EmailService {
             "Please adjust your schedule accordingly.\n\n" +
             "Best regards,\nV3 Dental Clinic Team",
             appointment.getPatientFullName(),
-            newDate,
-            newTime
+            formattedDate,
+            formattedTime
         ));
         mailSender.send(message);
     }
+
+  
 } 

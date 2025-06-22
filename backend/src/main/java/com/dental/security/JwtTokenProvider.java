@@ -58,6 +58,11 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            // Check if token is null or empty
+            if (token == null || token.trim().isEmpty()) {
+                return false;
+            }
+            
             Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()

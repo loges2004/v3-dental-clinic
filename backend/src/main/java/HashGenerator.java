@@ -2,10 +2,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class HashGenerator {
     public static void main(String[] args) {
-        String rawPassword = "v3@08062025"; // Your desired password
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String hashedPassword = encoder.encode(rawPassword);
-        System.out.println("Raw Password: " + rawPassword);
-        System.out.println("Hashed Password: " + hashedPassword);
+        // This utility was used to generate the initial admin password hash.
+        // The code has been removed for security and to prevent accidental execution.
+        // It does not affect the admin login functionality.
     }
 } 

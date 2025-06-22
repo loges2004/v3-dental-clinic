@@ -24,10 +24,28 @@ public class AppointmentService {
 
     @Transactional
     public Appointment createAppointment(Appointment appointment) {
+        // boolean isDuplicate = appointmentRepository.existsByPatientFullNameAndPatientEmailAndPatientPhoneAndAppointmentDateAndAppointmentTimeAndServiceType(
+        //     appointment.getPatientFullName(),
+        //     appointment.getPatientEmail(),
+        //     appointment.getPatientPhone(),
+        //     appointment.getAppointmentDate(),
+        //     appointment.getAppointmentTime(),
+        //     appointment.getServiceType()
+        // );
+
+        // if (isDuplicate) {
+        //     throw new IllegalStateException("This exact appointment already exists.");
+        // }
+
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        
-        // Send email to admin
-        emailService.sendNewAppointmentNotification(savedAppointment);
+
+        if (savedAppointment.getStatus() == Appointment.AppointmentStatus.PENDING) {
+            // Send email to admin for new pending appointment
+            emailService.sendNewAppointmentNotification(savedAppointment);
+        } else if (savedAppointment.getStatus() == Appointment.AppointmentStatus.ACCEPTED) {
+            // Send confirmation email to patient for admin-created appointment
+            emailService.sendAppointmentConfirmation(savedAppointment);
+        }
 
         return savedAppointment;
     }
@@ -42,6 +60,7 @@ public class AppointmentService {
         if (status == Appointment.AppointmentStatus.ACCEPTED) {
             emailService.sendAppointmentConfirmation(appointment);
         } else if (status == Appointment.AppointmentStatus.REJECTED) {
+            appointment.setDescription(reason);
             List<LocalTime> availableSlots = getAvailableTimeSlots(appointment.getAppointmentDate());
             emailService.sendAppointmentRejection(appointment, reason, availableSlots);
         } else if (status == Appointment.AppointmentStatus.RESCHEDULED) {
@@ -103,4 +122,9 @@ public class AppointmentService {
     // public List<Appointment> getPatientAppointmentsByDate(User patient, LocalDate date) {
     //     return appointmentRepository.findByPatientAndAppointmentDate(patient, date);
     // }
+
+    @Transactional
+    public void deleteAppointment(Long id) {
+        appointmentRepository.deleteById(id);
+    }
 } 
