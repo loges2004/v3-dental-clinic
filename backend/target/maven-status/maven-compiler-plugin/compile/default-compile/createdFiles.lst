@@ -12,7 +12,6 @@ com\dental\repository\NotificationRepository.class
 com\dental\model\User$UserRole.class
 com\dental\model\Appointment$AppointmentStatus.class
 com\dental\model\Notification.class
-com\dental\security\JwtService.class
 com\dental\controller\StatusUpdateRequest.class
 com\dental\controller\AppointmentController.class
 com\dental\repository\AppointmentRepository.class
