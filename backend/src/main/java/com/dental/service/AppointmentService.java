@@ -1,9 +1,7 @@
 package com.dental.service;
 
 import com.dental.model.Appointment;
-import com.dental.model.Notification;
 import com.dental.repository.AppointmentRepository;
-import com.dental.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +17,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class AppointmentService {
     private final AppointmentRepository appointmentRepository;
-    private final NotificationRepository notificationRepository;
     private final EmailService emailService;
 
     @Transactional

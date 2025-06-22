@@ -1,12 +1,12 @@
 package com.dental.model;
 
 import lombok.Data;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
 @Entity
 @Table(name = "users")
+@Data
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,16 +15,15 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String password;
 
-    @Column(name = "full_name", nullable = false)
+    @Column(name = "full_name")
     private String fullName;
 
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private UserRole role;
 
     @Column(name = "created_at")
@@ -32,6 +31,10 @@ public class User {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public enum UserRole {
+        ADMIN, USER
+    }
 
     @PrePersist
     protected void onCreate() {
@@ -42,9 +45,5 @@ public class User {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
-    }
-
-    public enum UserRole {
-        ADMIN, PATIENT
     }
 } 

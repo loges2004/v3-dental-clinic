@@ -1,5 +1,4 @@
 -- Drop tables if they exist to ensure a clean slate, in the correct order to handle foreign key constraints
-DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS appointments;
 DROP TABLE IF EXISTS users;
 
@@ -35,12 +34,3 @@ CREATE TABLE IF NOT EXISTS appointments (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Notifications table
-CREATE TABLE IF NOT EXISTS notifications (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    appointment_id BIGINT NOT NULL,
-    message TEXT NOT NULL,
-    is_read BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (appointment_id) REFERENCES appointments(id)
-); 
