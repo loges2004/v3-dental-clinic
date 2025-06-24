@@ -95,23 +95,9 @@ const AppointmentForm = () => {
   const animationFrameId = useRef(null);
   const scrollDirection = useRef(1);
 
-  // Get API base URL dynamically
   const getApiBaseUrl = () => {
-    // Check if we're in development or production
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      // Development - try to detect the correct IP
-      return 'http://localhost:8001';
-    } else {
-      // Production - use environment variable or Railway URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
-      if (backendUrl) {
-        return backendUrl;
-      }
-      
-      // Fallback: use Railway URL (replace with your actual Railway URL)
-      return ' https://v3-dental-clinic.onrender.com';
-    }
-  };
+    return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
+};
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
