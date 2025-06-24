@@ -711,7 +711,7 @@ const HomePage = () => {
                 React.createElement(
                   "a",
                   {
-                    href: "https://www.google.com/maps/place/V3+Dental+Clinic",
+                    href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
                     target: "_blank",
                     rel: "noopener noreferrer",
                     className: "maps-link highlight",
@@ -885,11 +885,16 @@ const HomePage = () => {
                   { className: "contact-details" },
                   React.createElement("h3", null, "Address"),
                   React.createElement(
-                    "p",
-                    null,
+                    "a",
+                    {
+                      href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
+                      target: "_blank",
+                      rel: "noopener noreferrer",
+                      style: { color: "#3b82f6", textDecoration: "underline", cursor: "pointer" }
+                    },
                     "235, Kannusamy Street, Sanganoor Main Road,",
                     React.createElement("br"),
-                    "Kannapa Nagar Junction, Coimbatore - 641027",
+                    "Kannapa Nagar Junction, Coimbatore - 641027"
                   ),
                 ),
               ),
@@ -996,16 +1001,34 @@ const HomePage = () => {
             React.createElement(
               "div",
               { className: "contact-map" },
-              React.createElement("iframe", {
-                src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.3!2d77.0!3d11.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzAwLjAiTiA3N8KwMDAnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890",
-                width: "100%",
-                height: "100%",
-                style: { border: 0 },
-                allowFullScreen: "",
-                loading: "lazy",
-                referrerPolicy: "no-referrer-when-downgrade",
-                title: "V3 Dental Clinic Location",
-              }),
+              React.createElement("div", { style: { position: "relative", width: "100%", height: "100%" } },
+                React.createElement("iframe", {
+                  src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.3!2d77.0!3d11.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzAwLjAiTiA3N8KwMDAnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890",
+                  width: "100%",
+                  height: "100%",
+                  style: { border: 0 },
+                  allowFullScreen: "",
+                  loading: "lazy",
+                  referrerPolicy: "no-referrer-when-downgrade",
+                  title: "V3 Dental Clinic Location"
+                }),
+                React.createElement("a", {
+                  href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                  style: {
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    zIndex: 2,
+                    background: "rgba(0,0,0,0)",
+                    cursor: "pointer"
+                  },
+                  "aria-label": "Open in Google Maps"
+                })
+              ),
             ),
           ),
         ),
