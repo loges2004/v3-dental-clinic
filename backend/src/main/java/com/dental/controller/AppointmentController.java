@@ -15,6 +15,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/appointments")
@@ -141,6 +142,12 @@ public class AppointmentController {
     public ResponseEntity<?> deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/availability")
+    public Map<String, Long> getAppointmentAvailability(@RequestParam("date") String date, @RequestParam("clinicArea") String clinicArea) {
+        LocalDate localDate = LocalDate.parse(date);
+        return appointmentService.getAvailabilityForDateAndClinicArea(localDate, clinicArea);
     }
 }
 

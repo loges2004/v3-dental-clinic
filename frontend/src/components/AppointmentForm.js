@@ -46,8 +46,10 @@ const servicesList = [
 ];
 
 const timeSlots = [
-  "09:30", "10:30", "11:30", "12:30", "01:30", "02:30", 
-  "04:00", "05:00", "06:00", "07:00", "08:00", "09:00"
+  "12:00 PM",
+  "09:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
+  "12:30 PM", "04:00 PM", "04:30 PM", "05:00 PM", "05:30 PM", "06:00 PM",
+  "06:30 PM", "07:00 PM", "07:30 PM", "08:00 PM", "08:30 PM", "09:00 PM"
 ];
 
 const clinicAreas = [
@@ -56,12 +58,17 @@ const clinicAreas = [
   // "RS puram"
 ];
 
+
+
+
 const benefits = [
   { icon: "🩺", title: "Expert Dentists", description: "Qualified professionals with years of experience" },
   { icon: "✅", title: "Comfortable Environment", description: "Modern equipment and pain-free treatments" },
   { icon: "🕐", title: "Flexible Scheduling", description: "Evening and weekend appointments available" },
   { icon: "📞", title: "24/7 Emergency Care", description: "Round-the-clock support for dental emergencies" },
 ];
+
+
 
 const galleryImages = [
   { id: 1, src: "/images/image6.jpg", alt: "Modern dental chair and equipment" },
@@ -74,12 +81,15 @@ const galleryImages = [
 
 ];
 
+
+
 const AppointmentForm = () => {
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({})
   const [isMobile, setIsMobile] = useState(false)
+  const [availability, setAvailability] = useState({});
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -105,6 +115,29 @@ const AppointmentForm = () => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (form.date && form.clinicArea) {
+      const fetchAvailability = async () => {
+        try {
+          const url = `${getApiBaseUrl()}/api/appointments/availability?date=${form.date}&clinicArea=${encodeURIComponent(form.clinicArea)}`;
+          console.log("Fetching availability from:", url);
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error('Failed to fetch availability');
+          }
+          const data = await response.json();
+          console.log("Availability data:", data);
+          setAvailability(data);
+          console.log("Availability:", data);
+        } catch (error) {
+          console.error("Error fetching availability:", error);
+          // Optionally, handle the error in the UI
+        }
+      };
+      fetchAvailability();
+    }
+  }, [form.date, form.clinicArea]);
 
   const animateScroll = useCallback(() => {
     const scrollSpeed = 1.2; // Adjust for desired speed
@@ -460,13 +493,33 @@ const AppointmentForm = () => {
                                 <Form.Control type="date" name="date" value={form.date} min={today} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.date && !!errors.date} isValid={touched.date && !errors.date} placeholder=" " />
                                 {touched.date && errors.date && <div className="invalid-feedback d-block">⚠️ {errors.date}</div>}
                             </FloatingLabel>
-                            <div className="mb-3 required">
-                                <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
-                                <div className="time-slots">
-                                    {timeSlots.map((slot) => <Button key={slot} type="button" onClick={() => handleChange("timeSlot", slot)} className={`btn time-slot ${form.timeSlot === slot ? "btn-primary selected" : "btn-outline-primary"}`}>{slot}</Button>)}
-                                </div>
-                                {touched.timeSlot && errors.timeSlot && <div className="text-danger mt-2 d-flex align-items-center">⚠️ {errors.timeSlot}</div>}
-                            </div>
+                            <Form.Group className="mb-3">
+                              <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
+                              <div className="time-slots-grid">
+                                {timeSlots.map((slot) => {
+                                  const isBooked = availability[slot] >= 3 || availability[slot.toLowerCase()] >= 3;
+                                  const slotClass = isBooked ? 'unavailable' : (form.timeSlot === slot ? 'selected' : 'available');
+                                  
+                                  console.log("Availability:", availability);
+                                  console.log("Slot:", slot);
+                                  
+                                  return (
+                                    <motion.button
+                                      key={slot}
+                                      type="button"
+                                      className={`time-slot-btn ${slotClass}`}
+                                      onClick={() => !isBooked && handleChange("timeSlot", slot)}
+                                      disabled={isBooked}
+                                      whileHover={{ scale: isBooked ? 1 : 1.05 }}
+                                      whileTap={{ scale: isBooked ? 1 : 0.95 }}
+                                    >
+                                      {slot}
+                                    </motion.button>
+                                  );
+                                })}
+                              </div>
+                              {touched.timeSlot && errors.timeSlot && <Alert variant="danger" className="mt-2">{errors.timeSlot}</Alert>}
+                            </Form.Group>
                         </Form>
                         <div className="form-actions">
                             <Button onClick={prevStep} variant="outline-primary" size="lg" className="w-50 btn-previous">← Previous</Button>
@@ -570,7 +623,7 @@ const AppointmentForm = () => {
                         <motion.div key={`desktop-${image.id}`} initial={{ x: -100, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 80 }} className="gallery-item">
                                 <img src={image.src} alt={image.alt} />
                             </motion.div>
-                        ))}
+                    ))}
                 </div>
             </div>
             
