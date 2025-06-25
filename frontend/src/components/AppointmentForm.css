@@ -2042,6 +2042,11 @@ label[for="date"]::after {
   font-weight: 500;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  white-space: nowrap;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .time-slot-btn.available {
