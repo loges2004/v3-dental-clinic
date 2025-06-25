@@ -1665,7 +1665,7 @@ body {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 9999; /* Ensured ultra-high z-index */
+  z-index: 999; /* Ensured ultra-high z-index */
   background: rgba(59, 130, 246, 0.05); /* Transparent blue to blend with background */
   color: white;
   border: none;
@@ -1699,7 +1699,7 @@ body {
   .carousel-nav {
     width: 40px;
     height: 40px;
-    z-index: 9999; /* Ensured ultra-high z-index for mobile */
+    z-index: 999; /* Ensured ultra-high z-index for mobile */
   }
 
   .carousel-nav.prev {
@@ -1772,7 +1772,7 @@ body {
   box-shadow: 5px 0 25px rgba(0, 0, 0, 0.1);
   transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
               border-radius 0.4s ease;
-  z-index: 999;
+  z-index: 1001;
   padding-top: 70px;
   border-radius: 3px;
   overflow: hidden;
