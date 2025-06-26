@@ -8,6 +8,7 @@ const AdminLogin = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
 
     const getApiBaseUrl = () => {
@@ -16,6 +17,7 @@ const AdminLogin = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsSubmitting(true);
         try {
             const apiUrl = `${getApiBaseUrl()}/api/auth/login`;
             const response = await axios.post(apiUrl, {
@@ -39,6 +41,8 @@ const AdminLogin = () => {
                 title: 'Login Failed',
                 text: 'Invalid credentials. Please try again.',
             });
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -99,7 +103,9 @@ const AdminLogin = () => {
                         </div>
                     </div>
                     <div className="d-grid gap-2 mt-4">
-                        <button type="submit" className="btn btn-primary btn-lg">Login</button>
+                        <button type="submit" className="btn btn-primary btn-lg" disabled={isSubmitting}>
+                            {isSubmitting ? 'Logging in...' : 'Login'}
+                        </button>
                     </div>
                 </form>
             </div>
