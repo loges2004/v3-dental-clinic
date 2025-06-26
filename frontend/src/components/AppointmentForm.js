@@ -118,15 +118,12 @@ const AppointmentForm = () => {
       const fetchAvailability = async () => {
         try {
           const url = `${getApiBaseUrl()}/api/appointments/availability?date=${form.date}&clinicArea=${encodeURIComponent(form.clinicArea)}`;
-          console.log("Fetching availability from:", url);
           const response = await fetch(url);
           if (!response.ok) {
             throw new Error('Failed to fetch availability');
           }
           const data = await response.json();
-          console.log("Availability data:", data);
           setAvailability(data);
-          console.log("Availability:", data);
         } catch (error) {
           console.error("Error fetching availability:", error);
           // Optionally, handle the error in the UI
@@ -291,7 +288,15 @@ const AppointmentForm = () => {
 
       const apiUrl = `${getApiBaseUrl()}/api/appointments`;
       
-      const response = await fetch(apiUrl, {
+      // Add timeout logic (20 seconds)
+      const fetchWithTimeout = (url, options, timeout = 60000) => {
+        return Promise.race([
+          fetch(url, options),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), timeout))
+        ]);
+      };
+
+      const response = await fetchWithTimeout(apiUrl, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json", 
@@ -496,9 +501,6 @@ const AppointmentForm = () => {
                                 {timeSlots.map((slot) => {
                                   const isBooked = availability[slot] >= 3 || availability[slot.toLowerCase()] >= 3;
                                   const slotClass = isBooked ? 'unavailable' : (form.timeSlot === slot ? 'selected' : 'available');
-                                  
-                                  console.log("Availability:", availability);
-                                  console.log("Slot:", slot);
                                   
                                   return (
                                     <motion.button
