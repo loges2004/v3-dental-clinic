@@ -123,7 +123,15 @@ const AppointmentForm = () => {
             throw new Error('Failed to fetch availability');
           }
           const data = await response.json();
-          setAvailability(data);
+          
+          // Normalize keys from backend (e.g., "04:00:00") to match frontend format ("04:00")
+          const normalizedAvailability = Object.entries(data).reduce((acc, [time, count]) => {
+            const formattedTime = time.slice(0, 5); // "HH:mm:ss" -> "HH:mm"
+            acc[formattedTime] = count;
+            return acc;
+          }, {});
+
+          setAvailability(normalizedAvailability);
         } catch (error) {
           console.error("Error fetching availability:", error);
           // Optionally, handle the error in the UI
