@@ -366,7 +366,7 @@ const AppointmentForm = () => {
         errorMessage = "Server connection issue. Please try again or contact support.";
         errorTitle = 'Server Error';
       } else if (error.message.includes("timeout")) {
-      s
+        errorMessage = "The request timed out. Please try again.";
         errorTitle = 'Timeout Error';
       } else if (error.message.includes("localhost")) {
         errorMessage = "Cannot connect to server. Please ensure you're on the same network as the server.";
