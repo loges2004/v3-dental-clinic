@@ -82,6 +82,7 @@ public class SecurityConfig {
             "https://*.vercel.app",
             "https://*.railway.app",
             "https://dental-clinic-*.vercel.app",
+            "https://v3dentalclinic.vercel.app",
             "https://*"
         ));
         

@@ -1,33 +1,27 @@
 #!/bin/bash
 
-echo "🚀 Starting Dental Clinic Deployment..."
+echo "🚀 Deploying Dental Clinic Backend with CORS fixes..."
 
-# Build backend
-echo "📦 Building Backend..."
-cd backend
-mvn clean package -DskipTests
+# Build the project
+echo "📦 Building project..."
+./mvnw clean package -DskipTests
 
-# Deploy backend to Railway
-echo "🚂 Deploying Backend to Railway..."
-railway up
-
-# Get Railway URL
-RAILWAY_URL=$(railway status --json | jq -r '.url')
-echo "✅ Backend deployed at: $RAILWAY_URL"
-
-# Update frontend environment
-echo "⚙️ Updating Frontend Environment..."
-cd ../frontend
-echo "REACT_APP_BACKEND_URL=$RAILWAY_URL" > .env.production
-
-# Build frontend
-echo "📦 Building Frontend..."
-npm run build
-
-# Deploy frontend to Vercel
-echo "⚡ Deploying Frontend to Vercel..."
-vercel --prod
-
-echo "🎉 Deployment Complete!"
-echo "Frontend: https://your-app.vercel.app"
-echo "Backend: $RAILWAY_URL" 
+# Check if build was successful
+if [ $? -eq 0 ]; then
+    echo "✅ Build successful!"
+    echo "🌐 CORS configuration updated for:"
+    echo "   - https://v3dentalclinic.vercel.app"
+    echo "   - http://localhost:3000"
+    echo ""
+    echo "📋 Changes made:"
+    echo "   ✅ Added specific CORS origin for Vercel domain"
+    echo "   ✅ Added @CrossOrigin annotations to controllers"
+    echo "   ✅ Added global CORS configuration"
+    echo "   ✅ Fixed manifest.json icon references"
+    echo ""
+    echo "🔄 Please redeploy your backend to Render with these changes"
+    echo "💡 The CORS errors should be resolved after redeployment"
+else
+    echo "❌ Build failed! Please check the errors above."
+    exit 1
+fi 

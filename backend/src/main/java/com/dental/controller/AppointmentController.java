@@ -20,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/appointments")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"https://v3dentalclinic.vercel.app", "http://localhost:3000"}, allowCredentials = "true")
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
