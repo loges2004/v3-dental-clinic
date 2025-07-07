@@ -104,7 +104,7 @@ const AppointmentForm = () => {
 
   const getApiBaseUrl = () => {
     return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
-};
+  };
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 768);
