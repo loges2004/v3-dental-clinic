@@ -222,7 +222,7 @@ const HomePage = () => {
                   "div",
                   { className: "brand-text" },
                   React.createElement("h1", { className: "clinic-name" }, "V3 DENTAL CLINIC"),
-                  React.createElement("p", { className: "tagline" }, "Excellence in Dental Care"),
+                  React.createElement("p", { className: "tagline" }, "UNLEASH YOUR RADIANT SMILE"),
                 ),
               ),
 
