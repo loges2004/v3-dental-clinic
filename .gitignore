@@ -1,2 +1,42 @@
-"node_modules/" 
-".dist/" 
+# ==================================
+# Java / Maven (for your backend)
+# ==================================
+# Compiled code and build output
+/backend/target/
+
+# Log files
+*.log
+
+# IDE files (IntelliJ, Eclipse, VSCode)
+.idea/
+*.iml
+.project
+.classpath
+.settings/
+
+
+# ==================================
+# Node.js / React (for your frontend)
+# ==================================
+# Dependencies
+/frontend/node_modules/
+
+# Build output
+/frontend/build/
+
+# Secret environment files
+.env
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+
+# ==================================
+# General OS files
+# ==================================
+.DS_Store
+Thumbs.db

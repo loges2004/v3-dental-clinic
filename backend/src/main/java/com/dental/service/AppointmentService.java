@@ -8,8 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -123,5 +125,26 @@ public class AppointmentService {
     @Transactional
     public void deleteAppointment(Long id) {
         appointmentRepository.deleteById(id);
+    }
+
+    public Map<String, Long> getAvailabilityForDate(LocalDate date) {
+        List<Object[]> results = appointmentRepository.countAcceptedAppointmentsByTime(date);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        return results.stream()
+                .collect(Collectors.toMap(
+                        result -> ((LocalTime) result[0]).format(timeFormatter),
+                        result -> (Long) result[1]
+                ));
+    }
+
+    public Map<String, Long> getAvailabilityForDateAndClinicArea(LocalDate date, String clinicArea) {
+        List<Object[]> results = appointmentRepository.countAcceptedAppointmentsByTimeAndClinicArea(date, clinicArea);
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+        return results.stream()
+                .collect(Collectors.toMap(
+                        result -> ((LocalTime) result[0]).format(timeFormatter),
+                        result -> (Long) result[1]
+                ));
     }
 } 

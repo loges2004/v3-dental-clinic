@@ -1,0 +1,38 @@
+[33mef283ac[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Fix: Remove secrets and build artifacts
+[33m9119c73[m Remove large JAR file
+[33m36d64f3[m Fix: Remove secrets and build artifacts
+[33m590ead1[m Fix: Remove secrets and build artifacts
+[33mb979a1a[m Initial commit
+[33m0c8f226[m[33m ([m[1;31morigin/main[m[33m)[m fix: update root dir config
+[33mc067420[m fix: update root dir config
+[33mf8c5b0b[m fix: update root dir config
+[33mf3f231e[m fix: update root dir config
+[33m2957186[m fix: update root dir config
+[33m402c963[m fix: complete package.json and vercel config
+[33meb74411[m fix: update root dir config
+[33m2c6fbc5[m Clean backend: remove Node.js files, ensure correct structure
+[33m2c6cf91[m Clean backend: remove Node.js files, ensure correct structure
+[33m3796cf0[m Fix: Simplify vercel.json for Vercel deployment
+[33m44ad0b1[m Clean backend: remove Node.js files, ensure correct structure
+[33ma5fb86c[m Clean backend: remove Node.js files, ensure correct structure
+[33m15236ca[m Clean backend: remove Node.js files, ensure correct structure
+[33m14fbc9c[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m Clean backend: remove Node.js files, ensure correct structure
+[33mc80bc14[m Clean backend: remove Node.js files, ensure correct structure
+[33m8bd6311[m Update backendend submodule
+[33md74e42f[m Update backendend submodule
+[33m0a2f33c[m Update backendend submodule
+[33m4527948[m Update frontend submodule
+[33mdbc5fd3[m Update backendend submodule
+[33m13f8c1d[m Update frontend submodule
+[33m4507a27[m Update frontend
+[33m02b4fcf[m Update frontend
+[33m70d5ae8[m Update frontend
+[33m5873225[m Update frontend submodule
+[33m38b2269[m Update backend submodule
+[33m368e313[m Update frontend submodule
+[33m55035a3[m Update backend submodule
+[33mbbed3cf[m Update frontend submodule
+[33m69397d0[m Add all frontend files and contents
+[33m67a0aff[m Initial commit with project structure
+[33m6e2fe07[m Update frontend submodule
+[33m8f1cb8b[m Initial commit with frontend and backend

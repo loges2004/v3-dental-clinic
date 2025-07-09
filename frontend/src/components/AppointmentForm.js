@@ -46,8 +46,7 @@ const servicesList = [
 ];
 
 const timeSlots = [
-  "09:30", "10:30", "11:30", "12:30", "01:30", "02:30", 
-  "04:00", "05:00", "06:00", "07:00", "08:00", "09:00"
+  "09:30", "10:30", "11:30", "12:30", "01:30", "02:30", "04:00", "05:00", "06:00", "07:00", "08:00", "09:00"
 ];
 
 const clinicAreas = [
@@ -56,12 +55,17 @@ const clinicAreas = [
   // "RS puram"
 ];
 
+
+
+
 const benefits = [
   { icon: "🩺", title: "Expert Dentists", description: "Qualified professionals with years of experience" },
   { icon: "✅", title: "Comfortable Environment", description: "Modern equipment and pain-free treatments" },
   { icon: "🕐", title: "Flexible Scheduling", description: "Evening and weekend appointments available" },
   { icon: "📞", title: "24/7 Emergency Care", description: "Round-the-clock support for dental emergencies" },
 ];
+
+
 
 const galleryImages = [
   { id: 1, src: "/images/image6.jpg", alt: "Modern dental chair and equipment" },
@@ -74,12 +78,15 @@ const galleryImages = [
 
 ];
 
+
+
 const AppointmentForm = () => {
   const [currentStep, setCurrentStep] = useState(1)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errors, setErrors] = useState({})
   const [touched, setTouched] = useState({})
   const [isMobile, setIsMobile] = useState(false)
+  const [availability, setAvailability] = useState({});
   const [form, setForm] = useState({
     fullName: "",
     email: "",
@@ -95,22 +102,8 @@ const AppointmentForm = () => {
   const animationFrameId = useRef(null);
   const scrollDirection = useRef(1);
 
-  // Get API base URL dynamically
   const getApiBaseUrl = () => {
-    // Check if we're in development or production
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      // Development - try to detect the correct IP
-      return 'http://localhost:8001';
-    } else {
-      // Production - use environment variable or Railway URL
-      const backendUrl = process.env.REACT_APP_BACKEND_URL;
-      if (backendUrl) {
-        return backendUrl;
-      }
-      
-      // Fallback: use Railway URL (replace with your actual Railway URL)
-      return 'https://your-railway-app-name.railway.app';
-    }
+    return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
   };
 
   useEffect(() => {
@@ -119,6 +112,34 @@ const AppointmentForm = () => {
     window.addEventListener("resize", checkMobile);
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  useEffect(() => {
+    if (form.date && form.clinicArea) {
+      const fetchAvailability = async () => {
+        try {
+          const url = `${getApiBaseUrl()}/api/appointments/availability?date=${form.date}&clinicArea=${encodeURIComponent(form.clinicArea)}`;
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error('Failed to fetch availability');
+          }
+          const data = await response.json();
+          
+          // Normalize keys from backend (e.g., "04:00:00") to match frontend format ("04:00")
+          const normalizedAvailability = Object.entries(data).reduce((acc, [time, count]) => {
+            const formattedTime = time.slice(0, 5); // "HH:mm:ss" -> "HH:mm"
+            acc[formattedTime] = count;
+            return acc;
+          }, {});
+
+          setAvailability(normalizedAvailability);
+        } catch (error) {
+          console.error("Error fetching availability:", error);
+          // Optionally, handle the error in the UI
+        }
+      };
+      fetchAvailability();
+    }
+  }, [form.date, form.clinicArea]);
 
   const animateScroll = useCallback(() => {
     const scrollSpeed = 1.2; // Adjust for desired speed
@@ -275,7 +296,15 @@ const AppointmentForm = () => {
 
       const apiUrl = `${getApiBaseUrl()}/api/appointments`;
       
-      const response = await fetch(apiUrl, {
+      // Add timeout logic (20 seconds)
+      const fetchWithTimeout = (url, options, timeout = 60000) => {
+        return Promise.race([
+          fetch(url, options),
+          new Promise((_, reject) => setTimeout(() => reject(new Error('Request timed out')), timeout))
+        ]);
+      };
+
+      const response = await fetchWithTimeout(apiUrl, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json", 
@@ -337,7 +366,7 @@ const AppointmentForm = () => {
         errorMessage = "Server connection issue. Please try again or contact support.";
         errorTitle = 'Server Error';
       } else if (error.message.includes("timeout")) {
-        errorMessage = "Request timed out. Please try again.";
+        errorMessage = "The request timed out. Please try again.";
         errorTitle = 'Timeout Error';
       } else if (error.message.includes("localhost")) {
         errorMessage = "Cannot connect to server. Please ensure you're on the same network as the server.";
@@ -474,13 +503,30 @@ const AppointmentForm = () => {
                                 <Form.Control type="date" name="date" value={form.date} min={today} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.date && !!errors.date} isValid={touched.date && !errors.date} placeholder=" " />
                                 {touched.date && errors.date && <div className="invalid-feedback d-block">⚠️ {errors.date}</div>}
                             </FloatingLabel>
-                            <div className="mb-3 required">
-                                <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
-                                <div className="time-slots">
-                                    {timeSlots.map((slot) => <Button key={slot} type="button" onClick={() => handleChange("timeSlot", slot)} className={`btn time-slot ${form.timeSlot === slot ? "btn-primary selected" : "btn-outline-primary"}`}>{slot}</Button>)}
-                                </div>
-                                {touched.timeSlot && errors.timeSlot && <div className="text-danger mt-2 d-flex align-items-center">⚠️ {errors.timeSlot}</div>}
-                            </div>
+                            <Form.Group className="mb-3">
+                              <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
+                              <div className="time-slots-grid">
+                                {timeSlots.map((slot) => {
+                                  const isBooked = availability[slot] >= 3 || availability[slot.toLowerCase()] >= 3;
+                                  const slotClass = isBooked ? 'unavailable' : (form.timeSlot === slot ? 'selected' : 'available');
+                                  
+                                  return (
+                                    <motion.button
+                                      key={slot}
+                                      type="button"
+                                      className={`time-slot-btn ${slotClass}`}
+                                      onClick={() => !isBooked && handleChange("timeSlot", slot)}
+                                      disabled={isBooked}
+                                      whileHover={{ scale: isBooked ? 1 : 1.05 }}
+                                      whileTap={{ scale: isBooked ? 1 : 0.95 }}
+                                    >
+                                      {slot}
+                                    </motion.button>
+                                  );
+                                })}
+                              </div>
+                              {touched.timeSlot && errors.timeSlot && <Alert variant="danger" className="mt-2">{errors.timeSlot}</Alert>}
+                            </Form.Group>
                         </Form>
                         <div className="form-actions">
                             <Button onClick={prevStep} variant="outline-primary" size="lg" className="w-50 btn-previous">← Previous</Button>
@@ -584,7 +630,7 @@ const AppointmentForm = () => {
                         <motion.div key={`desktop-${image.id}`} initial={{ x: -100, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 80 }} className="gallery-item">
                                 <img src={image.src} alt={image.alt} />
                             </motion.div>
-                        ))}
+                    ))}
                 </div>
             </div>
             

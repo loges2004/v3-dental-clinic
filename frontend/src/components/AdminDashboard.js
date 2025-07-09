@@ -9,11 +9,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
 const getApiBaseUrl = () => {
-    const hostname = window.location.hostname;
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
-        return 'http://localhost:8001';
-    }
-    return `http://${hostname}:8001`;
+    return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
 };
 
 const timeSlots = [
@@ -159,7 +155,7 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
-      const res = await fetch(`${getApiBaseUrl()}/api/appointments`, {
+      const res = await fetch(`https://v3-dental-clinic.onrender.com/api/appointments`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch');
@@ -207,7 +203,7 @@ const AdminDashboard = () => {
     try {
       const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
       const payload = { status: 'ACCEPTED' };
-      const res = await fetch(`${getApiBaseUrl()}/api/appointments/${id}/status`, {
+      const res = await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -275,7 +271,7 @@ const AdminDashboard = () => {
         newDate: rescheduleDate,
         newTime: rescheduleTime,
       };
-      await fetch(`${getApiBaseUrl()}/api/appointments/${id}/status`, {
+      await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -333,7 +329,7 @@ const AdminDashboard = () => {
     setIsUpdating(true);
     try {
       const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
-      const res = await fetch(`${getApiBaseUrl()}/api/appointments/${editId}/status`, {
+      const res = await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${editId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
@@ -401,7 +397,7 @@ const AdminDashboard = () => {
     if (confirm.isConfirmed) {
       try {
         const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
-        await fetch(`${getApiBaseUrl()}/api/appointments/${id}`, {
+        await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${id}`, {
           method: 'DELETE',
           headers: { Authorization: `Bearer ${token}` },
         });
@@ -450,7 +446,7 @@ const AdminDashboard = () => {
       try {
         const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
         const deletePromises = Array.from(selectedAppointments).map(id =>
-          fetch(`${getApiBaseUrl()}/api/appointments/${id}`, {
+          fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${id}`, {
             method: 'DELETE',
             headers: { Authorization: `Bearer ${token}` },
           })
@@ -512,7 +508,7 @@ const AdminDashboard = () => {
     setIsSubmitting(true);
     try {
       const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
-      const res = await fetch(`${getApiBaseUrl()}/api/appointments/admin-add`, {
+      const res = await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/admin-add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(newAppointment),
@@ -571,7 +567,7 @@ const AdminDashboard = () => {
         status: 'REJECTED',
         reason: rejectionReason,
       };
-      await fetch(`${getApiBaseUrl()}/api/appointments/${rejectId}/status`, {
+      await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${rejectId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
