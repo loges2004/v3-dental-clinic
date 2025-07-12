@@ -2432,4 +2432,9 @@ padding-right: 15px;
     grid-template-columns: repeat(4, 1fr);
   } 
 }
+@media (max-width: 767px) {
+  .social-media-grid svg {
+    font-size: 2rem !important;
+  }
+}
 }
