@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 @ControllerAdvice
-@CrossOrigin(origins = {"https://v3dentalclinic.vercel.app", "http://localhost:3000"})
+@CrossOrigin(origins = {"https://v3dentalclinic.com", "https://www.v3dentalclinic.com", "http://localhost:3000"})
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException.class)
