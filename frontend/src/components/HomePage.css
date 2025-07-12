@@ -1990,6 +1990,44 @@ body {
   font-weight: 600;
 }
 
+/* Container for the whole social media section */
+.social-media-section {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+/* Header section */
+.social-media-header h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.social-media-header p {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+/* Grid of social icons */
+.social-media-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Each icon link */
+.social-media-grid a {
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for icons */
+.social-media-grid a:hover {
+  transform: scale(1.1);
+}
+
 .scroll-to-top.hide-scroll-top {
   display: none;
 }
@@ -2164,5 +2202,234 @@ padding-right: 15px;
 
 .schedule-item.sunday .schedule-time.highlight {
   background: #06b6d4;
+}
+
+/* Social Media Section */
+.social-media-section {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.social-media-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.social-media-header h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #3b82f6, #10b981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.social-media-header p {
+  color: black;
+  font-size: 0.9rem;
+}
+
+.social-media-grid {
+  display: flex;
+  gap: 3rem;
+  justify-content: flex-start;
+  align-items: flex-end; /* This will align the bottoms of the icons */
+  margin-top: 1.5rem;
+}
+.social-media-grid svg {
+  display: block;
+  vertical-align: bottom;
+}
+.social-media-link {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+
+.social-icon-large {
+  font-size: 4rem !important;
+  margin-bottom: 0 !important;
+  min-width: 4rem;
+  min-height: 4rem;
+}
+
+.social-media-link {
+  text-decoration: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.social-media-link:focus {
+  outline: 2px solid #3b82f6;
+}
+
+.social-media-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s;
+}
+
+.social-media-link:hover::before {
+  left: 100%;
+}
+
+.social-media-link:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.social-media-link svg {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.social-media-link:hover svg {
+  transform: scale(1.1);
+}
+
+.social-media-link span {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: color 0.3s ease;
+}
+
+/* Instagram */
+.social-media-link.instagram {
+  border-color: rgba(225, 48, 108, 0.2);
+}
+
+.social-media-link.instagram svg {
+  color: #e1306c;
+}
+
+.social-media-link.instagram:hover {
+  background: linear-gradient(135deg, rgba(225, 48, 108, 0.1), rgba(225, 48, 108, 0.05));
+  border-color: #e1306c;
+}
+
+.social-media-link.instagram:hover span {
+  color: #e1306c;
+}
+
+/* Facebook */
+.social-media-link.facebook {
+  border-color: rgba(66, 103, 178, 0.2);
+}
+
+.social-media-link.facebook svg {
+  color: #4267b2;
+}
+
+.social-media-link.facebook:hover {
+  background: linear-gradient(135deg, rgba(66, 103, 178, 0.1), rgba(66, 103, 178, 0.05));
+  border-color: #4267b2;
+}
+
+.social-media-link.facebook:hover span {
+  color: #4267b2;
+}
+
+/* WhatsApp */
+.social-media-link.whatsapp {
+  border-color: rgba(37, 211, 102, 0.2);
+}
+
+.social-media-link.whatsapp svg {
+  color: #25d366;
+}
+
+.social-media-link.whatsapp:hover {
+  background: linear-gradient(135deg, rgba(37, 211, 102, 0.1), rgba(37, 211, 102, 0.05));
+  border-color: #25d366;
+}
+
+.social-media-link.whatsapp:hover span {
+  color: #25d366;
+}
+
+/* YouTube */
+.social-media-link.youtube {
+  border-color: rgba(255, 0, 0, 0.2);
+}
+
+.social-media-link.youtube svg {
+  color: #ff0000;
+}
+
+.social-media-link.youtube:hover {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.1), rgba(255, 0, 0, 0.05));
+  border-color: #ff0000;
+}
+
+.social-media-link.youtube:hover span {
+  color: #ff0000;
+}
+
+/* Responsive Design */
+@media (max-width: 767px) {
+  .social-media-section {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+  }
+  
+  .social-media-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+  
+  .social-media-link {
+    padding: 0.75rem;
+  }
+  
+  .social-media-link svg {
+    font-size: 1.5rem;
+  }
+  
+  .social-media-link span {
+    font-size: 0.7rem;
+  }
+}
+/* Grid of social icons */
+.social-media-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+/* Each icon link */
+.social-media-grid a {
+  text-decoration: none;
+  transition: transform 0.3s ease;
+}
+
+/* Hover effect for icons */
+.social-media-grid a:hover {
+  transform: scale(1.1);
+}
+
+.scroll-to-top.hide-scroll-top {
+  display: none;
+}
+@media (min-width: 768px) {
+  .social-media-grid {
+    grid-template-columns: repeat(4, 1fr);
+  } 
 }
 }

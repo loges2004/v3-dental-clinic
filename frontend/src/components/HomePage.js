@@ -12,6 +12,7 @@ import {
   faChild,
   faHospitalUser
 } from '@fortawesome/free-solid-svg-icons';
+import { faInstagram, faFacebook, faWhatsapp, faYoutube } from '@fortawesome/free-brands-svg-icons';
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -538,7 +539,6 @@ const HomePage = () => {
             target: "_blank",
             rel: "noopener noreferrer",
             className: "whatsapp-btn",
-            
           },
           React.createElement(
             "svg",
@@ -983,20 +983,76 @@ const HomePage = () => {
                     React.createElement("polyline", { points: "12,6 12,12 16,14" }),
                   ),
                 ),
+                              React.createElement(
+                "div",
+                { className: "contact-details" },
+                React.createElement("h3", null, "Working Hours"),
                 React.createElement(
                   "div",
-                  { className: "contact-details" },
-                  React.createElement("h3", null, "Working Hours"),
-                  React.createElement(
-                    "div",
-                    null,
-                    React.createElement("p", null, "Monday - Sunday"),
-                    React.createElement("p", { className: "highlight" }, "9:30 AM - 2:00 PM"),
-                    React.createElement("p", { className: "highlight" }, "4:00 PM - 9:30 PM"),
-                  ),
+                  null,
+                  React.createElement("p", null, "Monday - Sunday"),
+                  React.createElement("p", { className: "highlight" }, "9:30 AM - 2:00 PM"),
+                  React.createElement("p", { className: "highlight" }, "4:00 PM - 9:30 PM"),
                 ),
               ),
             ),
+
+            // Social Media Links
+            React.createElement(
+              "div",
+              { className: "social-media-section" },
+              React.createElement(
+                "div",
+                { className: "social-media-header" },
+                React.createElement("h3", null, "Follow Us"),
+                React.createElement("p", null, "Stay connected with us on social media"),
+              ),
+              React.createElement(
+                "div",
+                { className: "social-media-grid" },
+                React.createElement(
+                  "a",
+                  {
+                    href: "https://www.facebook.com/share/16ie37fw3X/",
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    "aria-label": "V3 Dental Clinic Facebook"
+                  },
+                  React.createElement(FontAwesomeIcon, { icon: faFacebook, style: { fontSize: '3rem', color: '#4267b2' } })
+                ),
+                React.createElement(
+                  "a",
+                  {
+                    href: "https://www.instagram.com/v3dentalclinic?igsh=MW43c3N4NGxrdGEybw==",
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    "aria-label": "V3 Dental Clinic Instagram"
+                  },
+                  React.createElement(FontAwesomeIcon, { icon: faInstagram, style: { fontSize: '3rem', color: '#e1306c' } })
+                ),
+                React.createElement(
+                  "a",
+                  {
+                    href: "https://wa.me/918778600419?text=Enquiry%20for%20Dental%20Treatment%20Services",
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    "aria-label": "V3 Dental Clinic WhatsApp"
+                  },
+                  React.createElement(FontAwesomeIcon, { icon: faWhatsapp, style: { fontSize: '3rem', color: '#25d366' } })
+                ),
+                React.createElement(
+                  "a",
+                  {
+                    href: "https://youtube.com/@v3dentalclinic?si=EXhGgmR5BIekCybG",
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    "aria-label": "V3 Dental Clinic YouTube"
+                  },
+                  React.createElement(FontAwesomeIcon, { icon: faYoutube, style: { fontSize: '3rem', color: '#ff0000' } })
+                ),
+              ),
+            ),
+          ),
 
             React.createElement(
               "div",
