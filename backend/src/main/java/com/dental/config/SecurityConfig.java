@@ -79,9 +79,6 @@ public class SecurityConfig {
             "http://192.168.*.*:*",
             "http://10.*.*.*:*",
             "http://172.*.*.*:*",
-            "https://*.vercel.app",
-            "https://*.railway.app",
-            "https://dental-clinic-*.vercel.app",
             "https://v3dentalclinic.com",
             "https://www.v3dentalclinic.com",
             "https://*"
