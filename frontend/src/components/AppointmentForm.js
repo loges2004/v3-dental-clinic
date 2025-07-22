@@ -19,6 +19,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { faWhatsapp } from '@fortawesome/free-brands-svg-icons';
+import { Helmet } from "react-helmet";
 
 const availableIcons = [
     faTooth,
@@ -424,288 +425,295 @@ const AppointmentForm = () => {
   };
 
   return (
-    <div className="appointment-form-wrapper">
-      <div className="appointment-container">
-        <div className="appointment-header">
-          <div className="floating-icons-container">
-            {iconsToRender.map((icon, i) => <FontAwesomeIcon key={i} icon={icon} className={`floating-icon icon-${i+1}`} />)}
+    <>
+      <Helmet>
+        <title>Book Appointment | V3 Dental Clinic</title>
+        <meta name="description" content="Book your dental appointment online at V3 Dental Clinic. Choose your service, date, and time for expert dental care." />
+        <meta name="keywords" content="Book Appointment, Dental Clinic, Dentist, Online Booking, Dental Care" />
+      </Helmet>
+      <div className="appointment-form-wrapper">
+        <div className="appointment-container">
+          <div className="appointment-header">
+            <div className="floating-icons-container">
+              {iconsToRender.map((icon, i) => <FontAwesomeIcon key={i} icon={icon} className={`floating-icon icon-${i+1}`} />)}
+            </div>
+            <img src="/images/logo.png" alt="V3 Dental Clinic Logo" className="animated-logo clinic-logo" />
+            <h1 className="clinic-title">V3 Dental Clinic</h1>
+            <div className="clinic-subtitle">Book Your Appointment</div>
           </div>
-          <img src="/images/logo.png" alt="V3 Dental Clinic Logo" className="animated-logo clinic-logo" />
-          <h1 className="clinic-title">V3 Dental Clinic</h1>
-          <div className="clinic-subtitle">Book Your Appointment</div>
-        </div>
 
-        <Container fluid className="main-content">
-          <Row className="content-grid">
-            <Col xs={12} lg={8} className="form-section">
-              <motion.div
-                initial={{ opacity: 0, y: isMobile ? 30 : 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: isMobile ? 0.6 : 0.8 }}
-                className="form-card"
-              >
-                <div className="form-header">
-                  <h2>Schedule Your Visit</h2>
-                  <p>Complete the form in 3 easy steps</p>
-                  <div className="progress-container">
-                    <div className="progress-bar">
-                      {[1, 2, 3].map((step) => (
-                        <div key={step} className="progress-step-container">
-                          <motion.div className={`progress-step-circle ${currentStep >= step ? "active" : ""}`} animate={{ scale: currentStep === step ? (isMobile ? 1.15 : 1.1) : 1 }}>
-                            {currentStep > step ? "✓" : step}
-                          </motion.div>
-                          {step < 3 && <div className={`progress-line ${currentStep > step ? "active" : ""}`} />}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="form-content">
-                  <AnimatePresence mode="wait">
-                    {currentStep === 1 && (
-                      <motion.div key="step1" variants={stepVariants} initial="hidden" animate="visible" exit="exit" className="form-step">
-                        <div className="step-header"><h3>Personal Information</h3><p>Tell us about yourself</p></div>
-                        <Form className="form-fields">
-                          <FloatingLabel controlId="fullName" label="👤 Full Name" className="mb-3 required">
-                            <Form.Control type="text" name="fullName" value={form.fullName} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.fullName && !!errors.fullName} isValid={touched.fullName && !errors.fullName} placeholder=" " />
-                            {touched.fullName && errors.fullName && <div className="invalid-feedback d-block">⚠️ {errors.fullName}</div>}
-                          </FloatingLabel>
-                          <FloatingLabel controlId="email" label="📧 Email Address (Optional)" className="mb-3">
-                            <Form.Control type="email" name="email" value={form.email} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.email && !!errors.email} isValid={touched.email && !errors.email && form.email} placeholder=" " />
-                            {touched.email && errors.email && <div className="invalid-feedback d-block">⚠️ {errors.email}</div>}
-                          </FloatingLabel>
-                          <FloatingLabel controlId="phone" label="📞 Phone Number" className="mb-3 required">
-                            <Form.Control type="tel" name="phone" value={form.phone} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.phone && !!errors.phone} isValid={touched.phone && !errors.phone} placeholder=" " />
-                            {touched.phone && errors.phone && <div className="invalid-feedback d-block">⚠️ {errors.phone}</div>}
-                          </FloatingLabel>
-                        </Form>
-                        <div className="form-actions">
-                          <Button onClick={handleNextStep} className="btn-custom btn-primary w-100" size="lg">Next Step →</Button>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {currentStep === 2 && (
-                       <motion.div key="step2" variants={stepVariants} initial="hidden" animate="visible" exit="exit" className="form-step">
-                        <div className="step-header"><h3>Appointment Details</h3><p>Choose your preferred time and location</p></div>
-                        <Alert variant="info" className="mb-3"><FontAwesomeIcon icon={faWhatsapp} className="me-2" />Enter valid WhatsApp number and email for confirmation message</Alert>
-                        
-                        <Form className="form-fields">
-                            <FloatingLabel controlId="clinicArea" label="📍 Clinic Area" className="mb-3 required">
-                                <Form.Select name="clinicArea" value={form.clinicArea} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.clinicArea && !!errors.clinicArea} isValid={touched.clinicArea && !errors.clinicArea}>
-                                    <option value="">Select clinic area</option>
-                                    {clinicAreas.map((area) => <option key={area} value={area}>{area}</option>)}
-                                </Form.Select>
-                                {touched.clinicArea && errors.clinicArea && <div className="invalid-feedback d-block">⚠️ {errors.clinicArea}</div>}
-                            </FloatingLabel>
-                            <FloatingLabel controlId="date" label="📅 Preferred Date" className="mb-3 required">
-                                <Form.Control type="date" name="date" value={form.date} min={today} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.date && !!errors.date} isValid={touched.date && !errors.date} placeholder=" " />
-                                {touched.date && errors.date && <div className="invalid-feedback d-block">⚠️ {errors.date}</div>}
-                            </FloatingLabel>
-                            <Form.Group className="mb-3">
-                              <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
-                              <div className="time-slots-grid">
-                                {timeSlots.map((slot) => {
-                                  const isBooked = availability[slot] >= 3 || availability[slot.toLowerCase()] >= 3;
-                                  const slotClass = isBooked ? 'unavailable' : (form.timeSlot === slot ? 'selected' : 'available');
-                                  
-                                  return (
-                                    <motion.button
-                                      key={slot}
-                                      type="button"
-                                      className={`time-slot-btn ${slotClass}`}
-                                      onClick={() => !isBooked && handleChange("timeSlot", slot)}
-                                      disabled={isBooked}
-                                      whileHover={{ scale: isBooked ? 1 : 1.05 }}
-                                      whileTap={{ scale: isBooked ? 1 : 0.95 }}
-                                    >
-                                      {slot}
-                                    </motion.button>
-                                  );
-                                })}
-                              </div>
-                              {touched.timeSlot && errors.timeSlot && <Alert variant="danger" className="mt-2">{errors.timeSlot}</Alert>}
-                            </Form.Group>
-                        </Form>
-                        <div className="form-actions">
-                            <Button onClick={prevStep} variant="outline-primary" size="lg" className="w-50 btn-previous">← Previous</Button>
-                            <Button onClick={handleNextStep} className="btn-custom btn-primary w-50" size="lg">Next Step →</Button>
-                        </div>
-                      </motion.div>
-                    )}
-
-                    {currentStep === 3 && (
-                       <motion.div key="step3" variants={stepVariants} initial="hidden" animate="visible" exit="exit" className="form-step">
-                        <div className="step-header"><h3>Select Service</h3><p>Choose the dental service you need</p></div>
-                        <Form className="form-fields">
-                            <div className="service-list required" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                                {servicesList.map((service, index) => (
-                                    <div
-                                      key={index}
-                                      role="button"
-                                      tabIndex={0}
-                                      className={`service-item ${form.serviceType === service ? "selected" : ""}`}
-                                      onClick={() => handleChange("serviceType", service)}
-                                      onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleChange("serviceType", service)}
-                                    >
-                                      <div className="d-flex justify-content-between align-items-center">
-                                        <span>{service}</span>
-                                        {form.serviceType === service && (
-                                          <span className="checkmark">✓</span>
-                                        )}
-                                      </div>
-                                    </div>
-                                ))}
-                            </div>
-                             {touched.serviceType && errors.serviceType && <div className="text-danger mt-2 d-flex align-items-center">⚠️ {errors.serviceType}</div>}
-                        </Form>
-                        <div className="form-actions">
-                            <Button onClick={prevStep} variant="outline-primary" size="lg" className="w-50 btn-previous">← Previous</Button>
-                            <Button onClick={handleSubmit} disabled={isSubmitting} variant="success" size="lg" className="w-50 btn-custom">{isSubmitting ? 'Booking...' : 'Confirm Appointment ✓'}</Button>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              </motion.div>
-            </Col>
-
-            <Col xs={12} lg={4} className="info-section">
-              <motion.div variants={containerVariants} initial="hidden" animate="visible">
-                <motion.h3 variants={itemVariants} className="info-title">Why Choose Us?</motion.h3>
-                {benefits.map((benefit, i) => (
-                  <motion.div key={i} variants={itemVariants} className="benefit-card">
-                    <div className="benefit-icon">{benefit.icon}</div>
-                    <div className="benefit-text">
-                      <h5>{benefit.title}</h5>
-                      <p>{benefit.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-                <motion.div variants={itemVariants} className="emergency-card">
-                  <div className="emergency-header">
-                    <div className="emergency-icon">📞</div>
-                    <h4>Dental Emergency?</h4>
-                  </div>
-                  <p>Call us immediately at</p>
-                  <motion.a 
-                    href="tel:8778600419"
-                    className="emergency-number"
-                    whileTap={{ scale: 0.95 }}
-                    animate={{
-                      boxShadow: ["0 0 0 0 rgba(220, 53, 69, 0.5)", "0 0 0 12px rgba(220, 53, 69, 0)"],
-                    }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                  >
-                    87786 00419
-                  </motion.a>
-                  <p className="emergency-note">We'll accommodate you as soon as possible</p>
-                </motion.div>
-              </motion.div>
-            </Col>
-          </Row>
-          
-          <motion.div ref={scrollRef} className="gallery-section">
-            <div className="gallery-header">
-                <motion.h2 initial={{ opacity: 0, y: isMobile ? 30 : 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-                    Our Modern Dental Facility
-                </motion.h2>
-                <motion.p initial={{ opacity: 0, y: isMobile ? 20 : 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
-                    State-of-the-art equipment and comfortable environment
-                </motion.p>
-            </div>
-
-            <div className="gallery-container">
-                <div className="mobile-gallery" ref={mobileGalleryRef}>
-                    {galleryImages.map((image, index) => (
-                        <motion.div key={`mobile-${image.id}`} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: index * 0.1 }} className="mobile-gallery-item">
-                            <img src={image.src} alt={image.alt} />
-                        </motion.div>
-                    ))}
-                </div>
-
-                <div className="desktop-gallery" ref={desktopGalleryRef}>
-                    {galleryImages.map((image, index) => (
-                        <motion.div key={`desktop-${image.id}`} initial={{ x: -100, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 80 }} className="gallery-item">
-                                <img src={image.src} alt={image.alt} />
+          <Container fluid className="main-content">
+            <Row className="content-grid">
+              <Col xs={12} lg={8} className="form-section">
+                <motion.div
+                  initial={{ opacity: 0, y: isMobile ? 30 : 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: isMobile ? 0.6 : 0.8 }}
+                  className="form-card"
+                >
+                  <div className="form-header">
+                    <h2>Schedule Your Visit</h2>
+                    <p>Complete the form in 3 easy steps</p>
+                    <div className="progress-container">
+                      <div className="progress-bar">
+                        {[1, 2, 3].map((step) => (
+                          <div key={step} className="progress-step-container">
+                            <motion.div className={`progress-step-circle ${currentStep >= step ? "active" : ""}`} animate={{ scale: currentStep === step ? (isMobile ? 1.15 : 1.1) : 1 }}>
+                              {currentStep > step ? "✓" : step}
                             </motion.div>
-                    ))}
-                </div>
-            </div>
+                            {step < 3 && <div className={`progress-line ${currentStep > step ? "active" : ""}`} />}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="form-content">
+                    <AnimatePresence mode="wait">
+                      {currentStep === 1 && (
+                        <motion.div key="step1" variants={stepVariants} initial="hidden" animate="visible" exit="exit" className="form-step">
+                          <div className="step-header"><h3>Personal Information</h3><p>Tell us about yourself</p></div>
+                          <Form className="form-fields">
+                            <FloatingLabel controlId="fullName" label="👤 Full Name" className="mb-3 required">
+                              <Form.Control type="text" name="fullName" value={form.fullName} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.fullName && !!errors.fullName} isValid={touched.fullName && !errors.fullName} placeholder=" " />
+                              {touched.fullName && errors.fullName && <div className="invalid-feedback d-block">⚠️ {errors.fullName}</div>}
+                            </FloatingLabel>
+                            <FloatingLabel controlId="email" label="📧 Email Address (Optional)" className="mb-3">
+                              <Form.Control type="email" name="email" value={form.email} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.email && !!errors.email} isValid={touched.email && !errors.email && form.email} placeholder=" " />
+                              {touched.email && errors.email && <div className="invalid-feedback d-block">⚠️ {errors.email}</div>}
+                            </FloatingLabel>
+                            <FloatingLabel controlId="phone" label="📞 Phone Number" className="mb-3 required">
+                              <Form.Control type="tel" name="phone" value={form.phone} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.phone && !!errors.phone} isValid={touched.phone && !errors.phone} placeholder=" " />
+                              {touched.phone && errors.phone && <div className="invalid-feedback d-block">⚠️ {errors.phone}</div>}
+                            </FloatingLabel>
+                          </Form>
+                          <div className="form-actions">
+                            <Button onClick={handleNextStep} className="btn-custom btn-primary w-100" size="lg">Next Step →</Button>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {currentStep === 2 && (
+                         <motion.div key="step2" variants={stepVariants} initial="hidden" animate="visible" exit="exit" className="form-step">
+                          <div className="step-header"><h3>Appointment Details</h3><p>Choose your preferred time and location</p></div>
+                          <Alert variant="info" className="mb-3"><FontAwesomeIcon icon={faWhatsapp} className="me-2" />Enter valid WhatsApp number and email for confirmation message</Alert>
+                          
+                          <Form className="form-fields">
+                              <FloatingLabel controlId="clinicArea" label="📍 Clinic Area" className="mb-3 required">
+                                  <Form.Select name="clinicArea" value={form.clinicArea} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.clinicArea && !!errors.clinicArea} isValid={touched.clinicArea && !errors.clinicArea}>
+                                      <option value="">Select clinic area</option>
+                                      {clinicAreas.map((area) => <option key={area} value={area}>{area}</option>)}
+                                  </Form.Select>
+                                  {touched.clinicArea && errors.clinicArea && <div className="invalid-feedback d-block">⚠️ {errors.clinicArea}</div>}
+                              </FloatingLabel>
+                              <FloatingLabel controlId="date" label="📅 Preferred Date" className="mb-3 required">
+                                  <Form.Control type="date" name="date" value={form.date} min={today} onChange={(e) => handleChange(e.target.name, e.target.value)} onBlur={handleBlur} isInvalid={touched.date && !!errors.date} isValid={touched.date && !errors.date} placeholder=" " />
+                                  {touched.date && errors.date && <div className="invalid-feedback d-block">⚠️ {errors.date}</div>}
+                              </FloatingLabel>
+                              <Form.Group className="mb-3">
+                                <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
+                                <div className="time-slots-grid">
+                                  {timeSlots.map((slot) => {
+                                    const isBooked = availability[slot] >= 3 || availability[slot.toLowerCase()] >= 3;
+                                    const slotClass = isBooked ? 'unavailable' : (form.timeSlot === slot ? 'selected' : 'available');
+                                    
+                                    return (
+                                      <motion.button
+                                        key={slot}
+                                        type="button"
+                                        className={`time-slot-btn ${slotClass}`}
+                                        onClick={() => !isBooked && handleChange("timeSlot", slot)}
+                                        disabled={isBooked}
+                                        whileHover={{ scale: isBooked ? 1 : 1.05 }}
+                                        whileTap={{ scale: isBooked ? 1 : 0.95 }}
+                                      >
+                                        {slot}
+                                      </motion.button>
+                                    );
+                                  })}
+                                </div>
+                                {touched.timeSlot && errors.timeSlot && <Alert variant="danger" className="mt-2">{errors.timeSlot}</Alert>}
+                              </Form.Group>
+                          </Form>
+                          <div className="form-actions">
+                              <Button onClick={prevStep} variant="outline-primary" size="lg" className="w-50 btn-previous">← Previous</Button>
+                              <Button onClick={handleNextStep} className="btn-custom btn-primary w-50" size="lg">Next Step →</Button>
+                          </div>
+                        </motion.div>
+                      )}
+
+                      {currentStep === 3 && (
+                         <motion.div key="step3" variants={stepVariants} initial="hidden" animate="visible" exit="exit" className="form-step">
+                          <div className="step-header"><h3>Select Service</h3><p>Choose the dental service you need</p></div>
+                          <Form className="form-fields">
+                              <div className="service-list required" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                                  {servicesList.map((service, index) => (
+                                      <div
+                                        key={index}
+                                        role="button"
+                                        tabIndex={0}
+                                        className={`service-item ${form.serviceType === service ? "selected" : ""}`}
+                                        onClick={() => handleChange("serviceType", service)}
+                                        onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && handleChange("serviceType", service)}
+                                      >
+                                        <div className="d-flex justify-content-between align-items-center">
+                                          <span>{service}</span>
+                                          {form.serviceType === service && (
+                                            <span className="checkmark">✓</span>
+                                          )}
+                                        </div>
+                                      </div>
+                                  ))}
+                              </div>
+                               {touched.serviceType && errors.serviceType && <div className="text-danger mt-2 d-flex align-items-center">⚠️ {errors.serviceType}</div>}
+                          </Form>
+                          <div className="form-actions">
+                              <Button onClick={prevStep} variant="outline-primary" size="lg" className="w-50 btn-previous">← Previous</Button>
+                              <Button onClick={handleSubmit} disabled={isSubmitting} variant="success" size="lg" className="w-50 btn-custom">{isSubmitting ? 'Booking...' : 'Confirm Appointment ✓'}</Button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                </motion.div>
+              </Col>
+
+              <Col xs={12} lg={4} className="info-section">
+                <motion.div variants={containerVariants} initial="hidden" animate="visible">
+                  <motion.h3 variants={itemVariants} className="info-title">Why Choose Us?</motion.h3>
+                  {benefits.map((benefit, i) => (
+                    <motion.div key={i} variants={itemVariants} className="benefit-card">
+                      <div className="benefit-icon">{benefit.icon}</div>
+                      <div className="benefit-text">
+                        <h5>{benefit.title}</h5>
+                        <p>{benefit.description}</p>
+                      </div>
+                    </motion.div>
+                  ))}
+                  <motion.div variants={itemVariants} className="emergency-card">
+                    <div className="emergency-header">
+                      <div className="emergency-icon">📞</div>
+                      <h4>Dental Emergency?</h4>
+                    </div>
+                    <p>Call us immediately at</p>
+                    <motion.a 
+                      href="tel:8778600419"
+                      className="emergency-number"
+                      whileTap={{ scale: 0.95 }}
+                      animate={{
+                        boxShadow: ["0 0 0 0 rgba(220, 53, 69, 0.5)", "0 0 0 12px rgba(220, 53, 69, 0)"],
+                      }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      87786 00419
+                    </motion.a>
+                    <p className="emergency-note">We'll accommodate you as soon as possible</p>
+                  </motion.div>
+                </motion.div>
+              </Col>
+            </Row>
             
-            {/* Animated Features Section */}
-            <motion.div 
-              className="features-highlight"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-            >
-              <div className="features-container">
-                <motion.span 
-                  className="feature-text"
-                  initial={{ opacity: 0, x: -30, scale: 0.8 }}
-                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                  whileHover={{ scale: 1.1, rotate: 2 }}
-                  animate={{ 
-                    textShadow: ["0 0 0px rgba(59, 130, 246, 0)", "0 0 10px rgba(59, 130, 246, 0.3)", "0 0 0px rgba(59, 130, 246, 0)"]
-                  }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: 0.4, 
-                    type: "spring", 
-                    stiffness: 100,
-                    textShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
-                  }}
-                >
-                  🔬 Advanced Dental Technology
-                </motion.span>
-                
-                <motion.span 
-                  className="feature-separator"
-                  initial={{ opacity: 0, scale: 0, rotate: -180 }}
-                  whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                  animate={{ 
-                    scale: [1, 1.2, 1],
-                    rotate: [0, 5, 0]
-                  }}
-                  transition={{ 
-                    duration: 0.5, 
-                    delay: 0.6, 
-                    type: "spring", 
-                    stiffness: 200,
-                    scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-                    rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                  }}
-                >
-                  
-                </motion.span>
-                
-                <motion.span 
-                  className="feature-text"
-                  initial={{ opacity: 0, x: 30, scale: 0.8 }}
-                  whileInView={{ opacity: 1, x: 0, scale: 1 }}
-                  whileHover={{ scale: 1.1, rotate: -2 }}
-                  animate={{ 
-                    textShadow: ["0 0 0px rgba(139, 92, 246, 0)", "0 0 10px rgba(139, 92, 246, 0.3)", "0 0 0px rgba(139, 92, 246, 0)"]
-                  }}
-                  transition={{ 
-                    duration: 0.6, 
-                    delay: 0.8, 
-                    type: "spring", 
-                    stiffness: 100,
-                    textShadow: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }
-                  }}
-                >
-                  😌 Relaxing Treatment Environment
-                </motion.span>
+            <motion.div ref={scrollRef} className="gallery-section">
+              <div className="gallery-header">
+                  <motion.h2 initial={{ opacity: 0, y: isMobile ? 30 : 50 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+                      Our Modern Dental Facility
+                  </motion.h2>
+                  <motion.p initial={{ opacity: 0, y: isMobile ? 20 : 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
+                      State-of-the-art equipment and comfortable environment
+                  </motion.p>
               </div>
+
+              <div className="gallery-container">
+                  <div className="mobile-gallery" ref={mobileGalleryRef}>
+                      {galleryImages.map((image, index) => (
+                          <motion.div key={`mobile-${image.id}`} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: index * 0.1 }} className="mobile-gallery-item">
+                              <img src={image.src} alt={image.alt} />
+                          </motion.div>
+                      ))}
+                  </div>
+
+                  <div className="desktop-gallery" ref={desktopGalleryRef}>
+                      {galleryImages.map((image, index) => (
+                          <motion.div key={`desktop-${image.id}`} initial={{ x: -100, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} transition={{ duration: 0.8, delay: index * 0.15, type: "spring", stiffness: 80 }} className="gallery-item">
+                                  <img src={image.src} alt={image.alt} />
+                              </motion.div>
+                      ))}
+                  </div>
+              </div>
+              
+              {/* Animated Features Section */}
+              <motion.div 
+                className="features-highlight"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+              >
+                <div className="features-container">
+                  <motion.span 
+                    className="feature-text"
+                    initial={{ opacity: 0, x: -30, scale: 0.8 }}
+                    whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                    whileHover={{ scale: 1.1, rotate: 2 }}
+                    animate={{ 
+                      textShadow: ["0 0 0px rgba(59, 130, 246, 0)", "0 0 10px rgba(59, 130, 246, 0.3)", "0 0 0px rgba(59, 130, 246, 0)"]
+                    }}
+                    transition={{ 
+                      duration: 0.6, 
+                      delay: 0.4, 
+                      type: "spring", 
+                      stiffness: 100,
+                      textShadow: { duration: 2, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  >
+                    🔬 Advanced Dental Technology
+                  </motion.span>
+                  
+                  <motion.span 
+                    className="feature-separator"
+                    initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                    whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                    animate={{ 
+                      scale: [1, 1.2, 1],
+                      rotate: [0, 5, 0]
+                    }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: 0.6, 
+                      type: "spring", 
+                      stiffness: 200,
+                      scale: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+                      rotate: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  >
+                    
+                  </motion.span>
+                  
+                  <motion.span 
+                    className="feature-text"
+                    initial={{ opacity: 0, x: 30, scale: 0.8 }}
+                    whileInView={{ opacity: 1, x: 0, scale: 1 }}
+                    whileHover={{ scale: 1.1, rotate: -2 }}
+                    animate={{ 
+                      textShadow: ["0 0 0px rgba(139, 92, 246, 0)", "0 0 10px rgba(139, 92, 246, 0.3)", "0 0 0px rgba(139, 92, 246, 0)"]
+                    }}
+                    transition={{ 
+                      duration: 0.6, 
+                      delay: 0.8, 
+                      type: "spring", 
+                      stiffness: 100,
+                      textShadow: { duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1 }
+                    }}
+                  >
+                    😌 Relaxing Treatment Environment
+                  </motion.span>
+                </div>
+              </motion.div>
             </motion.div>
-          </motion.div>
-          
-        </Container>
+            
+          </Container>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Modal, Button, Form } from 'react-bootstrap'; // Import react-bootstrap components
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { Helmet } from "react-helmet";
 
 const getApiBaseUrl = () => {
     return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
@@ -729,6 +730,11 @@ const AdminDashboard = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Admin Dashboard | V3 Dental Clinic</title>
+        <meta name="description" content="Admin dashboard for V3 Dental Clinic. Manage appointments, patients, and clinic operations securely." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
       <div 
         className="admin-dashboard-container"
         style={{ backgroundImage: `url('${process.env.PUBLIC_URL}/images/background_admin.jpg')` }}
