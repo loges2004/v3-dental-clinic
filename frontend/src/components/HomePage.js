@@ -13,7 +13,6 @@ import {
   faHospitalUser
 } from '@fortawesome/free-solid-svg-icons';
 import { faInstagram, faFacebook, faWhatsapp, faYoutube } from '@fortawesome/free-brands-svg-icons';
-import { Helmet } from "react-helmet";
 
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -61,7 +60,7 @@ const HomePage = () => {
     child: faChild,
     hospital: faHospitalUser,
   };
-  
+
 
   const services = [
     {
@@ -113,7 +112,7 @@ const HomePage = () => {
       image: "/images/Full_mouth_Rehabilitation.jpg",
     },
   ];
-  
+
 
   const heroImages = [
     "/images/teeth_white.jpg",
@@ -150,7 +149,7 @@ const HomePage = () => {
     const handleClickOutside = (event) => {
       const mobileMenu = document.querySelector('.mobile-menu')
       const mobileMenuBtn = document.querySelector('.mobile-menu-btn')
-      
+
       if (mobileMenu && !mobileMenu.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
         setIsMenuOpen(false)
       }
@@ -184,44 +183,54 @@ const HomePage = () => {
 
     return () => clearInterval(interval);
   }, [heroImages.length]); // Added heroImages.length as dependency
-  
-  return (
-    <>
-      <Helmet>
-        <title>V3 Dental Clinic | Best Dental Care in Your City</title>
-        <meta name="description" content="V3 Dental Clinic offers expert dentists, modern equipment, flexible scheduling, and affordable dental care. Book your appointment online for a healthy smile!" />
-        <meta name="keywords" content="Dental Clinic, Dentist, Appointment, Oral Health, Teeth Cleaning, Root Canal, Braces, Wisdom Tooth, Pediatric Dentistry, Dental Care" />
-        <meta property="og:title" content="V3 Dental Clinic | Best Dental Care in Your City" />
-        <meta property="og:description" content="Book your appointment with expert dentists at V3 Dental Clinic. Modern, affordable, and patient-friendly dental care." />
-        <meta property="og:type" content="website" />
-      </Helmet>
-      {/* Main Container */}
-      <div className="homepage-container">
-        {/* Floating Bubbles Container */}
-        <div className="bubble-container"></div>
 
-        {/* Fixed Navigation Header */}
-        <header className="fixed-header">
-          <nav className="navbar">
-            <div className="nav-container">
-              <div className="nav-content">
-                <div className="nav-brand">
-                  <div className="logo-container">
-                    <img
-                      src="/images/logo.png"
-                      alt="V3 Dental Clinic Logo"
-                      className="logo"
-                    />
-                  </div>
-                </div>
-                <div className="brand-text">
-                  <h1 className="clinic-name">V3 DENTAL CLINIC</h1>
-                  <p className="tagline">UNLEASH YOUR RADIANT SMILE</p>
-                </div>
-              </div>
+  return React.createElement(
+    React.Fragment,
+    null,
+    // Main Container
+    React.createElement(
+      "div",
+      { className: "homepage-container" },
+      // Floating Bubbles Container
+      React.createElement("div", { className: "bubble-container" }),
 
-              {/* Desktop Menu */}
-              <div className="desktop-menu">
+      // Fixed Navigation Header
+      React.createElement(
+        "header",
+        { className: "fixed-header" },
+        React.createElement(
+          "nav",
+          { className: "navbar" },
+          React.createElement(
+            "div",
+            { className: "nav-container" },
+            React.createElement(
+              "div",
+              { className: "nav-content" },
+              React.createElement(
+                "div",
+                { className: "nav-brand" },
+                React.createElement(
+                  "div",
+                  { className: "logo-container" },
+                  React.createElement("img", {
+                    src: "/images/logo.png",
+                    alt: "V3 Dental Clinic Logo",
+                    className: "logo",
+                  }),
+                ),
+                React.createElement(
+                  "div",
+                  { className: "brand-text" },
+                  React.createElement("h1", { className: "clinic-name" }, "V3 DENTAL CLINIC"),
+                  React.createElement("p", { className: "tagline" }, "UNLEASH YOUR RADIANT SMILE"),
+                ),
+              ),
+
+              // Desktop Menu
+              React.createElement(
+                "div",
+                { className: "desktop-menu" },
                 ["Home", "Services", "Why Choose Us", "Contact"].map((item) =>
                   React.createElement(
                     "a",
@@ -232,7 +241,7 @@ const HomePage = () => {
                     },
                     item,
                   ),
-                )
+                ),
                 React.createElement(
                   "button",
                   {
@@ -258,7 +267,7 @@ const HomePage = () => {
                 ),
               ),
 
-              {/* Mobile Menu Button */}
+              // Mobile Menu Button
               React.createElement(
                 "button",
                 {
@@ -273,7 +282,7 @@ const HomePage = () => {
             ),
           ),
 
-          {/* Mobile Menu */}
+          // Mobile Menu
           React.createElement(
             "div",
             {
@@ -328,7 +337,7 @@ const HomePage = () => {
         ),
       ),
 
-      {/* Simplified Hero Section */}
+      // Simplified Hero Section
       React.createElement(
         "section",
         { ref: heroRef, className: "hero-section carousel-section", id: "home" },
@@ -342,7 +351,7 @@ const HomePage = () => {
           React.createElement("div", { className: "hero-overlay" }),
         ),
 
-        {/* Centered Carousel Indicators */}
+        // Centered Carousel Indicators
         React.createElement(
           "div",
           { className: "hero-indicators" },
@@ -355,7 +364,7 @@ const HomePage = () => {
           ),
         ),
 
-        {/* Carousel Navigation Buttons */}
+        // Carousel Navigation Buttons
         React.createElement(
           "button",
           {
@@ -401,7 +410,7 @@ const HomePage = () => {
           )
         ),
 
-        {/* Hero Content */}
+        // Hero Content
         React.createElement(
           "div",
           { className: "hero-content" },
@@ -497,7 +506,7 @@ const HomePage = () => {
         ),
       ),
 
-      {/* Fixed Call and WhatsApp Buttons */}
+      // Fixed Call and WhatsApp Buttons
       React.createElement(
         "div",
         { className: "fixed-contact-buttons" },
@@ -530,6 +539,7 @@ const HomePage = () => {
             target: "_blank",
             rel: "noopener noreferrer",
             className: "whatsapp-btn",
+            
           },
           React.createElement(
             "svg",
@@ -549,7 +559,7 @@ const HomePage = () => {
         ),
       ),
 
-      {/* Services Section */}
+      // Services Section
       React.createElement(
         "section",
         {
@@ -625,7 +635,7 @@ const HomePage = () => {
             ),
           ),
 
-          {/* Consultation Hours */}
+          // Consultation Hours
           React.createElement(
             "div",
             { className: "consultation-card" },
@@ -793,7 +803,7 @@ const HomePage = () => {
         ),
       ),
 
-      {/* Contact Section */}
+      // Contact Section
       React.createElement(
         "section",
         {
@@ -980,6 +990,15 @@ const HomePage = () => {
                 React.createElement("h3", null, "Working Hours"),
                 React.createElement(
                   "div",
+                  { className: "contact-details" },
+                  React.createElement("h3", null, "Working Hours"),
+                  React.createElement(
+                    "div",
+                    null,
+                    React.createElement("p", null, "Monday - Sunday"),
+                    React.createElement("p", { className: "highlight" }, "9:30 AM - 2:00 PM"),
+                    React.createElement("p", { className: "highlight" }, "4:00 PM - 9:30 PM"),
+                  ),
                   null,
                   React.createElement("p", null, "Monday - Sunday"),
                   React.createElement("p", { className: "highlight" }, "9:30 AM - 2:00 PM"),
@@ -988,7 +1007,7 @@ const HomePage = () => {
               ),
             ),
 
-            {/* Social Media Links */}
+            // Social Media Links
             React.createElement(
               "div",
               { className: "social-media-section" },
@@ -1081,7 +1100,7 @@ const HomePage = () => {
         ),
       ),
 
-      {/* Footer */}
+      // Footer
       React.createElement(
         "footer",
         { className: "footer" },
@@ -1135,7 +1154,7 @@ const HomePage = () => {
           ),
         ),
       ),
-    </>
+    ),
   )
 }
 
