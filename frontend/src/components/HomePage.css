@@ -2166,32 +2166,7 @@ padding-right: 15px;
 .consultation-schedule .schedule-item:nth-child(1) { animation-delay: 0.1s; }
 .consultation-schedule .schedule-item:nth-child(2) { animation-delay: 0.2s; }
 
-.schedule-day.highlight {
-  background: #2563eb;
-  color: #fff !important;
-  font-weight: 700;
-  border-radius: 8px;
-  padding: 0.18em 0.8em;
-  margin-right: 0.2em;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.08);
-}
 
-.schedule-time.highlight {
-  background: #10b981;
-  color: #fff !important;
-  font-weight: 700;
-  border-radius: 8px;
-  padding: 0.18em 0.8em;
-  box-shadow: 0 2px 8px rgba(16,185,129,0.08);
-}
-
-.schedule-item.sunday .schedule-day.highlight {
-  background: #7c3aed;
-}
-
-.schedule-item.sunday .schedule-time.highlight {
-  background: #06b6d4;
-}
 
 /* Social Media Section */
 .social-media-section {
