@@ -987,7 +987,6 @@ const HomePage = () => {
                               React.createElement(
                 "div",
                 { className: "contact-details" },
-                React.createElement("h3", null, "Working Hours"),
                 React.createElement(
                   "div",
                   { className: "contact-details" },
