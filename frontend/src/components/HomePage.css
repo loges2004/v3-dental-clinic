@@ -978,18 +978,7 @@ body {
   border-radius: 8px;
 }
 
-.schedule-day {
-  font-size: 1.125rem;
-  color: #2563eb;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
 
-.schedule-time {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #059669;
-}
 
 .consultation-contact {
   display: flex;
