@@ -63,7 +63,7 @@ Track total appointments dynamically
 
 📸 Screenshots
 Admin Dashboard
-Screenshots/admin_dashboard.PNG
+![Admin Dashboard](screenshots/admin_dashboard.png)
 
 
 
