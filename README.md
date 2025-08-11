@@ -65,10 +65,10 @@ Track total appointments dynamically
 
 
 HOMEPAGE
-![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/ba5aee08a0af6ba652c56fb12baeba640eadc87c/Screenshots/homepage.jpg)
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/6f12343c93099eaf5889a1bb415e3d3eb71656c8/Screenshots/homepage.jpg)
 
 
-![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/ba5aee08a0af6ba652c56fb12baeba640eadc87c/Screenshots/appoitment.jpg)
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/6f12343c93099eaf5889a1bb415e3d3eb71656c8/Screenshots/appointment.jpg)
 
 
 
