@@ -6,6 +6,10 @@ Website: https://v3dentalclinic.com
 appointment: https://v3dentalclinic.com/appointment
 Admin Login:JWT-based authentication – Admin only 
 
+
+
+
+
 🛠 Tech Stack
 Backend: Java, Spring Boot, Spring Data JPA
 
@@ -15,6 +19,14 @@ Database: MySQL
 
 Security: JWT Authentication, Role-Based Access Control, OWASP-Aligned Practices
 
+
+
+
+
+
+
+
+
 🔐 Security Features
 JWT authentication for admin-only access
 
@@ -23,6 +35,10 @@ Role-based permissions for sensitive data
 Encrypted patient information
 
 OWASP-guideline-secured endpoints
+
+
+
+
 
 📋 Features
 View & manage appointments with filters (date, time, status)
@@ -35,8 +51,24 @@ Export appointment data to PDF
 
 Track total appointments dynamically
 
+
+
+
+
+
+
+
+
 📸 Screenshots
 Admin Dashboard
+
+
+
+
+
+
+
+
 
 
 📂 Project Architecture
@@ -46,10 +78,24 @@ Service Layer: Business logic implementation
 
 Repository Layer: Database operations with Spring Data JPA
 
+
+
+
+
+
+
+
+
+
 📈 Impact
 Reduced appointment no-shows by 25% with automated reminders
 
 Actively used in production by a live dental clinic
+
+
+
+
+
 
 📜 License
 This project is licensed for demonstration purposes. Sensitive credentials and patient data have been removed.
