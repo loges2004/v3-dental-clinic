@@ -63,16 +63,18 @@ Track total appointments dynamically
 
 📸 Screenshots
 Admin Dashboard
+
 ![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/ba5aee08a0af6ba652c56fb12baeba640eadc87c/Screenshots/admin_dashboard.PNG)
 
+ADMIN DASHBOARD FEATURES
+
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/09e970d8ab666d0c05be1966ea0e631c29a94627/Screenshots/admin_reschedule.PNG)
 
 
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/09e970d8ab666d0c05be1966ea0e631c29a94627/Screenshots/admin_newappointment.PNG)
 
 
-
-
-
-
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/09e970d8ab666d0c05be1966ea0e631c29a94627/Screenshots/admin_download.PNG)
 📂 Project Architecture
 Controller Layer: Handles HTTP requests
 
