@@ -76,6 +76,9 @@ APPOINTMENT
 ![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/6f12343c93099eaf5889a1bb415e3d3eb71656c8/Screenshots/appointment.jpg)
 
 
+Admin login 
+
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/0c9187d840c3747cb6ad0b86d73dd0c41fa90680/Screenshots/admin_login.jpg)
 
 Admin Dashboard
 
