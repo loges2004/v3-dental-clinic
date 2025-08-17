@@ -74,17 +74,24 @@ HOMEPAGE
 
 
 APPOINTMENT
-![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/6f12343c93099eaf5889a1bb415e3d3eb71656c8/Screenshots/whatsapp_confirm.jpg)
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/6f12343c93099eaf5889a1bb415e3d3eb71656c8/Screenshots/appointment.jpg)
 
 
 Appointment confirmation
 
+
+
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/273790db6321998dc09ea6e8c4438c042c6811c9/Screenshots/confirm_email.jpg)
+
+
+
+
 ![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/273790db6321998dc09ea6e8c4438c042c6811c9/Screenshots/reschedule_email.jpg)
 
-![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/273790db6321998dc09ea6e8c4438c042c6811c9/Screenshots/confirm_email.jpg)
 
 
-![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/273790db6321998dc09ea6e8c4438c042c6811c9/Screenshots/confirm_email.jpg)
+
+![Admin Dashboard](https://github.com/loges2004/v3-dental-clinic/blob/273790db6321998dc09ea6e8c4438c042c6811c9/Screenshots/whatsapp_confirm.jpg)
 
 Admin login 
 
