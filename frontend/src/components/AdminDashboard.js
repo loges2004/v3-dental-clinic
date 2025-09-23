@@ -250,7 +250,7 @@ const AdminDashboard = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Failed to accept appointment. Please try again.',
+        text: 'Failed to accept appointment. Please try again.',  
       });
     } finally {
       setAcceptingId(null);
