@@ -52,6 +52,20 @@ const clinicLocations = {
   // "RS puram": "https://www.google.com/maps/place/V3+Dental+Care+-+Best+Dental+Clinic+in+RS+Puram,Coimbatore/@10.999696,76.95353,17z/"
 };
 
+// Helper to open WhatsApp with prefilled message
+const openWhatsappWithMessage = (rawPhone, message) => {
+  if (!rawPhone) return;
+  let phone = String(rawPhone).replace(/\D/g, '');
+  if (phone.startsWith('0')) {
+    phone = phone.substring(1);
+  }
+  if (!phone.startsWith('91')) {
+    phone = '91' + phone; // default to India code
+  }
+  const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+  window.open(whatsappUrl, '_blank');
+};
+
 const getLogoBase64 = () => {
   return new Promise((resolve) => {
     const img = new Image();
@@ -229,15 +243,7 @@ const AdminDashboard = () => {
           `Please arrive 10 minutes early.\n` +
           `Thank you for booking with us!\n\n` +
           `*V3 Dental Clinic*`;
-        let phone = appt.patientPhone.replace(/\D/g, '');
-        if (phone.startsWith('0')) {
-          phone = phone.substring(1);
-        }
-        if (!phone.startsWith('91')) {
-          phone = '91' + phone;
-        }
-        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+        openWhatsappWithMessage(appt.patientPhone, message);
       });
       fetchAppointments();
     } catch (err) {
@@ -341,12 +347,13 @@ const AdminDashboard = () => {
         title: 'Status Updated!',
         text: `Appointment status changed to ${selectedStatus}.`,
       }).then(() => {
-        if (selectedStatus === 'ACCEPTED' || selectedStatus === 'RESCHEDULED') {
-          const date = new Date(appt.appointmentDate);
-          const dateStr = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
-          const timeObj = new Date(`1970-01-01T${appt.appointmentTime}`);
-          const timeStr = timeObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
-          const message =
+        const date = new Date(appt.appointmentDate);
+        const dateStr = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        const timeObj = new Date(`1970-01-01T${appt.appointmentTime}`);
+        const timeStr = timeObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+
+        if (selectedStatus === 'ACCEPTED') {
+          const msg =
             `*V3 Dental Clinic | Appointment Confirmation*\n\n` +
             `*Name:* ${appt.patientFullName}\n` +
             `*Service:* ${appt.serviceType}\n` +
@@ -356,15 +363,25 @@ const AdminDashboard = () => {
             `Please arrive 10 minutes early.\n` +
             `Thank you for booking with us!\n\n` +
             `*V3 Dental Clinic*`;
-          let phone = appt.patientPhone.replace(/\D/g, '');
-          if (phone.startsWith('0')) {
-            phone = phone.substring(1);
-          }
-          if (!phone.startsWith('91')) {
-            phone = '91' + phone;
-          }
-          const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-          window.open(whatsappUrl, '_blank');
+          openWhatsappWithMessage(appt.patientPhone, msg);
+        } else if (selectedStatus === 'RESCHEDULED') {
+          const msg =
+            `*V3 Dental Clinic | Appointment Rescheduled*\n\n` +
+            `Your appointment has been rescheduled.\n\n` +
+            `*New Date:* ${dateStr}\n` +
+            `*New Time:* ${timeStr}\n` +
+            (appt.clinicArea && clinicLocations[appt.clinicArea] ? `*Clinic:* ${appt.clinicArea} – ${clinicLocations[appt.clinicArea]}\n\n` : '\n') +
+            `If the time doesn't work, please reply to reschedule.\n\n` +
+            `*V3 Dental Clinic*`;
+          openWhatsappWithMessage(appt.patientPhone, msg);
+        } else if (selectedStatus === 'REJECTED') {
+          const msg =
+            `*V3 Dental Clinic | Appointment Update*\n\n` +
+            `We are unable to confirm your requested appointment.\n` +
+            (rejectionReason ? `Reason: ${rejectionReason}\n\n` : '\n') +
+            `Please reply here to choose another slot.\n\n` +
+            `*V3 Dental Clinic*`;
+          openWhatsappWithMessage(appt.patientPhone, msg);
         }
       });
       handleCloseEditModal();
@@ -534,15 +551,7 @@ const AdminDashboard = () => {
           `Please arrive 10 minutes early.\n` +
           `Thank you for booking with us!\n\n` +
           `*V3 Dental Clinic*`;
-        let phone = appt.patientPhone.replace(/\D/g, '');
-        if (phone.startsWith('0')) {
-          phone = phone.substring(1);
-        }
-        if (!phone.startsWith('91')) {
-          phone = '91' + phone;
-        }
-        const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        window.open(whatsappUrl, '_blank');
+        openWhatsappWithMessage(appt.patientPhone, message);
       });
       handleCloseAddModal();
       fetchAppointments();
