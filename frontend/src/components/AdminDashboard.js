@@ -250,7 +250,7 @@ const AdminDashboard = () => {
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: 'Failed to accept appointment. Please try again.',  
+        text: 'Failed to accept appointment. Please try again.',
       });
     } finally {
       setAcceptingId(null);
@@ -278,15 +278,31 @@ const AdminDashboard = () => {
         newDate: rescheduleDate,
         newTime: rescheduleTime,
       };
-      await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${id}/status`, {
+      const res = await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
       });
+      const appt = await res.json();
       Swal.fire({
         icon: 'success',
         title: 'Appointment Rescheduled!',
         text: 'Patient has been notified with the new time.',
+      }).then(() => {
+        const date = new Date(appt.appointmentDate);
+        const dateStr = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
+        const timeObj = new Date(`1970-01-01T${appt.appointmentTime}`);
+        const timeStr = timeObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+        const msg =
+          `*V3 Dental Clinic | Appointment Rescheduled*\n\n` +
+          `*Name:* ${appt.patientFullName}\n` +
+          `*Service:* ${appt.serviceType}\n` +
+          `*New Date:* ${dateStr}\n` +
+          `*New Time:* ${timeStr}\n` +
+          (appt.clinicArea && clinicLocations[appt.clinicArea] ? `*Clinic:* ${appt.clinicArea} – ${clinicLocations[appt.clinicArea]}\n\n` : '\n') +
+          `If the time doesn't work, please reply to reschedule.\n\n` +
+          `*V3 Dental Clinic*`;
+        openWhatsappWithMessage(appt.patientPhone, msg);
       });
       setRejectId(null);
       setRescheduleDate('');
@@ -577,12 +593,21 @@ const AdminDashboard = () => {
         status: 'REJECTED',
         reason: rejectionReason,
       };
-      await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${rejectId}/status`, {
+      const res = await fetch(`https://v3-dental-clinic.onrender.com/api/appointments/${rejectId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(payload)
       });
-      Swal.fire('Rejected!', 'The appointment has been rejected.', 'success');
+      const appt = await res.json();
+      Swal.fire('Rejected!', 'The appointment has been rejected.', 'success').then(() => {
+        const msg =
+          `*V3 Dental Clinic | Appointment Update*\n\n` +
+          `Dear ${appt.patientFullName}, your appointment request could not be confirmed.\n` +
+          (rejectionReason ? `Reason: ${rejectionReason}\n\n` : '\n') +
+          `Please reply here to pick another suitable time.\n\n` +
+          `*V3 Dental Clinic*`;
+        openWhatsappWithMessage(appt.patientPhone, msg);
+      });
       setShowRejectModal(false);
       fetchAppointments();
     } catch (err) {
