@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -19,6 +19,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EmailService {
     private final JavaMailSender mailSender;
+    @Value("${spring.mail.username}")
+    private String fromEmailAddress;
 
     private boolean hasEmail(Appointment appointment) {
         return appointment.getPatientEmail() != null && !appointment.getPatientEmail().trim().isEmpty();
@@ -29,6 +31,10 @@ public class EmailService {
 
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
+                message.setFrom(fromEmailAddress);
+                message.setReplyTo(fromEmailAddress);
+            }
             message.setTo(appointment.getPatientEmail());
             message.setSubject("Appointment Confirmation - V3 Dental Clinic");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
@@ -69,6 +75,10 @@ public class EmailService {
 
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
+                message.setFrom(fromEmailAddress);
+                message.setReplyTo(fromEmailAddress);
+            }
             message.setTo(appointment.getPatientEmail());
             message.setSubject("Appointment Update - V3 Dental Clinic");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
@@ -105,6 +115,10 @@ public class EmailService {
     public void sendNewAppointmentNotification(Appointment appointment) {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
+                message.setFrom(fromEmailAddress);
+                message.setReplyTo(fromEmailAddress);
+            }
             message.setTo("v3dentalclinic@gmail.com"); // Admin email
             message.setSubject("New Appointment Request - V3 Dental Clinic");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
@@ -140,6 +154,10 @@ public class EmailService {
 
         try {
             SimpleMailMessage message = new SimpleMailMessage();
+            if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
+                message.setFrom(fromEmailAddress);
+                message.setReplyTo(fromEmailAddress);
+            }
             message.setTo(appointment.getPatientEmail());
             message.setSubject("Appointment Rescheduled - V3 Dental Clinic");
             DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
