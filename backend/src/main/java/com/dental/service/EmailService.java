@@ -23,7 +23,12 @@ public class EmailService {
     private String fromEmailAddress;
 
     private boolean hasEmail(Appointment appointment) {
-        return appointment.getPatientEmail() != null && !appointment.getPatientEmail().trim().isEmpty();
+        boolean present = appointment.getPatientEmail() != null && !appointment.getPatientEmail().trim().isEmpty();
+        if (!present) {
+            log.info("Skipping patient email send: no email on appointment id={}, name={}",
+                appointment.getId(), appointment.getPatientFullName());
+        }
+        return present;
     }
 
     public void sendAppointmentConfirmation(Appointment appointment) {
@@ -65,6 +70,7 @@ public class EmailService {
 
             message.setText(whatsappMessage);
             mailSender.send(message);
+            log.info("Sent confirmation email to {} for appointment id={}", appointment.getPatientEmail(), appointment.getId());
         } catch (Exception ex) {
             log.error("Failed to send appointment confirmation email: {}", ex.getMessage());
         }
@@ -107,6 +113,7 @@ public class EmailService {
                 slotsMessage
             ));
             mailSender.send(message);
+            log.info("Sent rejection email to {} for appointment id={}", appointment.getPatientEmail(), appointment.getId());
         } catch (Exception ex) {
             log.error("Failed to send appointment rejection email: {}", ex.getMessage());
         }
@@ -144,6 +151,7 @@ public class EmailService {
                 appointment.getDescription()
             ));
             mailSender.send(message);
+            log.info("Sent admin new-appointment notification for appointment id={}", appointment.getId());
         } catch (Exception ex) {
             log.error("Failed to send new appointment notification email: {}", ex.getMessage());
         }
@@ -176,6 +184,7 @@ public class EmailService {
                 formattedTime
             ));
             mailSender.send(message);
+            log.info("Sent rescheduled email to {} for appointment id={}", appointment.getPatientEmail(), appointment.getId());
         } catch (Exception ex) {
             log.error("Failed to send appointment rescheduled email: {}", ex.getMessage());
         }
