@@ -3,7 +3,7 @@
 # ==================================
 # Compiled code and build output
 /backend/target/
-
+backend/.env
 
 # Log files
 *.log
