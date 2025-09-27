@@ -50,7 +50,7 @@ public class AppointmentController {
             Appointment appointment = new Appointment();
             
             appointment.setPatientFullName(request.getName().trim());
-            appointment.setPatientEmail(request.getEmail() != null ? request.getEmail().trim() : "");
+            appointment.setPatientEmail(request.getEmail() != null && !request.getEmail().trim().isEmpty() ? request.getEmail().trim() : null);
             appointment.setPatientPhone(request.getPhone().trim());
             
             try {

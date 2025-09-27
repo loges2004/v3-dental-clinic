@@ -25,13 +25,17 @@ public class EmailService {
     private boolean hasEmail(Appointment appointment) {
         boolean present = appointment.getPatientEmail() != null && !appointment.getPatientEmail().trim().isEmpty();
         if (!present) {
-            log.info("Skipping patient email send: no email on appointment id={}, name={}",
-                appointment.getId(), appointment.getPatientFullName());
+            log.info("Skipping patient email send: no email on appointment id={}, name={}, email={}",
+                appointment.getId(), appointment.getPatientFullName(), appointment.getPatientEmail());
+        } else {
+            log.info("Email found for appointment id={}, email={}", appointment.getId(), appointment.getPatientEmail());
         }
         return present;
     }
 
     public void sendAppointmentConfirmation(Appointment appointment) {
+        log.info("Attempting to send confirmation email for appointment id={}, email={}", 
+            appointment.getId(), appointment.getPatientEmail());
         if (!hasEmail(appointment)) return;
 
         try {
@@ -77,6 +81,8 @@ public class EmailService {
     }
 
     public void sendAppointmentRejection(Appointment appointment, String reason, List<LocalTime> availableSlots) {
+        log.info("Attempting to send rejection email for appointment id={}, email={}", 
+            appointment.getId(), appointment.getPatientEmail());
         if (!hasEmail(appointment)) return;
 
         try {
@@ -158,6 +164,8 @@ public class EmailService {
     }
 
     public void sendAppointmentRescheduled(Appointment appointment, LocalDate newDate, LocalTime newTime) {
+        log.info("Attempting to send rescheduled email for appointment id={}, email={}", 
+            appointment.getId(), appointment.getPatientEmail());
         if (!hasEmail(appointment)) return;
 
         try {

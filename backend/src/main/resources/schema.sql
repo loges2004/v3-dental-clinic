@@ -22,14 +22,14 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS appointments (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     patient_full_name VARCHAR(255) NOT NULL,
-    patient_email VARCHAR(255) NOT NULL,
+    patient_email VARCHAR(255),
     patient_phone VARCHAR(20) NOT NULL,
     appointment_date DATE NOT NULL,
     appointment_time TIME NOT NULL,
     service_type VARCHAR(100) NOT NULL,
     clinic_area VARCHAR(255),
     description TEXT,
-    status ENUM('PENDING', 'ACCEPTED', 'REJECTED') DEFAULT 'PENDING',
+    status ENUM('PENDING', 'ACCEPTED', 'REJECTED', 'RESCHEDULED') DEFAULT 'PENDING',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
