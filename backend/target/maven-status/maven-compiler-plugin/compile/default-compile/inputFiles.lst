@@ -1,14 +1,17 @@
 E:\dental\backend\src\main\java\com\dental\DentalClinicApplication.java
 E:\dental\backend\src\main\java\com\dental\service\AppointmentService.java
 E:\dental\backend\src\main\java\com\dental\controller\AuthController.java
+E:\dental\backend\src\main\java\com\dental\controller\PublicTestController.java
 E:\dental\backend\src\main\java\com\dental\service\UserService.java
 E:\dental\backend\src\main\java\com\dental\config\GlobalExceptionHandler.java
+E:\dental\backend\src\main\java\com\dental\controller\DiagnosticController.java
 E:\dental\backend\src\main\java\com\dental\service\EmailService.java
 E:\dental\backend\src\main\java\com\dental\controller\TestController.java
 E:\dental\backend\src\main\java\com\dental\payload\response\AuthResponse.java
 E:\dental\backend\src\main\java\com\dental\controller\AppointmentController.java
 E:\dental\backend\src\main\java\com\dental\config\SecurityConfig.java
 E:\dental\backend\src\main\java\HashGenerator.java
+E:\dental\backend\src\main\java\com\dental\controller\HealthController.java
 E:\dental\backend\src\main\java\com\dental\config\EmailConfig.java
 E:\dental\backend\src\main\java\com\dental\security\JwtTokenProvider.java
 E:\dental\backend\src\main\java\com\dental\model\Appointment.java

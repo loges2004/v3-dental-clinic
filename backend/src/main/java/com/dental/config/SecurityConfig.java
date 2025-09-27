@@ -44,6 +44,8 @@ public class SecurityConfig {
             .requestMatchers("/api/appointments/date/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/appointments").permitAll()
             .requestMatchers("/api/appointments/availability").permitAll() // <-- THIS MUST COME BEFORE
+            .requestMatchers("/api/diagnostic/**").permitAll() // Allow diagnostic endpoints
+            .requestMatchers("/api/test/**").permitAll() // Allow test endpoints
             .requestMatchers(HttpMethod.POST, "/api/appointments/admin-add").hasRole("ADMIN")
             .requestMatchers("/api/appointments/**").hasRole("ADMIN")      // <-- THIS
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
