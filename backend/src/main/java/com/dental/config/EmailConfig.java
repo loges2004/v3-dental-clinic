@@ -21,7 +21,7 @@ public class EmailConfig {
     private String mailUsername;
 
     @Value("${spring.mail.password}")
-    private String mailPassword;
+    private String brevoSmtpKey;
 
     @Bean
     public JavaMailSender javaMailSender() {
@@ -29,18 +29,15 @@ public class EmailConfig {
         mailSender.setHost(mailHost);
         mailSender.setPort(mailPort);
         mailSender.setUsername(mailUsername);
-        mailSender.setPassword(mailPassword);
+        mailSender.setPassword(brevoSmtpKey);
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.ssl.enable", "true");
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.ssl.required", "true");
+        props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.connectiontimeout", "30000");
         props.put("mail.smtp.timeout", "30000");
         props.put("mail.smtp.writetimeout", "30000");
-        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         props.put("mail.debug", "true");
 
         return mailSender;

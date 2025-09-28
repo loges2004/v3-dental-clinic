@@ -22,7 +22,7 @@ public class ProductionDiagnosticController {
     private String mailUsername;
 
     @Value("${spring.mail.password:NOT_SET}")
-    private String mailPassword;
+    private String brevoSmtpKey;
 
     @Value("${spring.datasource.url:NOT_SET}")
     private String datasourceUrl;
@@ -42,7 +42,7 @@ public class ProductionDiagnosticController {
         emailConfig.put("host", mailHost);
         emailConfig.put("port", mailPort);
         emailConfig.put("username", mailUsername);
-        emailConfig.put("password", mailPassword != null && !mailPassword.equals("NOT_SET") ? "***SET***" : "NOT_SET");
+        emailConfig.put("password", brevoSmtpKey != null && !brevoSmtpKey.equals("NOT_SET") ? "***SET***" : "NOT_SET");
         
         // Database configuration
         Map<String, Object> dbConfig = new HashMap<>();
@@ -57,7 +57,7 @@ public class ProductionDiagnosticController {
         // Check if configurations are properly set
         boolean emailConfigured = !mailHost.equals("NOT_SET") && 
                                 !mailUsername.equals("NOT_SET") && 
-                                !mailPassword.equals("NOT_SET");
+                                !brevoSmtpKey.equals("NOT_SET");
         
         boolean dbConfigured = !datasourceUrl.equals("NOT_SET") && 
                               !datasourceUsername.equals("NOT_SET");
@@ -75,9 +75,9 @@ public class ProductionDiagnosticController {
         
         try {
             // This will test if the email configuration is working
-            if (mailPassword.equals("NOT_SET")) {
+            if (brevoSmtpKey.equals("NOT_SET")) {
                 result.put("status", "FAILED");
-                result.put("error", "MAIL_PASSWORD environment variable not set");
+                result.put("error", "BREVO_SMTP_KEY environment variable not set");
                 return ResponseEntity.ok(result);
             }
             
