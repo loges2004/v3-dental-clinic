@@ -13,6 +13,8 @@ E:\dental\backend\src\main\java\com\dental\config\SecurityConfig.java
 E:\dental\backend\src\main\java\HashGenerator.java
 E:\dental\backend\src\main\java\com\dental\controller\HealthController.java
 E:\dental\backend\src\main\java\com\dental\config\EmailConfig.java
+E:\dental\backend\src\main\java\com\dental\controller\ProductionDiagnosticController.java
+E:\dental\backend\src\main\java\com\dental\controller\SimpleTestController.java
 E:\dental\backend\src\main\java\com\dental\security\JwtTokenProvider.java
 E:\dental\backend\src\main\java\com\dental\model\Appointment.java
 E:\dental\backend\src\main\java\com\dental\model\User.java
