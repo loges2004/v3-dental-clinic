@@ -35,6 +35,7 @@ public class EmailConfig {
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.enable", "false"); // Port 2525 uses STARTTLS, not SSL
         props.put("mail.smtp.connectiontimeout", "30000");
         props.put("mail.smtp.timeout", "30000");
         props.put("mail.smtp.writetimeout", "30000");
