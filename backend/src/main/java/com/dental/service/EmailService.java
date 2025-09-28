@@ -19,8 +19,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class EmailService {
     private final JavaMailSender mailSender;
-    @Value("${spring.mail.username}")
+    @Value("${spring.mail.from-address:noreply@v3dentalclinic.com}")
     private String fromEmailAddress;
+    
+    @Value("${spring.mail.from-name:V3 Dental Clinic}")
+    private String fromName;
 
     private boolean hasEmail(Appointment appointment) {
         boolean present = appointment.getPatientEmail() != null && !appointment.getPatientEmail().trim().isEmpty();
@@ -41,7 +44,10 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
-                message.setFrom(fromEmailAddress);
+                String fullFromAddress = fromName != null && !fromName.isEmpty() 
+                    ? fromName + " <" + fromEmailAddress + ">"
+                    : fromEmailAddress;
+                message.setFrom(fullFromAddress);
                 message.setReplyTo(fromEmailAddress);
             }
             message.setTo(appointment.getPatientEmail());
@@ -88,7 +94,10 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
-                message.setFrom(fromEmailAddress);
+                String fullFromAddress = fromName != null && !fromName.isEmpty() 
+                    ? fromName + " <" + fromEmailAddress + ">"
+                    : fromEmailAddress;
+                message.setFrom(fullFromAddress);
                 message.setReplyTo(fromEmailAddress);
             }
             message.setTo(appointment.getPatientEmail());
@@ -129,7 +138,10 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
-                message.setFrom(fromEmailAddress);
+                String fullFromAddress = fromName != null && !fromName.isEmpty() 
+                    ? fromName + " <" + fromEmailAddress + ">"
+                    : fromEmailAddress;
+                message.setFrom(fullFromAddress);
                 message.setReplyTo(fromEmailAddress);
             }
             message.setTo("v3dentalclinic@gmail.com"); // Admin email
@@ -171,7 +183,10 @@ public class EmailService {
         try {
             SimpleMailMessage message = new SimpleMailMessage();
             if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
-                message.setFrom(fromEmailAddress);
+                String fullFromAddress = fromName != null && !fromName.isEmpty() 
+                    ? fromName + " <" + fromEmailAddress + ">"
+                    : fromEmailAddress;
+                message.setFrom(fullFromAddress);
                 message.setReplyTo(fromEmailAddress);
             }
             message.setTo(appointment.getPatientEmail());
