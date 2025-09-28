@@ -213,5 +213,25 @@ public class EmailService {
         }
     }
 
-  
+    public void sendTestEmail(String toEmail, String subject, String message) {
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            if (fromEmailAddress != null && !fromEmailAddress.isEmpty()) {
+                String fullFromAddress = fromName != null && !fromName.isEmpty() 
+                    ? fromName + " <" + fromEmailAddress + ">"
+                    : fromEmailAddress;
+                mailMessage.setFrom(fullFromAddress);
+                mailMessage.setReplyTo(fromEmailAddress);
+            }
+            mailMessage.setTo(toEmail);
+            mailMessage.setSubject(subject);
+            mailMessage.setText(message);
+            mailSender.send(mailMessage);
+            log.info("Test email sent successfully to: {}", toEmail);
+        } catch (Exception ex) {
+            log.error("Failed to send test email: {}", ex.getMessage());
+            throw ex;
+        }
+    }
+
 } 
