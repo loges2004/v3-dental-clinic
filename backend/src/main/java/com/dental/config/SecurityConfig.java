@@ -48,6 +48,7 @@ public class SecurityConfig {
             .requestMatchers("/api/test/**").permitAll() // Allow test endpoints
             .requestMatchers("/api/production-diagnostic/**").permitAll() // Allow production diagnostic endpoints
             .requestMatchers("/public/**").permitAll() // Allow public test endpoints
+            .requestMatchers("/api/simple/**").permitAll() // Allow simple test endpoints
             .requestMatchers(HttpMethod.POST, "/api/appointments/admin-add").hasRole("ADMIN")
             .requestMatchers("/api/appointments/**").hasRole("ADMIN")      // <-- THIS
             .requestMatchers("/api/admin/**").hasRole("ADMIN")
