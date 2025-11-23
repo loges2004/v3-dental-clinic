@@ -40,6 +40,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+            .requestMatchers("/api/health/**").permitAll() // Allow health check for cron jobs (Render inactivity prevention)
             .requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/api/appointments/date/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/api/appointments").permitAll()
