@@ -52,7 +52,7 @@ const timeSlots = [
 
 const clinicAreas = [
   "Kannappa nagar",
-  // "Sai baba colony",
+  "Sai baba colony",
   // "RS puram"
 ];
 
