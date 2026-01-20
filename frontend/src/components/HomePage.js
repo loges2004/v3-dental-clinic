@@ -881,24 +881,77 @@ const HomePage = () => {
                     React.createElement("circle", { cx: "12", cy: "10", r: "3" }),
                   ),
                 ),
-                React.createElement(
-                  "div",
-                  { className: "contact-details" },
-                  React.createElement("h3", null, "Address"),
-                  React.createElement(
-                    "a",
-                    {
-                      href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
-                      target: "_blank",
-                      rel: "noopener noreferrer",
-                      style: { color: "#3b82f6", textDecoration: "underline", cursor: "pointer" }
-                    },
-                    "235, Kannusamy Street, Sanganoor Main Road,",
-                    React.createElement("br"),
-                    "Kannapa Nagar Junction, Coimbatore - 641027"
-                  ),
-                ),
-              ),
+              React.createElement(
+  "div",
+  { className: "contact-details" },
+
+  // Title
+  React.createElement(
+    "h3",
+    { style: { color: "#ffffff" } },
+    "Clinic Locations"
+  ),
+
+  // Branch 1
+  React.createElement(
+    "div",
+    { style: { marginBottom: "14px" } },
+    React.createElement(
+      "strong",
+      { style: { color: "#e5e7eb" } }, // light text for dark background
+      "Branch 1 – Kavundampalayam, Coimbatore"
+    ),
+    React.createElement("br"),
+    React.createElement(
+      "a",
+      {
+        href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        style: {
+          color: "#22c55e", // green
+          textDecoration: "underline",
+          cursor: "pointer"
+        }
+      },
+      "235, Kannusamy Street, Sanganoor Main Road,",
+      React.createElement("br"),
+      "Kannapa Nagar Junction, Coimbatore - 641027"
+    )
+  ),
+
+  // Branch 2
+  React.createElement(
+    "div",
+    null,
+    React.createElement(
+      "strong",
+      { style: { color: "#e5e7eb" } },
+      "Branch 2 – Sai Baba Colony, Coimbatore"
+    ),
+    React.createElement("br"),
+    React.createElement(
+      "a",
+      {
+        href: "https://maps.app.goo.gl/5dvfEhJZpbmiJzaQ7",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        style: {
+          color: "#22c55e", // green
+          textDecoration: "underline",
+          cursor: "pointer"
+        }
+      },
+      "320, S.V Valagam, Maniam Velappar St,",
+      React.createElement("br"),
+      "Kuppakonam Pudur, K K Pudur,",
+      React.createElement("br"),
+      "Coimbatore, Tamil Nadu 641038"
+    )
+  )
+)
+
+ ),
 
               React.createElement(
                 "div",
@@ -1063,38 +1116,87 @@ const HomePage = () => {
             ),
           ),
 
-            React.createElement(
-              "div",
-              { className: "contact-map" },
-              React.createElement("div", { style: { position: "relative", width: "100%", height: "100%" } },
-                React.createElement("iframe", {
-                  src: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3916.3!2d77.0!3d11.0!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTHCsDAwJzAwLjAiTiA3N8KwMDAnMDAuMCJF!5e0!3m2!1sen!2sin!4v1234567890",
-                  width: "100%",
-                  height: "100%",
-                  style: { border: 0 },
-                  allowFullScreen: "",
-                  loading: "lazy",
-                  referrerPolicy: "no-referrer-when-downgrade",
-                  title: "V3 Dental Clinic Location"
-                }),
-                React.createElement("a", {
-                  href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
-                  target: "_blank",
-                  rel: "noopener noreferrer",
-                  style: {
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    width: "100%",
-                    height: "100%",
-                    zIndex: 2,
-                    background: "rgba(0,0,0,0)",
-                    cursor: "pointer"
-                  },
-                  "aria-label": "Open in Google Maps"
-                })
-              ),
-            ),
+React.createElement(
+  "div",
+  { className: "contact-map-wrapper" },
+
+  // ✅ Branch 1 Map
+  React.createElement(
+    "div",
+    { className: "contact-map" },
+    React.createElement(
+      "div",
+      { style: { position: "relative", width: "100%", height: "300px" } },
+      React.createElement("iframe", {
+        src: "https://www.google.com/maps?q=235,Kannusamy+Street,Sanganoor+Main+Road,Coimbatore&output=embed",
+        width: "100%",
+        height: "100%",
+        style: { border: 0, borderRadius: "12px" },
+        allowFullScreen: "",
+        loading: "lazy",
+        referrerPolicy: "no-referrer-when-downgrade",
+        title: "Branch 1 – Kavundampalayam, Coimbatore"
+      }),
+      React.createElement("a", {
+        href: "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
+        target: "_blank",
+        rel: "noopener noreferrer",
+        style: {
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: 2,
+          background: "rgba(0,0,0,0)",
+          cursor: "pointer"
+        },
+        "aria-label": "Open Branch 1 in Google Maps"
+      })
+    )
+  ),
+
+  // ✅ Branch 2 Map
+  React.createElement(
+  "div",
+  { className: "contact-map" },
+  React.createElement(
+    "div",
+    { style: { position: "relative", width: "100%", height: "300px" } },
+    React.createElement("iframe", {
+      src: "https://www.google.com/maps?q=V3+Dental+Clinic+-+Sai+Baba+Colony+K+K+Pudur&output=embed",
+      width: "100%",
+      height: "100%",
+      style: { border: 0 },
+      allowFullScreen: "",
+      loading: "lazy",
+      referrerPolicy: "no-referrer-when-downgrade",
+      title: "Branch 2 – Sai Baba Colony, Coimbatore"
+    }),
+    React.createElement("a", {
+      href: "https://maps.app.goo.gl/5dvfEhJZpbmiJzaQ7",
+      target: "_blank",
+      rel: "noopener noreferrer",
+      style: {
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        zIndex: 2,
+        background: "rgba(0,0,0,0)",
+        cursor: "pointer"
+      },
+      "aria-label": "Open Branch 2 in Google Maps"
+    })
+  )
+)
+
+)
+
+
+
+
           ),
         ),
       ),

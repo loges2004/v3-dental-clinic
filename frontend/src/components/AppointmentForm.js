@@ -51,12 +51,9 @@ const timeSlots = [
 ];
 
 const clinicAreas = [
-  "Kannappa nagar",
-  "Sai baba colony",
-  // "RS puram"
+  "Kavundampalayam",
+  "Sai baba colony",8
 ];
-
-
 
 
 const benefits = [
@@ -514,7 +511,8 @@ const AppointmentForm = () => {
                                 <Form.Label className="fw-semibold text-muted mb-3">🕐 Available Time Slots</Form.Label>
                                 <div className="time-slots-grid">
                                   {timeSlots.map((slot) => {
-                                    const isBooked = availability[slot] >= 3 || availability[slot.toLowerCase()] >= 3;
+                                   const isBooked = availability[slot] >= 1 || availability[slot.toLowerCase()] >= 1;
+
                                     const slotClass = isBooked ? 'unavailable' : (form.timeSlot === slot ? 'selected' : 'available');
                                     
                                     return (
