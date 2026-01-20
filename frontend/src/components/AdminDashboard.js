@@ -9,9 +9,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { Helmet } from "react-helmet";
 
-const getApiBaseUrl = () => {
-    return process.env.REACT_APP_API_BASE_URL || 'http://localhost:8001';
-};
+
 
 const timeSlots = [
   '09:30',
