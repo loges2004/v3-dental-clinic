@@ -40,13 +40,13 @@ const serviceTypes = [
 
 const clinicAreas = [
   "Kannappa nagar",
-  // "Sai baba colony",
+ "Sai baba colony",
   // "RS puram"
 ];
 
 const clinicLocations = {
   "Kannappa nagar": "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
-  // "Sai baba colony": "https://www.google.com/maps/place/V3+DENTAL+CARE+-+SAIBABA+COLONY/@11.0264273,76.9431476,17z/",
+   "Sai baba colony": "https://www.google.com/maps/place/V3+Dental+Clinic+-+Sai+Baba+Colony/@11.0328252,76.9416018,17z/data=!3m1!4b1!4m6!3m5!1s0x3ba859a70fe7d749:0x92a94929b1e19be1!8m2!3d11.0328252!4d76.9441767!16s%2Fg%2F11yw398k4v?entry=ttu&g_ep=EgoyMDI2MDEyMS4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D",
   // "RS puram": "https://www.google.com/maps/place/V3+Dental+Care+-+Best+Dental+Clinic+in+RS+Puram,Coimbatore/@10.999696,76.95353,17z/"
 };
 

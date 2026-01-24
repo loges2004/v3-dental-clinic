@@ -51,7 +51,7 @@ const timeSlots = [
 ];
 
 const clinicAreas = [
-  "Kavundampalayam",
+  "Kannappa nagar",
   "Sai baba colony",
 ];
 
