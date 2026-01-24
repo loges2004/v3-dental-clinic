@@ -46,7 +46,7 @@ const clinicAreas = [
 
 const clinicLocations = {
   "Kannappa nagar": "https://maps.app.goo.gl/yqS21NNiS5ALGvvs7",
-   "Sai baba colony": "https://share.google/A6b6XintY7ggYPTIu",
+   "Sai baba colony": "https://maps.app.goo.gl/z5CYdBWAVNQRN7ni7",
   // "RS puram": "https://www.google.com/maps/place/V3+Dental+Care+-+Best+Dental+Clinic+in+RS+Puram,Coimbatore/@10.999696,76.95353,17z/"
 };
 
