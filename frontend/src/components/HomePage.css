@@ -1819,7 +1819,9 @@ body {
   top: 0;
   left: -50%;
   width: 50%;
-  height: 480px;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: auto;
   background: #bfd5f6;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
