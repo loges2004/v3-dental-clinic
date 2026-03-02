@@ -50,6 +50,8 @@ public class SecurityConfig {
             .requestMatchers("/api/production-diagnostic/**").permitAll() // Allow production diagnostic endpoints
             .requestMatchers("/public/**").permitAll() // Allow public test endpoints
             .requestMatchers("/api/simple/**").permitAll() // Allow simple test endpoints
+            .requestMatchers("/api/gallery/**").permitAll() // Public gallery images
+            .requestMatchers("/api/admin/gallery/**").permitAll() // Allow admin gallery management without role checks
             .requestMatchers(HttpMethod.POST, "/api/appointments/admin-add").hasRole("ADMIN")
             .requestMatchers("/api/appointments/**").hasRole("ADMIN")      // <-- THIS
             .requestMatchers("/api/admin/**").hasRole("ADMIN")

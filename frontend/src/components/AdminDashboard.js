@@ -107,6 +107,13 @@ const AdminDashboard = () => {
   const [selectedAppointments, setSelectedAppointments] = useState(new Set()); // Track selected appointments
   const [selectAll, setSelectAll] = useState(false); // Track select all state
   const [isBulkDeleting, setIsBulkDeleting] = useState(false); // Track bulk deletion state
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
+  const [showGalleryManager, setShowGalleryManager] = useState(false);
+  const [galleryTreatment, setGalleryTreatment] = useState('');
+  const [galleryFile, setGalleryFile] = useState(null);
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [isLoadingGallery, setIsLoadingGallery] = useState(false);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [newAppointment, setNewAppointment] = useState({
     patientFullName: '',
     patientPhone: '',
@@ -163,6 +170,149 @@ const AdminDashboard = () => {
   };
 
   const handleCloseAddModal = () => setShowAddModal(false);
+  const handleCloseGalleryModal = () => {
+    setShowGalleryModal(false);
+    setGalleryTreatment('');
+    setGalleryFile(null);
+  };
+
+  const API_BASE = process.env.NODE_ENV === 'development'
+    ? `http://${window.location.hostname}:8001`
+    : 'https://v3-dental-clinic.onrender.com';
+
+  const fetchGalleryImagesAdmin = useCallback(async () => {
+    setIsLoadingGallery(true);
+    try {
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+      if (!token) {
+        setIsLoadingGallery(false);
+        return;
+      }
+      const res = await fetch(`${API_BASE}/api/admin/gallery`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok) {
+        throw new Error('Failed to load gallery images');
+      }
+      const data = await res.json();
+      setGalleryItems(Array.isArray(data) ? data : []);
+    } catch (err) {
+      // Silent fail for now; admin still sees upload modal
+    } finally {
+      setIsLoadingGallery(false);
+    }
+  }, [API_BASE]);
+
+  // Refresh gallery items whenever the Gallery Manager modal is opened
+  useEffect(() => {
+    if (showGalleryManager) {
+      fetchGalleryImagesAdmin();
+    }
+  }, [showGalleryManager, fetchGalleryImagesAdmin]);
+
+  const handleUploadGalleryImage = async () => {
+    if (!galleryTreatment.trim() || !galleryFile) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Missing Information',
+        text: 'Please enter treatment name and select an image file.',
+      });
+      return;
+    }
+
+    const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+    if (!token) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Not Authorized',
+        text: 'Please login again to upload images.',
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('treatmentName', galleryTreatment);
+    formData.append('file', galleryFile);
+
+    setIsUploadingImage(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/gallery/upload`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (!res.ok) {
+        throw new Error('Upload failed');
+      }
+
+      await res.json();
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Image Uploaded',
+        text: 'The gallery image has been uploaded to Cloudinary.',
+      });
+      handleCloseGalleryModal();
+      fetchGalleryImagesAdmin();
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Upload Failed',
+        text: 'Unable to upload image. Please try again.',
+      });
+    } finally {
+      setIsUploadingImage(false);
+    }
+  };
+
+  const handleDeleteGalleryImage = async (publicId) => {
+    const confirm = await Swal.fire({
+      icon: 'warning',
+      title: 'Delete Image?',
+      text: 'This image will be permanently removed from the gallery.',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete',
+    });
+    if (!confirm.isConfirmed) return;
+
+    try {
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('jwtToken');
+      if (!token) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Not Authorized',
+          text: 'Please login again to delete images.',
+        });
+        return;
+      }
+      const res = await fetch(`${API_BASE}/api/admin/gallery?publicId=${encodeURIComponent(publicId)}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (!res.ok && res.status !== 204) {
+        throw new Error('Delete failed');
+      }
+      setGalleryItems(prev => prev.filter(item => item.publicId !== publicId));
+      Swal.fire({
+        icon: 'success',
+        title: 'Deleted',
+        text: 'The image has been removed from the gallery.',
+      });
+    } catch (err) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Delete Failed',
+        text: 'Unable to delete image. Please try again.',
+      });
+    }
+  };
 
   const fetchAppointments = useCallback(async () => {
     setLoading(true);
@@ -186,7 +336,8 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchAppointments();
-  }, [fetchAppointments]);
+    fetchGalleryImagesAdmin();
+  }, [fetchAppointments, fetchGalleryImagesAdmin]);
 
   // Filtered appointments
   const filteredAppointments = appointments.filter(appt => {
@@ -845,6 +996,23 @@ const AdminDashboard = () => {
           <Button variant="primary" className="ms-3" onClick={handleShowAddModal}>
             Add Appointment
           </Button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginLeft: '0.5rem' }}>
+            <Button
+              variant="secondary"
+              className="btn-sm"
+              onClick={() => setShowGalleryManager(true)}
+            >
+              Gallery Manager
+            </Button>
+            <Button
+              variant="outline-light"
+              className="ms-1"
+              style={{ backgroundColor: '#0d6efd', borderColor: '#0d6efd' }}
+              onClick={() => setShowGalleryModal(true)}
+            >
+              Upload Image
+            </Button>
+          </div>
         </div>
 
         {/* Selection Summary */}
@@ -892,6 +1060,8 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
+
+        {/* Gallery Manager is now a modal, opened via the button above */}
 
         {loading ? (
           <p>Loading appointments...</p>
@@ -1218,6 +1388,120 @@ const AdminDashboard = () => {
               {isSubmitting ? 'Adding...' : 'Add Appointment'}
             </Button>
           </Modal.Footer>
+        </Modal>
+
+        {/* Gallery Upload Modal */}
+        <Modal show={showGalleryModal} onHide={handleCloseGalleryModal} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Upload Gallery Image</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3" controlId="galleryTreatmentName">
+                <Form.Label>Treatment Name</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Treatment name"
+                  value={galleryTreatment}
+                  onChange={(e) => setGalleryTreatment(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="galleryImageFile">
+                <Form.Label>Image File</Form.Label>
+                <Form.Control
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setGalleryFile(e.target.files && e.target.files[0] ? e.target.files[0] : null)}
+                />
+              </Form.Group>
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleCloseGalleryModal}>
+              Close
+            </Button>
+            <Button variant="primary" onClick={handleUploadGalleryImage} disabled={isUploadingImage}>
+              {isUploadingImage ? 'Uploading...' : 'Upload Image'}
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* Gallery Manager Modal */}
+        <Modal
+          show={showGalleryManager}
+          onHide={() => setShowGalleryManager(false)}
+          size="lg"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Gallery Manager</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {isLoadingGallery && (
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>Loading gallery images...</p>
+            )}
+            {!isLoadingGallery && galleryItems.length === 0 && (
+              <p style={{ fontSize: '0.9rem', color: '#666' }}>
+                No gallery images uploaded yet. Use "Upload Image" to add photos.
+              </p>
+            )}
+            {!isLoadingGallery && galleryItems.length > 0 && (
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
+                  gap: '0.75rem',
+                }}
+              >
+                {galleryItems.map((item) => (
+                  <div
+                    key={item.publicId}
+                    style={{
+                      borderRadius: '8px',
+                      overflow: 'hidden',
+                      background: '#ffffff',
+                      boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div style={{ position: 'relative', paddingTop: '70%', overflow: 'hidden' }}>
+                      <img
+                        src={item.url}
+                        alt={item.treatmentName || 'Gallery'}
+                        style={{
+                          position: 'absolute',
+                          inset: 0,
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                      />
+                    </div>
+                    {item.treatmentName && (
+                      <div style={{ padding: '0.35rem 0.5rem', fontSize: '0.78rem', fontWeight: 500 }}>
+                        {item.treatmentName}
+                      </div>
+                    )}
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteGalleryImage(item.publicId)}
+                      style={{
+                        border: 'none',
+                        padding: '0.4rem',
+                        fontSize: '0.8rem',
+                        backgroundColor: '#dc3545',
+                        color: '#fff',
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </Modal.Body>
         </Modal>
       </div>
       <div className="floating-action-buttons">

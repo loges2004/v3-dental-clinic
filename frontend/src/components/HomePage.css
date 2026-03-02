@@ -202,6 +202,27 @@ body {
   padding: 0.5rem 0;
 }
 
+.nav-link-gallery {
+  padding-right: 1.6rem;
+}
+
+.nav-gallery-badge {
+  position: absolute;
+  top: -4px;
+  right: 0;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.68rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px #f9fafb;
+}
+
 .nav-link:hover {
   color: #007bff; /* Highlight on hover with logo blue */
 }
@@ -345,6 +366,28 @@ body {
   border-radius: 8px;
   transition: all 0.3s ease;
   position: relative;
+}
+
+.mobile-nav-link-gallery {
+  padding-right: 2.2rem;
+}
+
+.mobile-gallery-badge {
+  position: absolute;
+  top: 50%;
+  right: 1.2rem;
+  transform: translateY(-50%);
+  min-width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px rgba(191, 219, 254, 0.9);
 }
 
 .mobile-nav-link:hover {
@@ -649,6 +692,28 @@ body {
   -webkit-backdrop-filter: blur(10px);
   color: white;
   border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.hero-view-gallery-btn {
+  position: relative;
+  padding-right: 2.5rem;
+}
+
+.hero-gallery-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 26px;
+  height: 20px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.95);
 }
 
 .hero-btn.secondary:hover {
@@ -1925,6 +1990,7 @@ body {
   gap: 10px;
   align-items: flex-end;
 }
+
 
 
 

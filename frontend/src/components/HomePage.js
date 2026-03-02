@@ -17,6 +17,7 @@ import { faInstagram, faFacebook, faWhatsapp, faYoutube } from '@fortawesome/fre
 const HomePage = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [currentImage, setCurrentImage] = useState(0)
+  const [treatmentCount, setTreatmentCount] = useState(null)
 
   const servicesRef = useRef(null)
   const heroRef = useRef(null)
@@ -184,6 +185,56 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, [heroImages.length]); // Added heroImages.length as dependency
 
+  useEffect(() => {
+    const API_BASE = process.env.NODE_ENV === 'development'
+      ? `http://${window.location.hostname}:8001`
+      : 'https://v3-dental-clinic.onrender.com';
+
+    const deriveTreatmentNameFromUrl = (url) => {
+      if (!url) return '';
+      try {
+        const marker = '/tender-clinic/';
+        const idx = url.indexOf(marker);
+        if (idx === -1) return '';
+        const start = idx + marker.length;
+        const rest = url.substring(start);
+        const parts = rest.split('/');
+        const slug = parts[0];
+        if (!slug) return '';
+        const withSpaces = slug.replace(/-/g, ' ');
+        return withSpaces
+          .split(/\s+/)
+          .filter(Boolean)
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      } catch {
+        return '';
+      }
+    };
+
+    const fetchCount = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/gallery`);
+        if (!res.ok) return;
+        const data = await res.json();
+        const items = (Array.isArray(data) ? data : []).map(url => ({
+          url,
+          treatmentName: deriveTreatmentNameFromUrl(url),
+        }));
+        const unique = new Set(
+          items
+            .map(i => i.treatmentName)
+            .filter(name => !!name)
+        );
+        setTreatmentCount(unique.size);
+      } catch {
+        // ignore on homepage
+      }
+    };
+
+    fetchCount();
+  }, []);
+
   return React.createElement(
     React.Fragment,
     null,
@@ -243,6 +294,20 @@ const HomePage = () => {
                   ),
                 ),
                 React.createElement(
+                  "a",
+                  {
+                    href: "/gallery",
+                    className: "nav-link nav-link-gallery",
+                  },
+                  "Gallery",
+                  treatmentCount !== null &&
+                    React.createElement(
+                      "span",
+                      { className: "nav-gallery-badge" },
+                      String(treatmentCount)
+                    ),
+                ),
+                React.createElement(
                   "button",
                   {
                     className: "book-btn",
@@ -294,7 +359,7 @@ const HomePage = () => {
               { className: "mobile-menu-top-bar" },
               React.createElement("span", { className: "close-label" }, "Close"),
             ),
-            React.createElement(
+              React.createElement(
               "div",
               { className: "mobile-menu-content" },
               ["Home", "Services", "Why Choose Us", "Contact"].map((item) =>
@@ -308,6 +373,21 @@ const HomePage = () => {
                   },
                   item,
                 ),
+              ),
+              React.createElement(
+                "a",
+                {
+                  href: "/gallery",
+                  className: "mobile-nav-link mobile-nav-link-gallery",
+                  onClick: () => setIsMenuOpen(false),
+                },
+                "Gallery",
+                treatmentCount !== null &&
+                  React.createElement(
+                    "span",
+                    { className: "mobile-gallery-badge" },
+                    String(treatmentCount)
+                  ),
               ),
               React.createElement(
                 "button",
@@ -500,6 +580,20 @@ const HomePage = () => {
                   }),
                 ),
                 "Call Now",
+              ),
+              React.createElement(
+                "button",
+                {
+                  className: "hero-btn secondary hero-view-gallery-btn",
+                  onClick: () => window.location.href = '/gallery',
+                },
+                "View Gallery",
+                treatmentCount !== null &&
+                  React.createElement(
+                    "span",
+                    { className: "hero-gallery-badge" },
+                    `${treatmentCount}+`
+                  ),
               ),
             ),
           ),
